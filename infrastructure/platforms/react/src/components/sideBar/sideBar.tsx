@@ -1,8 +1,7 @@
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
+
 
 export default function Component() {
   return (
@@ -20,7 +19,7 @@ export default function Component() {
               <nav className="grid items-start px-4 text-sm font-medium">
                 <Link
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-600 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                  to="#"
+                  to="/"
                 
                 >
                   <i className="bi bi-house"></i>
@@ -28,7 +27,7 @@ export default function Component() {
                 </Link>
                 <Link
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-600  transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
-                  to="#"
+                  to="/moto-management"
                 
                 >
                   <i className="bi bi-graph-up-arrow"></i>
@@ -87,7 +86,7 @@ export default function Component() {
               <nav className="grid items-start px-4 text-sm font-medium">
                 <Link
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-600 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                  to="#"
+                  to="/"
                 
                 >
                   <i className="bi bi-house"></i>
@@ -95,7 +94,7 @@ export default function Component() {
                 </Link>
                 <Link
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-600  transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
-                  to="#"
+                  to="/moto-management"
                 
                 >
                  <i className="bi bi-graph-up-arrow"></i>
@@ -138,57 +137,17 @@ export default function Component() {
           </div>
         </SheetContent>
       </Sheet>
-      <div className="flex flex-col">
+      <div className="flex flex-col w-max">
         <header className="flex h-14 items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40">
           <Link className="lg:hidden" to="#">
             <span className="sr-only">Home</span>
           </Link>
           <div className="w-full flex-1">
-            <form>
-              <div className="relative">
-                <i className="bi bi-search absolute left-2.5 top-1.5 h-4 w-4 text-gray-600 dark:text-gray-400"></i>
-                <Input
-                  className="w-full bg-gray-100/50 appearance-none shadow-none pl-8 md:w-2/3 lg:w-1/3 dark:bg-gray-800/50 dark:placeholder-gray-800"
-                  placeholder="Search"
-                  type="search"
-                />
-              </div>
-            </form>
+            
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                className="rounded-full border border-gray-200 w-8 h-8 dark:border-gray-800"
-                size="icon"
-                variant="ghost"
-              >
-                <img
-                  alt="Avatar"
-                  className="rounded-full"
-                  height="32"
-                  src="/placeholder.svg"
-                  style={{ aspectRatio: "32/32", objectFit: "cover" }}
-                  width="32"
-                />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          
         </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-          <div className="grid md:grid-cols-2 gap-4">
-            {/* JE VEUX QUE LES PAGES SOIT ICI  */}
-            TEST
-          </div>
-        </main>
+        
       </div>
     </div>
   )
