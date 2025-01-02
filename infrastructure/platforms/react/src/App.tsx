@@ -1,7 +1,10 @@
-export default function App() {
-  return (
-    <div className="text-center bg-blue-500 text-white p-4">
-      <h1 className="text-2xl font-bold">Hello, Tailwind CSS!</h1>
-    </div>
-  );
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import routes from './routes';
+
+const router = createBrowserRouter(routes);
+
+function App() {
+  return <RouterProvider router={router} />;
 }
+
+export default App;
