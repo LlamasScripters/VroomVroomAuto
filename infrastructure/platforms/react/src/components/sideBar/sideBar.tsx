@@ -1,5 +1,5 @@
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
@@ -183,6 +183,12 @@ export default function Component() {
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
+        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* JE VEUX QUE LES PAGES SOIT ICI  */}
+            TEST
+          </div>
+        </main>
       </div>
     </div>
   )
