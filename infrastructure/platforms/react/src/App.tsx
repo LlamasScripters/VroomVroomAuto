@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import DashboardPage from "./pages/DashboardPage";
 import MotoManagementPage from "./pages/MotoManagementPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import { Link } from "react-router-dom";
 
 function App() {
   return (
@@ -13,12 +16,11 @@ function App() {
       <div className="grid min-h-screen bg-gray-100/40 lg:grid-cols-[280px_1fr] dark:bg-gray-800/40">
         {/* Sidebar component stays the same */}
         <Sidebar />
-
         {/* Main content area - uses flex column to stack header and content */}
         <div className="flex flex-col min-h-screen">
           {/* Header - now spans full width of the main content area */}
           <header className="flex h-14 items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40">
-            {/* Your existing header content */}
+            {/* HEADER*/}
             <div className="w-full flex-1">
               <form>
               <div className="relative">
@@ -55,6 +57,8 @@ function App() {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
+              <DropdownMenuItem><Link to="/login">Se connecter</Link></DropdownMenuItem>
+              <DropdownMenuItem><Link to="/register">S'inscrire</Link></DropdownMenuItem>
               <DropdownMenuItem>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -65,6 +69,8 @@ function App() {
             <Routes>
               <Route path="/" element={<DashboardPage />} />
               <Route path="/moto-management" element={<MotoManagementPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
             </Routes>
           </main>
         </div>
