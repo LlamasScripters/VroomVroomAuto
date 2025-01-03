@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import DashboardPage from "./pages/DashboardPage";
 import MotoManagementPage from "./pages/MotoManagementPage";
+import EntretienManagementPage from "./pages/EntretienManagementPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import { Link } from "react-router-dom";
@@ -69,6 +70,7 @@ function App() {
             <Routes>
               <Route path="/" element={<DashboardPage />} />
               <Route path="/moto-management" element={<MotoManagementPage />} />
+              <Route path="/entretien" element={<EntretienManagementPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
             </Routes>

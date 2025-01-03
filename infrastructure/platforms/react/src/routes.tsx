@@ -1,6 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import MotoManagementPage from './pages/MotoManagementPage';
 import DashboardPage from './pages/DashboardPage';
+import EntretienManagementPage from './pages/EntretienManagementPage';
 
 const routes: RouteObject[] = [
   {
@@ -10,6 +11,10 @@ const routes: RouteObject[] = [
   {
     path: '/',
     element: <DashboardPage />,
+  },
+  {
+    path: '/entretien',
+    element: <EntretienManagementPage />,
   },
   // Autres pages à ajouter
   // {

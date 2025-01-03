@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Moto } from '../types';
 import MotoTable from '../components/motoManagement/MotoTable';
-import SearchAndFilters from '../components/motoManagement/SearchAndFilters';
+import SearchAndFilters from '../components/shared/SearchAndFilters';
 import MotoForm from '../components/motoManagement/MotoForm';
 import MotoHistory from '../components/motoManagement/MotoHistory';
 import MotoMaintenance from '../components/motoManagement/MotoMaintenance';
@@ -119,7 +119,15 @@ function MotoManagementPage() {
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-4">Gestion des Motos</h1>
-      <SearchAndFilters onSearch={handleSearch} onFilter={handleFilter} />
+      <SearchAndFilters
+        onSearch={handleSearch}
+        onFilter={handleFilter}
+        filterOptions={[
+          { value: 'Tiger', label: 'Tiger' },
+          { value: 'Street', label: 'Street' },
+        ]}
+        placeholder="Rechercher une moto..."
+      />
       <button
         onClick={handleAddMoto}
         className="bg-blue-500 text-white py-2 px-4 rounded my-4"

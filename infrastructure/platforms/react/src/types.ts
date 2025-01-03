@@ -8,3 +8,12 @@ export interface Moto {
     status: string;
   }
   
+  export interface Entretien {
+    id?: string;
+    motoId: string;
+    type: string;
+    description: string;
+    date: string;
+    status: string;
+  }
+  
