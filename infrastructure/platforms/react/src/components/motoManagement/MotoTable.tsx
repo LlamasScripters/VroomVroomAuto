@@ -13,6 +13,7 @@ function MotoTable({ motos, onEditMoto, onShowMaintenance, onShowHistory, onDele
     <table className="min-w-full border-collapse border border-gray-200 mt-4">
       <thead>
         <tr>
+          <th className="border p-2">Marque</th>
           <th className="border p-2">Modèle</th>
           <th className="border p-2">N° Série</th>
           <th className="border p-2">Kilométrage</th>
@@ -26,6 +27,7 @@ function MotoTable({ motos, onEditMoto, onShowMaintenance, onShowHistory, onDele
             key={moto.id}
             className={moto.kilometrage > 20000 ? 'bg-red-100' : ''}
           >
+            <td className="border p-2">{moto.marque}</td>
             <td className="border p-2">{moto.model}</td>
             <td className="border p-2">{moto.serialNumber}</td>
             <td className="border p-2">{moto.kilometrage} km</td>
