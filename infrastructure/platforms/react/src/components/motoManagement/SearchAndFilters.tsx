@@ -12,7 +12,6 @@ function SearchAndFilters({ onSearch, onFilter }: { onSearch: (query: string) =>
         <option value="Tiger">Tiger</option>
         <option value="Street">Street</option>
       </select>
-      <button className="bg-blue-500 text-white p-2 rounded">Ajouter une moto</button>
     </div>
   );
 }

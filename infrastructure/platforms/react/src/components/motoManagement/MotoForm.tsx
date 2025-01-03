@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 interface MotoFormProps {
-  onSubmit: (moto: { model: string; serialNumber: string; kilometrage: number; status: string }) => void;
+  onSubmit: (moto: { id?: string; model: string; serialNumber: string; kilometrage: number; status: string }) => void;
   onCancel: () => void;
   initialData?: {
-    id?: number;
+    id?: string;
     model: string;
     serialNumber: string;
     kilometrage: number;
