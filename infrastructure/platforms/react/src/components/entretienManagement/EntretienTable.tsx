@@ -1,51 +1,62 @@
-import { Entretien } from '../../types';
+import { Entretien } from '../../types'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
+import { Edit, Trash2 } from 'lucide-react'
 
 interface EntretienTableProps {
-  entretiens: Entretien[];
-  onEditEntretien: (entretien: Entretien) => void;
-  onDeleteEntretien: (id: string) => void;
+  entretiens: Entretien[]
+  onEditEntretien: (entretien: Entretien) => void
+  onDeleteEntretien: (id: string) => void
 }
 
-function EntretienTable({ entretiens, onEditEntretien, onDeleteEntretien }: EntretienTableProps) {
+export function EntretienTable({ entretiens, onEditEntretien, onDeleteEntretien }: EntretienTableProps) {
   return (
-    <table className="min-w-full border-collapse border border-gray-200 mt-4">
-      <thead>
-        <tr>
-          <th className="border p-2">Modèle de Moto</th>
-          <th className="border p-2">Type</th>
-          <th className="border p-2">Description</th>
-          <th className="border p-2">Date</th>
-          <th className="border p-2">Statut</th>
-          <th className="border p-2">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {entretiens.map((entretien) => (
-          <tr key={entretien.id}>
-            <td className="border p-2">{entretien.motoId}</td>
-            <td className="border p-2">{entretien.type}</td>
-            <td className="border p-2">{entretien.description}</td>
-            <td className="border p-2">{entretien.date}</td>
-            <td className="border p-2">{entretien.status}</td>
-            <td className="border p-2">
-              <button
-                className="bg-green-500 text-white p-1 rounded mr-2"
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[50px]">N°</TableHead>
+          <TableHead>Modèle de Moto</TableHead>
+          <TableHead>Type</TableHead>
+          <TableHead>Description</TableHead>
+          <TableHead>Date</TableHead>
+          <TableHead>Statut</TableHead>
+          <TableHead className="text-right">Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {entretiens.map((entretien, index) => (
+          <TableRow key={entretien.id}>
+            <TableCell className="font-medium">{index + 1}</TableCell>
+            <TableCell>{entretien.motoId}</TableCell>
+            <TableCell>{entretien.type}</TableCell>
+            <TableCell>{entretien.description}</TableCell>
+            <TableCell>{entretien.date}</TableCell>
+            <TableCell>{entretien.status}</TableCell>
+            <TableCell className="text-right">
+              <Button
+                variant="outline"
+                size="icon"
+                className="mr-2"
                 onClick={() => onEditEntretien(entretien)}
               >
-                Modifier
-              </button>
-              <button
-                className="bg-red-500 text-white p-1 rounded"
+                <Edit className="h-4 w-4" />
+                <span className="sr-only">Modifier</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
                 onClick={() => onDeleteEntretien(entretien.id!)}
               >
-                Supprimer
-              </button>
-            </td>
-          </tr>
+                <Trash2 className="h-4 w-4" />
+                <span className="sr-only">Supprimer</span>
+              </Button>
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
-  );
+      </TableBody>
+    </Table>
+  )
 }
 
-export default EntretienTable;
+export default EntretienTable
+

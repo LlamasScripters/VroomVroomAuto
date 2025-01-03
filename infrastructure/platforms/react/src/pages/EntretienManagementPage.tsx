@@ -27,6 +27,18 @@ function EntretienManagementPage() {
   const [entretiens, setEntretiens] = useState<Entretien[]>(mockEntretiens);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [currentEntretien, setCurrentEntretien] = useState<Entretien | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const entretiensPerPage = 5;
+
+  const indexOfLastEntretien = currentPage * entretiensPerPage;
+  const indexOfFirstEntretien = indexOfLastEntretien - entretiensPerPage;
+  const currentEntretiens = entretiens.slice(indexOfFirstEntretien, indexOfLastEntretien);
+
+  const totalPages = Math.ceil(entretiens.length / entretiensPerPage);
+
+  const handleChangePage = (page: number) => {
+    setCurrentPage(page);
+  };
 
   const handleAddEntretien = () => {
     setCurrentEntretien(null);
@@ -40,6 +52,7 @@ function EntretienManagementPage() {
 
   const handleDeleteEntretien = (id: string) => {
     setEntretiens(entretiens.filter((entretien) => entretien.id !== id));
+    alert("Entretien supprimé avec succès !");
   };
 
   const handleSubmitEntretien = (entretien: Entretien) => {
@@ -48,12 +61,14 @@ function EntretienManagementPage() {
       setEntretiens(
         entretiens.map((e) => (e.id === entretien.id ? { ...entretien } : e))
       );
+      alert("Entretien modifié avec succès !");
     } else {
       // Ajout d'un nouvel entretien
       setEntretiens([
         ...entretiens,
         { ...entretien, id: `${Date.now()}` },
       ]);
+      alert("Entretien ajouté avec succès !");
     }
     setIsFormVisible(false);
   };
@@ -99,10 +114,22 @@ function EntretienManagementPage() {
         Ajouter un entretien
       </button>
       <EntretienTable
-        entretiens={entretiens}
+        entretiens={currentEntretiens}
         onEditEntretien={handleEditEntretien}
         onDeleteEntretien={handleDeleteEntretien}
       />
+
+      <div className="flex justify-center mt-4">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handleChangePage(index + 1)}
+            className={`px-4 py-2 mx-1 rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
 
       {isFormVisible && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
