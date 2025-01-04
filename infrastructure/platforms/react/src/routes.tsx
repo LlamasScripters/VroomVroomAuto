@@ -4,6 +4,7 @@ import DashboardPage from './pages/DashboardPage';
 import EntretienManagementPage from './pages/EntretienManagementPage';
 import PanneManagementPage from './pages/PanneManagementPage';
 import ReparationManagementPage from './pages/ReparationManagementPage';
+import PieceManagementPage from './pages/PieceManagementPage';
 
 const routes: RouteObject[] = [
   {
@@ -26,12 +27,10 @@ const routes: RouteObject[] = [
     path: '/reparations',
     element: <ReparationManagementPage />,
   },
-
-  // Autres pages à ajouter
-  // {
-  //   path: '/login',
-  //   element: <LoginPage />,
-  // },
+  {
+    path: '/pieces',
+    element: <PieceManagementPage />,
+  }
 ];
 
 export default routes;

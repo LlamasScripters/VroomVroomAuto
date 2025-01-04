@@ -41,3 +41,13 @@ export interface Garantie {
     actionsCorrectives: string[];
   }
   
+  export interface Piece {
+    id: string;
+    nom: string;
+    reference: string;
+    quantiteEnStock: number;
+    seuilCritique: number;
+    categorie: string;
+  }
+  
+  

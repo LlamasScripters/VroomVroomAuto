@@ -9,6 +9,7 @@ import EntretienManagementPage from "./pages/EntretienManagementPage";
 import PanneManagementPage from "./pages/PanneManagementPage";
 import GarantieManagementPage from "./pages/GarantieManagementPage";
 import ReparationManagementPage from "./pages/ReparationManagementPage";
+import PieceManagementPage from "./pages/PieceManagementPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import { Link } from "react-router-dom";
@@ -79,6 +80,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/reparations" element={<ReparationManagementPage />} />
+              <Route path="/pieces" element={<PieceManagementPage />} />
             </Routes>
           </main>
         </div>
