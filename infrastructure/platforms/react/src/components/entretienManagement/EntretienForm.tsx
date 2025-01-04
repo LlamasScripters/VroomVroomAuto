@@ -15,6 +15,7 @@ interface EntretienFormProps {
 
 function EntretienForm({ onSubmit, onCancel, initialData }: EntretienFormProps) {
   const [formData, setFormData] = useState({
+    id: initialData?.id || '',
     motoId: initialData?.motoId || '',
     type: initialData?.type || 'Préventif',
     description: initialData?.description || '',
