@@ -33,4 +33,11 @@ export interface Garantie {
     dateFin: string;
     status: string;
   }
+  export interface Reparation {
+    id?: string;
+    panneId: string;
+    description: string;
+    date: string;
+    actionsCorrectives: string[];
+  }
   

@@ -3,6 +3,7 @@ import MotoManagementPage from './pages/MotoManagementPage';
 import DashboardPage from './pages/DashboardPage';
 import EntretienManagementPage from './pages/EntretienManagementPage';
 import PanneManagementPage from './pages/PanneManagementPage';
+import ReparationManagementPage from './pages/ReparationManagementPage';
 
 const routes: RouteObject[] = [
   {
@@ -21,6 +22,11 @@ const routes: RouteObject[] = [
     path: '/pannes',
     element: <PanneManagementPage />,
   },
+  { 
+    path: '/reparations',
+    element: <ReparationManagementPage />,
+  },
+
   // Autres pages à ajouter
   // {
   //   path: '/login',
