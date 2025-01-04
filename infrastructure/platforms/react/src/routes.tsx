@@ -2,6 +2,7 @@ import { RouteObject } from 'react-router-dom';
 import MotoManagementPage from './pages/MotoManagementPage';
 import DashboardPage from './pages/DashboardPage';
 import EntretienManagementPage from './pages/EntretienManagementPage';
+import PanneManagementPage from './pages/PanneManagementPage';
 
 const routes: RouteObject[] = [
   {
@@ -15,6 +16,10 @@ const routes: RouteObject[] = [
   {
     path: '/entretien',
     element: <EntretienManagementPage />,
+  },
+  {
+    path: '/pannes',
+    element: <PanneManagementPage />,
   },
   // Autres pages à ajouter
   // {

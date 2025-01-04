@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input"
 import DashboardPage from "./pages/DashboardPage";
 import MotoManagementPage from "./pages/MotoManagementPage";
 import EntretienManagementPage from "./pages/EntretienManagementPage";
+import PanneManagementPage from "./pages/PanneManagementPage";
+import GarantieManagementPage from "./pages/GarantieManagementPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import { Link } from "react-router-dom";
@@ -71,6 +73,8 @@ function App() {
               <Route path="/" element={<DashboardPage />} />
               <Route path="/moto-management" element={<MotoManagementPage />} />
               <Route path="/entretien" element={<EntretienManagementPage />} />
+              <Route path="/pannes" element={<PanneManagementPage />} />
+              <Route path="/garanties" element={<GarantieManagementPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
             </Routes>

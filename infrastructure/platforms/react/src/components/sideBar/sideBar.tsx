@@ -40,17 +40,17 @@ export default function Component() {
                 </NavLink>
                 <NavLink
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-600 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                  to="#"
+                  to="/pannes"
                 >
                   <i className="bi bi-box-seam"></i>
-                  Products
+                  Gestion des pannes
                 </NavLink>
                 <NavLink
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-600 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                  to="#"
+                  to="/garanties"
                 >
                   <i className="bi bi-people"></i>
-                  Customers
+                  Gestion des garanties
                 </NavLink>
                 <NavLink
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-600 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
