@@ -7,6 +7,8 @@ import CommandeSQL from './commande.sql';
 import ConducteurSQL from './conducteur.sql';
 import EssaiSQL from './essaie.sql';
 import IncidentSQL from './incident.sql';
+import PanneSQL from './panne.sql';
+import ReparationSQL from './reparation.sql';
 
 // User associations
 UserSQL.hasMany(ClientSQL, { foreignKey: 'userId' });
@@ -39,3 +41,17 @@ EssaiSQL.belongsTo(ConducteurSQL, { foreignKey: 'conducteurId' });
 // Essai associations
 EssaiSQL.hasMany(IncidentSQL, { foreignKey: 'essaiId' });
 IncidentSQL.belongsTo(EssaiSQL, { foreignKey: 'essaiId' });
+
+// Pannes associations
+MotoSQL.hasMany(PanneSQL, { foreignKey: 'motoId' });
+PanneSQL.belongsTo(MotoSQL, { foreignKey: 'motoId' });
+
+UserSQL.hasMany(PanneSQL, { foreignKey: 'userId' });
+PanneSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
+
+// Réparations associations
+PanneSQL.hasMany(ReparationSQL, { foreignKey: 'panneId' });
+ReparationSQL.belongsTo(PanneSQL, { foreignKey: 'panneId' });
+
+UserSQL.hasMany(ReparationSQL, { foreignKey: 'userId' });
+ReparationSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
