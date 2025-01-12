@@ -2,13 +2,13 @@ import { UUID } from '../value-objects/UUID';
 
 export class Essai {
     constructor(
-      private readonly essaiId: UUID,
-      private readonly motoId: UUID,
-      private readonly ConducteurId: UUID,
-      private readonly dateDebut: Date,
-      private readonly dateFin: Date,
-      private readonly duree: number,
-      private readonly userId: UUID
+      public readonly essaiId: UUID,
+      public readonly motoId: UUID,
+      public readonly ConducteurId: UUID,
+      public readonly dateDebut: Date,
+      public readonly dateFin: Date,
+      public readonly duree: number,
+      public readonly userId: UUID
     ) {}
 
     public static create(
@@ -22,32 +22,5 @@ export class Essai {
     ): Essai {
       return new Essai(essaiId, motoId, ConducteurId, dateDebut, dateFin, duree, userId);
     }
-
-    public getEssaiId(): UUID {
-      return this.essaiId;
-    }
-
-    public getMotoId(): UUID {
-      return this.motoId;
-    } 
-
-    public getConducteurId(): UUID {
-      return this.ConducteurId;
-    } 
-      
-    public getDateDebut(): Date {
-      return this.dateDebut;
-    }
-
-    public getDateFin(): Date {
-      return this.dateFin;
-    }
-
-    public getDuree(): number {
-      return this.duree;
-    }
-
-    public getUserId(): UUID {
-      return this.userId;
-    }
+    
   }

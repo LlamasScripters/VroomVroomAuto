@@ -2,14 +2,14 @@ import { UUID } from '../value-objects/UUID';
 
 export class Reparation {
   constructor(
-    private readonly reparationId: UUID,
-    private readonly panneId: UUID,
-    private readonly description: string,
-    private readonly dateReparation: Date,
-    private readonly actionsCorrectives: string[],
-    private readonly coutReparation: number,
-    private readonly status: string,
-    private readonly userId: UUID
+    public readonly reparationId: UUID,
+    public readonly panneId: UUID,
+    public readonly description: string,
+    public readonly dateReparation: Date,
+    public readonly actionsCorrectives: string[],
+    public readonly coutReparation: number,
+    public readonly status: string,
+    public readonly userId: UUID
   ) {}
 
   public static create(
@@ -25,35 +25,4 @@ export class Reparation {
     return new Reparation(reparationId, panneId, description, dateReparation, actionsCorrectives, coutReparation, status, userId);
   }
 
-  public getReparationId(): UUID {
-    return this.reparationId;
-  }
-
-  public getPanneId(): UUID {
-    return this.panneId;
-  }
-
-  public getDescription(): string {
-    return this.description;
-  }
-
-  public getDateReparation(): Date {
-    return this.dateReparation;
-  }
-
-  public getActionsCorrectives(): string[] {
-    return this.actionsCorrectives;
-  }
-
-  public getCoutReparation(): number {
-    return this.coutReparation;
-  }
-
-  public getStatus(): string {
-    return this.status;
-  }
-
-  public getUserId(): UUID {
-    return this.userId;
-  }
 }

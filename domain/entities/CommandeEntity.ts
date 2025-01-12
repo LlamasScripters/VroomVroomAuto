@@ -2,14 +2,14 @@ import { UUID } from '../value-objects/UUID';
 
 export class Commande {
   constructor(
-    private commandeId: UUID,
-    private dateCommande: Date,
-    private pieceId: UUID,
-    private quantiteCommandee: number,
-    private coutTotal: number,
-    private dateLivraison: Date,
-    private statutCommande: string,
-    private userId: UUID
+    public readonly commandeId: UUID,
+    public readonly dateCommande: Date,
+    public readonly pieceId: UUID,
+    public readonly quantiteCommandee: number,
+    public readonly coutTotal: number,
+    public readonly dateLivraison: Date,
+    public readonly statutCommande: string,
+    public readonly userId: UUID
   ) {}
   public static create(
     commandeId: UUID,
@@ -24,35 +24,4 @@ export class Commande {
     return new Commande(commandeId,dateCommande,pieceId,quantiteCommandee,coutTotal,dateLivraison,statutCommande,userId);
   }
 
-  public getCommandeId(): UUID {
-    return this.commandeId;
-  }
-
-  public getDateCommande(): Date {
-    return this.dateCommande;
-  }
-
-  public getPieceId(): UUID {
-    return this.pieceId;
-  }
-
-  public getQuantiteCommandee(): number {
-    return this.quantiteCommandee;
-  }
-
-  public getCoutTotal(): number {
-    return this.coutTotal;
-  }
-
-  public getDateLivraison(): Date {
-    return this.dateLivraison;
-  }
-
-  public getStatutCommande(): string {
-    return this.statutCommande;
-  }
-
-  public getUserId(): UUID {
-    return this.userId;
-  }
 }

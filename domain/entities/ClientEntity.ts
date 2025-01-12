@@ -1,18 +1,20 @@
 import { UUID } from '../value-objects/UUID';
 
 export class Client {
+  // déplacer le nodeModules dans domain
+  // utiliser validator pour les emails au lieu de regex
     constructor(
-      private readonly clientId: UUID,
-      private readonly nom: string,
-      private readonly prenom: string,
-      private readonly mail: string,
-      private readonly telephone: string,
-      private readonly numeroDeRue: number,
-      private readonly nomDeRue: string,
-      private readonly codePostal: string,
-      private readonly ville: string,
-      private readonly pays: string,
-      private readonly userId: UUID
+      public readonly clientId: UUID,
+      public readonly nom: string,
+      public readonly prenom: string,
+      public readonly mail: string,
+      public readonly telephone: string,
+      public readonly numeroDeRue: number,
+      public readonly nomDeRue: string,
+      public readonly codePostal: string,
+      public readonly ville: string,
+      public readonly pays: string,
+      public readonly userId: UUID
     ) {}
 
     public static create(
@@ -33,49 +35,5 @@ export class Client {
 
     public getFullAddress(): string {
       return this.numeroDeRue + ' ' + this.nomDeRue + ' ' + this.codePostal + ' ' + this.ville + ' ' + this.pays;
-    }
-
-    public getNom(): string {
-      return this.nom;
-    } 
-
-    public getPrenom(): string {
-      return this.prenom;
-    } 
-
-    public getMail(): string {
-      return this.mail;
-    } 
-
-    public getTelephone(): string {
-      return this.telephone;
-    } 
-
-    public getNumeroDeRue(): number { 
-      return this.numeroDeRue;
-    }
-    
-    public getNomDeRue(): string {
-      return this.nomDeRue;
-    }
-
-    public getCodePostal(): string {
-      return this.codePostal;
-    }
-
-    public getVille(): string {
-      return this.ville;
-    }
-
-    public getPays(): string {
-      return this.pays;
-    }
-
-    public getUserId(): UUID {
-      return this.userId;
-    }
-
-    public getClientId(): UUID {
-      return this.clientId;
     }
   }

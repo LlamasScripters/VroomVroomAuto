@@ -4,13 +4,13 @@ import { Password } from '../value-objects/PASSWORD';
 
 export class User {
     constructor(
-      private readonly userId: UUID,
-      private readonly username: string,
-      private readonly email: Email,
-      private readonly motDePasse: Password,
-      private readonly role: string,
-      private readonly dateCreation: Date,
-      private readonly derniereConnexion: Date
+      public readonly userId: UUID,
+      public readonly username: string,
+      public readonly email: Email,
+      public readonly motDePasse: Password,
+      public readonly role: string,
+      public readonly dateCreation: Date,
+      public readonly derniereConnexion: Date
     ) {}
 
     public static create(
@@ -25,31 +25,4 @@ export class User {
       return new User(userId, username, email, motDePasse, role, dateCreation, derniereConnexion);
     }
 
-    public getUserId(): UUID {
-      return this.userId;
-    }
-
-    public getUsername(): string {
-      return this.username;
-    }
-
-    public getEmail(): Email {
-      return this.email;
-    }
-
-    public getMotDePasse(): Password {
-      return this.motDePasse;
-    }
-
-    public getRole(): string {
-      return this.role;
-    }
-
-    public getDateCreation(): Date {
-      return this.dateCreation;
-    }
-
-    public getDerniereConnexion(): Date {
-      return this.derniereConnexion;
-    }
   }
