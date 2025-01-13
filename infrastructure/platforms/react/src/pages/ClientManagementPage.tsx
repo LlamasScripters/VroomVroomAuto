@@ -38,14 +38,21 @@ const mockClients: Client[] = [
     nom: 'Simpson',
     prenom: 'Homer',
     mail: 'hp@outlook.fr',
-    telephone: '123456789'
+    telephone: '126456789'
   },
   {
     id: '6',
     nom: 'Simpson',
     prenom: 'Marge',
     mail: 'marge@outlook.fr',
-    telephone: '123456789'
+    telephone: '123457689'
+  },
+  {
+    id: '7',
+    nom: 'Simpson',
+    prenom: 'Bart',
+    mail: 'elbarto@gmail.com',
+    telephone: '123456719'
   },
 ];
 
