@@ -54,6 +54,13 @@ const mockClients: Client[] = [
     mail: 'elbarto@gmail.com',
     telephone: '123456719'
   },
+  {
+    id: '8',
+    nom: 'Simpson',
+    prenom: 'Lisa',
+    mail: 'ecolo@arbre.com',
+    telephone: '123456711'
+  },
 ];
 
 function ClientManagementPage() {
