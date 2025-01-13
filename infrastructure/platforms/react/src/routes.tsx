@@ -5,15 +5,17 @@ import EntretienManagementPage from './pages/EntretienManagementPage';
 import PanneManagementPage from './pages/PanneManagementPage';
 import ReparationManagementPage from './pages/ReparationManagementPage';
 import PieceManagementPage from './pages/PieceManagementPage';
+import GarantieManagementPage from './pages/GarantieManagementPage';
+import ClientManagementPage from './pages/ClientManagementPage';
 
 const routes: RouteObject[] = [
   {
-    path: '/moto-management',
-    element: <MotoManagementPage />,
-  },
-  {
     path: '/',
     element: <DashboardPage />,
+  },
+  {
+    path: '/moto-management',
+    element: <MotoManagementPage />,
   },
   {
     path: '/entretien',
@@ -23,6 +25,10 @@ const routes: RouteObject[] = [
     path: '/pannes',
     element: <PanneManagementPage />,
   },
+  {
+    path: '/garanties',
+    element: <GarantieManagementPage />,
+  },
   { 
     path: '/reparations',
     element: <ReparationManagementPage />,
@@ -30,7 +36,11 @@ const routes: RouteObject[] = [
   {
     path: '/pieces',
     element: <PieceManagementPage />,
-  }
+  },
+  {
+    path: '/clients',
+    element: <ClientManagementPage />,
+  },
 ];
 
 export default routes;
