@@ -40,6 +40,13 @@ const mockClients: Client[] = [
     mail: 'hp@outlook.fr',
     telephone: '123456789'
   },
+  {
+    id: '6',
+    nom: 'Simpson',
+    prenom: 'Marge',
+    mail: 'marge@outlook.fr',
+    telephone: '123456789'
+  },
 ];
 
 function ClientManagementPage() {
