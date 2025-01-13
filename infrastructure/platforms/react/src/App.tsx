@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Sidebar from "../src/components/sideBar/sideBar";
+import { Link } from "react-router-dom";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import Sidebar from "../src/components/sideBar/sideBar";
 import DashboardPage from "./pages/DashboardPage";
 import MotoManagementPage from "./pages/MotoManagementPage";
 import EntretienManagementPage from "./pages/EntretienManagementPage";
@@ -10,9 +11,10 @@ import PanneManagementPage from "./pages/PanneManagementPage";
 import GarantieManagementPage from "./pages/GarantieManagementPage";
 import ReparationManagementPage from "./pages/ReparationManagementPage";
 import PieceManagementPage from "./pages/PieceManagementPage";
+import ClientManagementPage from "./pages/ClientManagementPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import { Link } from "react-router-dom";
+
 
 function App() {
   return (
@@ -81,6 +83,7 @@ function App() {
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/reparations" element={<ReparationManagementPage />} />
               <Route path="/pieces" element={<PieceManagementPage />} />
+              <Route path="/clients" element={<ClientManagementPage />} />
             </Routes>
           </main>
         </div>
