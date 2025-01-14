@@ -96,7 +96,7 @@ function GarantieManagementPage() {
   };
 
   return (
-    <div className="p-8">
+    <div className="">
       <h1 className="text-2xl font-bold mb-4">Gestion des Garanties</h1>
       <SearchAndFilters
         onSearch={handleSearch}
