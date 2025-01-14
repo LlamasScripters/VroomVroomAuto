@@ -130,7 +130,6 @@ function ClientManagementPage() {
         onSearch={handleSearch}
         onFilter={handleFilter}
         filterOptions={[
-          { value: '', label: ' Tout' },
           { value: 'Doe', label: 'Doe' },
           { value: 'Malam', label: 'Malam' },
           { value: 'Flintstone', label: 'Flintstone' },

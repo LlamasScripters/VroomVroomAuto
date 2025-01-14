@@ -15,6 +15,17 @@ export interface Entretien {
   status: string;
 }
 
+export interface Employe {
+  id?: string;
+  nom: string;
+  prenom: string;
+  mail: string;
+  telephone: string;
+  dateCreation: Date;
+  derniereConnexion: Date;
+  role: string;
+}
+
 export interface Garantie {
   id?: string;
   motoId: string;

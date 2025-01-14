@@ -40,7 +40,7 @@ export function LoginForm({
       <div className="text-center text-sm">
         Vous n'avez pas de compte ?{" "}
         <NavLink to="/register" className="underline underline-offset-4">
-          Connectez-vous 
+          Inscrivez-vous 
         </NavLink>
       </div>
     </form>

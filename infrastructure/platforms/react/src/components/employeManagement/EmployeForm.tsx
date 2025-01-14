@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-interface ClientFormProps {
-  onSubmit: (client: { id?: string; nom: string; prenom: string; mail: string; telephone: string }) => void;
+interface EmployeFormProps {
+  onSubmit: (employe: { id?: string; nom: string; prenom: string; mail: string; telephone: string; dateCreation: Date; derniereConnexion: Date; role: string}) => void;
   onCancel: () => void;
   initialData?: {
     id?: string;
@@ -9,18 +9,23 @@ interface ClientFormProps {
     prenom: string;
     mail: string;
     telephone: string;
+    dateCreation: Date;
+    derniereConnexion: Date;
+    role: string;
   };
 }
 
-function ClientForm({ onSubmit, onCancel, initialData }: ClientFormProps) {
+function EmployeForm({ onSubmit, onCancel, initialData }: EmployeFormProps) {
   const [formData, setFormData] = useState({
     id: initialData?.id || '',
     nom: initialData?.nom || '',
     prenom: initialData?.prenom || '',
     mail: initialData?.mail || '',
     telephone: initialData?.telephone || '',
+    dateCreation: initialData?.dateCreation || new Date(),
+    derniereConnexion: initialData?.derniereConnexion || new Date(),
+    role: initialData?.role || '',
   });
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -34,7 +39,7 @@ function ClientForm({ onSubmit, onCancel, initialData }: ClientFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4">{initialData ? 'Modifier un client' : 'Ajouter un client'}</h2>
+      <h2 className="text-xl font-bold mb-4">{initialData ? 'Modifier un employé' : 'Ajouter un employé'}</h2>
 
       <div className="mb-4">
         <label htmlFor="nom" className="block text-sm font-medium text-gray-700">Nom</label>
@@ -65,7 +70,7 @@ function ClientForm({ onSubmit, onCancel, initialData }: ClientFormProps) {
       <div className="mb-4">
         <label htmlFor="mail" className="block text-sm font-medium text-gray-700">Mail</label>
         <input
-          type="mail"
+          type="email"
           id="mail"
           name="mail"
           value={formData.mail}
@@ -78,12 +83,25 @@ function ClientForm({ onSubmit, onCancel, initialData }: ClientFormProps) {
       <div className="mb-4">
         <label htmlFor="telephone" className="block text-sm font-medium text-gray-700">Telephone</label>
         <input
-          type="number"
+          type="tel"
           maxLength={10}
           minLength={9}
           id="telephone"
           name="telephone"
           value={formData.telephone}
+          onChange={handleChange}
+          required
+          className="mt-1 block w-full p-2 border border-gray-300 rounded-lg"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
+        <input
+          type="text"
+          id="role"
+          name="role"
+          value={formData.role}
           onChange={handleChange}
           required
           className="mt-1 block w-full p-2 border border-gray-300 rounded-lg"
@@ -109,4 +127,4 @@ function ClientForm({ onSubmit, onCancel, initialData }: ClientFormProps) {
   );
 }
 
-export default ClientForm;
+export default EmployeForm;

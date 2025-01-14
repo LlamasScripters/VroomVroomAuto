@@ -12,6 +12,7 @@ import GarantieManagementPage from "./pages/GarantieManagementPage";
 import ReparationManagementPage from "./pages/ReparationManagementPage";
 import PieceManagementPage from "./pages/PieceManagementPage";
 import ClientManagementPage from "./pages/ClientManagementPage";
+import EmployeManagementPage from "./pages/EmployeManagementPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 
@@ -41,34 +42,34 @@ function App() {
             </form>
             </div>
             <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                className="rounded-full border border-gray-200 w-8 h-8 dark:border-gray-800"
-                size="icon"
-                variant="ghost"
-              >
-                <img
-                  alt="Avatar"
-                  className="rounded-full"
-                  height="32"
-                  src="/placeholder.svg"
-                  style={{ aspectRatio: "32/32", objectFit: "cover" }}
-                  width="32"
-                />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem><Link to="/login">Se connecter</Link></DropdownMenuItem>
-              <DropdownMenuItem><Link to="/register">S'inscrire</Link></DropdownMenuItem>
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  className="rounded-full border border-gray-200 w-8 h-8 dark:border-gray-800"
+                  size="icon"
+                  variant="ghost"
+                >
+                  <img
+                    alt="Avatar"
+                    className="rounded-full"
+                    height="32"
+                    src="/placeholder.svg"
+                    style={{ aspectRatio: "32/32", objectFit: "cover" }}
+                    width="32"
+                  />
+                  <span className="sr-only">Toggle user menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Paramètres</DropdownMenuItem>
+                <DropdownMenuItem>Aide</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem><Link to="/login">Se connecter</Link></DropdownMenuItem>
+                <DropdownMenuItem><Link to="/register">S'inscrire</Link></DropdownMenuItem>
+                <DropdownMenuItem>Déconnexion</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </header>
 
           {/* Main content area - fills remaining space and enables scrolling */}
@@ -84,6 +85,7 @@ function App() {
               <Route path="/reparations" element={<ReparationManagementPage />} />
               <Route path="/pieces" element={<PieceManagementPage />} />
               <Route path="/clients" element={<ClientManagementPage />} />
+              <Route path="/employes" element={<EmployeManagementPage />} />
             </Routes>
           </main>
         </div>
