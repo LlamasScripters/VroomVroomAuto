@@ -78,27 +78,40 @@ export class SqlMotoRepository implements MotoRepository {
 
 
   async update(moto: Moto): Promise<Moto> {
-    const updated = await MotoSQL.update(
-      {
-        marque: moto.marque,
-        model: moto.model,
-        kilometrage: moto.kilometrage,
-        dateMiseEnService: moto.dateMiseEnService,
-        statut: moto.statut,
-        serialNumber: moto.serialNumber,
-        clientId: moto.clientId.toString()
-      },
-      {
-        where: { motoId: moto.motoId.toString() }
-      }
+    const [numberOfAffectedRows] = await MotoSQL.update(
+        {
+            marque: moto.marque,
+            model: moto.model,
+            kilometrage: moto.kilometrage,
+            dateMiseEnService: moto.dateMiseEnService,
+            statut: moto.statut,
+            serialNumber: moto.serialNumber,
+            clientId: moto.clientId.toString()
+        },
+        {
+            where: { motoId: moto.motoId.toString() },
+            returning: true
+        }
     );
 
-    if (updated[0] === 0) {
-      throw new Error('Moto non trouvée');
+    if (numberOfAffectedRows === 0) {
+        throw new Error('Moto non trouvée');
     }
 
-    return moto;
-  }
+    // Récupérer la moto mise à jour
+    const updatedMoto = await MotoSQL.findByPk(moto.motoId.toString()) as MotoModel;
+    
+    return Moto.create(
+        new UUID(updatedMoto.motoId),
+        updatedMoto.marque,
+        updatedMoto.model,
+        updatedMoto.kilometrage,
+        updatedMoto.dateMiseEnService,
+        updatedMoto.statut,
+        updatedMoto.serialNumber,
+        new UUID(updatedMoto.clientId)
+    );
+}
 
   async delete(motoId: UUID): Promise<boolean> {
     const deleted = await MotoSQL.destroy({

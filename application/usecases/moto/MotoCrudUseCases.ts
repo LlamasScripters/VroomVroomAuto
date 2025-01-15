@@ -26,21 +26,22 @@ export class MotoUseCases {
   }
 
   async updateMoto(motoId: UUID, updatedData: Partial<MotoData>): Promise<Moto | null> {
-    const moto = await this.motoRepository.findById(motoId);
-    if (!moto) return null;
+    const existingMoto = await this.motoRepository.findById(motoId);
+    if (!existingMoto) return null;
 
+    // Créer une nouvelle instance avec les données mises à jour
     const updatedMoto = Moto.create(
-      moto.motoId,
-      updatedData.marque || moto.marque,
-      updatedData.model || moto.model,
-      updatedData.kilometrage || moto.kilometrage,
-      updatedData.dateMiseEnService || moto.dateMiseEnService,
-      updatedData.statut || moto.statut,
-      updatedData.serialNumber || moto.serialNumber,
-      moto.clientId
+        motoId,
+        updatedData.marque ?? existingMoto.marque,
+        updatedData.model ?? existingMoto.model,
+        updatedData.kilometrage ?? existingMoto.kilometrage,
+        updatedData.dateMiseEnService ? new Date(updatedData.dateMiseEnService) : existingMoto.dateMiseEnService,
+        updatedData.statut ?? existingMoto.statut,
+        updatedData.serialNumber ?? existingMoto.serialNumber,
+        existingMoto.clientId
     );
     
-    return this.motoRepository.save(updatedMoto);
+    return this.motoRepository.update(updatedMoto);
   }
 
   async deleteMoto(motoId: UUID): Promise<boolean> {

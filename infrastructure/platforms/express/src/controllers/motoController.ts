@@ -50,6 +50,7 @@ export class MotoController {
   async updateMoto(req: Request, res: Response): Promise<void> {
     try {
       const motoId = new UUID(req.params.id);
+      // Convertir les données reçues en DTO
       const updatedMoto = await this.motoUseCases.updateMoto(motoId, req.body);
 
       if (!updatedMoto) {
@@ -57,11 +58,13 @@ export class MotoController {
         return;
       }
 
-      res.json(updatedMoto);
+      // Convertir en DTO avant de renvoyer
+      const motoDTO = MotoMapper.toDTO(updatedMoto);
+      res.json(motoDTO);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }
-  }
+}
 
   async getAllMotos(req: Request, res: Response): Promise<void> {
     try {

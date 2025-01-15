@@ -49,19 +49,25 @@ export const MotoService = {
 
   async updateMoto(moto: Moto): Promise<Moto> {
     try {
-      const response = await fetch(`${API_URL}/motos/${moto.motoId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(moto),
-      });
-      if (!response.ok) {
-        throw new Error('Erreur lors de la mise à jour de la moto');
-      }
-      return response.json();
+        if (!moto.motoId) {
+            throw new Error('ID de moto manquant');
+        }
+      
+        const response = await fetch(`${API_URL}/motos/${moto.motoId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(moto),
+        });
+        
+        if (!response.ok) {
+            throw new Error('Erreur lors de la mise à jour de la moto');
+        }
+        
+        return response.json();
     } catch (error) {
-      throw new Error(`Erreur lors de la mise à jour de la moto: ${error}`);
+        throw new Error(`Erreur lors de la mise à jour de la moto: ${error}`);
     }
   },
 

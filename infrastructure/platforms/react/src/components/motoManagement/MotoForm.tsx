@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 interface MotoFormProps {
   onSubmit: (moto: {
-    id?: string;
+    motoId?: string;
     marque: string;
     model: string;      
     serialNumber: string;
@@ -12,7 +12,7 @@ interface MotoFormProps {
   }) => void;
   onCancel: () => void;
   initialData?: {
-    id?: string;
+    motoId?: string;
     marque: string;
     model: string;
     serialNumber: string;
@@ -25,7 +25,7 @@ interface MotoFormProps {
 
 function MotoForm({ onSubmit, onCancel, initialData }: MotoFormProps) {
   const [formData, setFormData] = useState({
-    id: initialData?.id || '',
+    motoId: initialData?.motoId || '',
     marque: initialData?.marque || '',
     model: initialData?.model || '', 
     serialNumber: initialData?.serialNumber || '',
@@ -118,10 +118,10 @@ function MotoForm({ onSubmit, onCancel, initialData }: MotoFormProps) {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="status" className="block text-sm font-medium text-gray-700">Statut</label>
+        <label htmlFor="statut" className="block text-sm font-medium text-gray-700">Statut</label>
         <select
-          id="status"
-          name="status"
+          id="statut"
+          name="statut"
           value={formData.statut}
           onChange={handleChange}
           required
