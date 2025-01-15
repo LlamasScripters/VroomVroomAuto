@@ -44,4 +44,8 @@ export class MotoUseCases {
   async deleteMoto(motoId: UUID): Promise<boolean> {
     return this.motoRepository.delete(motoId);
   }
+
+  async getAllMotos(): Promise<Moto[]> {
+    return this.motoRepository.findAll();
+  }
 }
