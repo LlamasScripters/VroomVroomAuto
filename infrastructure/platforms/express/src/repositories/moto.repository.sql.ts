@@ -9,7 +9,7 @@ import { Model } from 'sequelize';
 interface MotoModel extends Model {
   motoId: string;
   marque: string;
-  modele: string;
+  model: string;
   kilometrage: number;
   dateMiseEnService: Date;
   statut: string;
@@ -22,7 +22,7 @@ export class SqlMotoRepository implements MotoRepository {
       const createdMoto = await MotoSQL.create({
         motoId: moto.motoId.toString(),
         marque: moto.marque,
-        modele: moto.modele,
+        model: moto.model,
         kilometrage: moto.kilometrage,
         dateMiseEnService: moto.dateMiseEnService,
         statut: moto.statut,
@@ -32,7 +32,7 @@ export class SqlMotoRepository implements MotoRepository {
       return Moto.create(
         new UUID(createdMoto.get('motoId') as string),
         createdMoto.get('marque') as string,
-        createdMoto.get('modele') as string,
+        createdMoto.get('model') as string,
         createdMoto.get('kilometrage') as number,
         createdMoto.get('dateMiseEnService') as Date,
         createdMoto.get('statut') as string,
@@ -50,7 +50,7 @@ export class SqlMotoRepository implements MotoRepository {
     return Moto.create(
       new UUID(moto.motoId),
       moto.marque,
-      moto.modele,
+      moto.model,
       moto.kilometrage,
       moto.dateMiseEnService,
       moto.statut,
@@ -63,7 +63,7 @@ export class SqlMotoRepository implements MotoRepository {
     return motos.map(moto => Moto.create(
       new UUID(moto.motoId),
       moto.marque,
-      moto.modele,
+      moto.model,
       moto.kilometrage,
       moto.dateMiseEnService,
       moto.statut,
@@ -76,7 +76,7 @@ export class SqlMotoRepository implements MotoRepository {
     const updated = await MotoSQL.update(
       {
         marque: moto.marque,
-        modele: moto.modele,
+        model: moto.model,
         kilometrage: moto.kilometrage,
         dateMiseEnService: moto.dateMiseEnService,
         statut: moto.statut,

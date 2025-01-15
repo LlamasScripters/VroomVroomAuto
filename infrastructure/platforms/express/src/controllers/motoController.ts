@@ -17,7 +17,7 @@ export class MotoController {
     try {
       const moto = await this.motoUseCases.createMoto(
         req.body.marque,
-        req.body.modele,
+        req.body.model,
         req.body.kilometrage,
         req.body.dateMiseEnService,
         req.body.statut,

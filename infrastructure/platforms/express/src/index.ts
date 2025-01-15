@@ -36,5 +36,3 @@ connectToDatabase().then(() => {
 }).catch((err: unknown) => {
   console.error('Failed to connect to the database', err);
 });
-
-

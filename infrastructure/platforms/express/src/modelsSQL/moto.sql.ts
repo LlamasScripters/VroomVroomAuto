@@ -11,7 +11,7 @@ const MotoSQL = connection.define('Moto', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  modele: {
+  model: {
     type: DataTypes.STRING,
     allowNull: false,
   },

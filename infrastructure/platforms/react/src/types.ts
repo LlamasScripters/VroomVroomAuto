@@ -27,11 +27,11 @@ export interface Garantie {
 export interface Moto {
   id?: string;
   marque: string;
-  model: string;
+  model: string;          // au lieu de "model"
   serialNumber: string;
   kilometrage: number;
   dateMiseEnService: string;
-  status: string;
+  statut: string;          // au lieu de "status"
   clientId?: string;
 }
 

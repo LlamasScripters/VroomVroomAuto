@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 
 interface MotoFormProps {
-  onSubmit: (moto: { id?: string; marque: string; model: string; serialNumber: string; kilometrage: number; dateMiseEnService: string; status: string }) => void;
+  onSubmit: (moto: {
+    id?: string;
+    marque: string;
+    model: string;      
+    serialNumber: string;
+    kilometrage: number;
+    dateMiseEnService: string;
+    statut: string;     
+  }) => void;
   onCancel: () => void;
   initialData?: {
     id?: string;
@@ -10,19 +18,20 @@ interface MotoFormProps {
     serialNumber: string;
     kilometrage: number;
     dateMiseEnService: string;
-    status: string;
+    statut: string;
   };
 }
+
 
 function MotoForm({ onSubmit, onCancel, initialData }: MotoFormProps) {
   const [formData, setFormData] = useState({
     id: initialData?.id || '',
     marque: initialData?.marque || '',
-    model: initialData?.model || '',
+    model: initialData?.model || '', 
     serialNumber: initialData?.serialNumber || '',
     kilometrage: initialData?.kilometrage || 0,
     dateMiseEnService: initialData?.dateMiseEnService || '',
-    status: initialData?.status || 'En service',
+    statut: initialData?.statut || 'En service',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -113,7 +122,7 @@ function MotoForm({ onSubmit, onCancel, initialData }: MotoFormProps) {
         <select
           id="status"
           name="status"
-          value={formData.status}
+          value={formData.statut}
           onChange={handleChange}
           required
           className="mt-1 block w-full p-2 border border-gray-300 rounded-lg"
