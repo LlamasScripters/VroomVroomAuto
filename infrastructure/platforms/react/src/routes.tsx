@@ -8,7 +8,6 @@ import PieceManagementPage from './pages/PieceManagementPage';
 import GarantieManagementPage from './pages/GarantieManagementPage';
 import ClientManagementPage from './pages/ClientManagementPage';
 import EmployeManagementPage from './pages/EmployeManagementPage';
-import MaintenanceRuleManagementPage from './pages/MaintenanceRuleManagementPage';
 
 const routes: RouteObject[] = [
   {
@@ -46,10 +45,6 @@ const routes: RouteObject[] = [
   {
     path: '/employes',
     element: <EmployeManagementPage />,
-  },
-  {
-    path: '/maintenance-rules',
-    element: <MaintenanceRuleManagementPage />,
   }
 ];
 
