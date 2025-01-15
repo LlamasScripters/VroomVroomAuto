@@ -25,11 +25,15 @@ export class MotoController {
         req.body.serialNumber,
         new UUID(req.body.clientId)
       );
-      res.status(201).json(moto);
+    
+     const motoDTO = MotoMapper.toDTO(moto);
+     res.status(201).json(motoDTO);
+  
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }
   }
+  
 
   async getMoto(req: Request, res: Response): Promise<void> {
     try {
