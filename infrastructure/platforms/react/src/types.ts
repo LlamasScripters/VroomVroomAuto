@@ -59,3 +59,11 @@ export interface Reparation {
   date: string;
   actionsCorrectives: string[];
 }
+
+export interface MaintenanceRule {
+  id?: string;
+  modele: string;
+  intervalleKilometrage: number;
+  intervalleTemps: number;
+  typeEntretien: string;
+}

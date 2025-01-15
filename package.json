@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "module-alias": "^2.2.3",
     "uuid": "^11.0.3"
+  },
+  "moduleAliases": {
+    "@domain": "dist/domain",
+    "@application": "dist/application",
+    "@infrastructure": "dist/infrastructure"
   }
 }

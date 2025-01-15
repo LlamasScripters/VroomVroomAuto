@@ -7,6 +7,7 @@ import ReparationManagementPage from './pages/ReparationManagementPage';
 import PieceManagementPage from './pages/PieceManagementPage';
 import GarantieManagementPage from './pages/GarantieManagementPage';
 import ClientManagementPage from './pages/ClientManagementPage';
+import MaintenanceRuleManagementPage from './pages/MaintenanceRuleManagementPage';
 
 const routes: RouteObject[] = [
   {
@@ -41,6 +42,10 @@ const routes: RouteObject[] = [
     path: '/clients',
     element: <ClientManagementPage />,
   },
+  {
+    path: '/maintenance-rules',
+    element: <MaintenanceRuleManagementPage />,
+  }
 ];
 
 export default routes;

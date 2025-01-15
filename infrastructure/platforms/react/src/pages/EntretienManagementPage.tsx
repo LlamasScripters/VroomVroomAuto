@@ -1,40 +1,46 @@
-import { useState } from 'react';
-import { Entretien } from '../types'; 
+import { useEffect, useState } from 'react';
+import { Entretien } from '../types';
+import { EntretienService } from '../services/entretienService';
 import EntretienTable from '../components/entretienManagement/EntretienTable';
 import EntretienForm from '../components/entretienManagement/EntretienForm';
 import SearchAndFilters from '../components/shared/SearchAndFilters';
-
-const mockEntretiens: Entretien[] = [
-  {
-    id: '1',
-    motoId: 'Tiger 660',
-    type: 'Préventif',
-    description: 'Changement d’huile',
-    date: '2023-10-15',
-    status: 'Terminé',
-  },
-  {
-    id: '2',
-    motoId: 'Street 900',
-    type: 'Curatif',
-    description: 'Réparation des freins',
-    date: '2023-11-20',
-    status: 'En cours',
-  },
-];
+import { toast } from "react-hot-toast";
 
 function EntretienManagementPage() {
-  const [entretiens, setEntretiens] = useState<Entretien[]>(mockEntretiens);
+  const [entretiens, setEntretiens] = useState<Entretien[]>([]);
+  const [filteredEntretiens, setFilteredEntretiens] = useState<Entretien[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [currentEntretien, setCurrentEntretien] = useState<Entretien | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const entretiensPerPage = 5;
 
+  useEffect(() => {
+    fetchEntretiens();
+  }, []);
+
   const indexOfLastEntretien = currentPage * entretiensPerPage;
   const indexOfFirstEntretien = indexOfLastEntretien - entretiensPerPage;
-  const currentEntretiens = entretiens.slice(indexOfFirstEntretien, indexOfLastEntretien);
+  const currentEntretiens = filteredEntretiens.slice(indexOfFirstEntretien, indexOfLastEntretien);
+  const totalPages = Math.ceil(filteredEntretiens.length / entretiensPerPage);
 
-  const totalPages = Math.ceil(entretiens.length / entretiensPerPage);
+  const fetchEntretiens = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const data = await EntretienService.getAllEntretiens();
+      setEntretiens(data);
+      setFilteredEntretiens(data);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Une erreur est survenue';
+      setError(errorMessage);
+      toast.error('Erreur lors de la récupération des entretiens');
+      console.error('Erreur:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleChangePage = (page: number) => {
     setCurrentPage(page);
@@ -50,27 +56,42 @@ function EntretienManagementPage() {
     setIsFormVisible(true);
   };
 
-  const handleDeleteEntretien = (id: string) => {
-    setEntretiens(entretiens.filter((entretien) => entretien.id !== id));
-    alert("Entretien supprimé avec succès !");
+  const handleDeleteEntretien = async (id: string) => {
+    try {
+      setError(null);
+      await EntretienService.deleteEntretien(id);
+      setEntretiens(entretiens.filter((entretien) => entretien.id !== id));
+      setFilteredEntretiens(filteredEntretiens.filter((entretien) => entretien.id !== id));
+      toast.success("Entretien supprimé avec succès");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Une erreur est survenue';
+      setError(errorMessage);
+      toast.error("Erreur lors de la suppression de l'entretien");
+      console.error('Erreur:', error);
+    }
   };
 
-  const handleSubmitEntretien = (entretien: Entretien) => {
-    if (entretien.id) {
-      // Modification d'un entretien existant
-      setEntretiens(
-        entretiens.map((e) => (e.id === entretien.id ? { ...entretien } : e))
-      );
-      alert("Entretien modifié avec succès !");
-    } else {
-      // Ajout d'un nouvel entretien
-      setEntretiens([
-        ...entretiens,
-        { ...entretien, id: `${Date.now()}` },
-      ]);
-      alert("Entretien ajouté avec succès !");
+  const handleSubmitEntretien = async (entretien: Entretien) => {
+    try {
+      setError(null);
+      if (entretien.id) {
+        const updatedEntretien = await EntretienService.updateEntretien(entretien);
+        setEntretiens(entretiens.map((e) => (e.id === entretien.id ? updatedEntretien : e)));
+        setFilteredEntretiens(filteredEntretiens.map((e) => (e.id === entretien.id ? updatedEntretien : e)));
+        toast.success("Entretien modifié avec succès");
+      } else {
+        const newEntretien = await EntretienService.createEntretien(entretien);
+        setEntretiens([...entretiens, newEntretien]);
+        setFilteredEntretiens([...filteredEntretiens, newEntretien]);
+        toast.success("Entretien ajouté avec succès");
+      }
+      setIsFormVisible(false);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Une erreur est survenue';
+      setError(errorMessage);
+      toast.error("Erreur lors de la sauvegarde de l'entretien");
+      console.error('Erreur:', error);
     }
-    setIsFormVisible(false);
   };
 
   const handleCancelForm = () => {
@@ -78,26 +99,33 @@ function EntretienManagementPage() {
   };
 
   const handleSearch = (query: string) => {
-    setEntretiens(
-      mockEntretiens.filter((entretien) =>
-        entretien.description.toLowerCase().includes(query.toLowerCase())
-      )
+    const filtered = entretiens.filter((entretien) =>
+      entretien.description.toLowerCase().includes(query.toLowerCase())
     );
+    setFilteredEntretiens(filtered);
+    setCurrentPage(1);
   };
 
   const handleFilter = (filter: string) => {
     if (filter === '') {
-      setEntretiens(mockEntretiens);
+      setFilteredEntretiens(entretiens);
     } else {
-      setEntretiens(
-        mockEntretiens.filter((entretien) => entretien.type === filter)
-      );
+      const filtered = entretiens.filter((entretien) => entretien.type === filter);
+      setFilteredEntretiens(filtered);
     }
+    setCurrentPage(1);
   };
 
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-4">Gestion des Entretiens</h1>
+
+      {error && (
+        <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          {error}
+        </div>
+      )}
+      
       <SearchAndFilters
         onSearch={handleSearch}
         onFilter={handleFilter}
@@ -107,24 +135,34 @@ function EntretienManagementPage() {
         ]}
         placeholder="Rechercher un entretien..."
       />
+
       <button
         onClick={handleAddEntretien}
         className="bg-blue-500 text-white py-2 px-4 rounded my-4"
       >
         Ajouter un entretien
       </button>
-      <EntretienTable
-        entretiens={currentEntretiens}
-        onEditEntretien={handleEditEntretien}
-        onDeleteEntretien={handleDeleteEntretien}
-      />
+
+      {isLoading ? (
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+        </div>
+      ) : (
+        <EntretienTable
+          entretiens={currentEntretiens}
+          onEditEntretien={handleEditEntretien}
+          onDeleteEntretien={handleDeleteEntretien}
+        />
+      )}
 
       <div className="flex justify-center mt-4">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index + 1}
             onClick={() => handleChangePage(index + 1)}
-            className={`px-4 py-2 mx-1 rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className={`px-4 py-2 mx-1 rounded ${
+              currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'
+            }`}
           >
             {index + 1}
           </button>

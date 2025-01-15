@@ -12,8 +12,10 @@ import GarantieManagementPage from "./pages/GarantieManagementPage";
 import ReparationManagementPage from "./pages/ReparationManagementPage";
 import PieceManagementPage from "./pages/PieceManagementPage";
 import ClientManagementPage from "./pages/ClientManagementPage";
+import MaintenanceRuleManagementPage from "./pages/MaintenanceRuleManagementPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+
 
 
 function App() {
@@ -84,6 +86,7 @@ function App() {
               <Route path="/reparations" element={<ReparationManagementPage />} />
               <Route path="/pieces" element={<PieceManagementPage />} />
               <Route path="/clients" element={<ClientManagementPage />} />
+              <Route path="/maintenance-rules" element={<MaintenanceRuleManagementPage />} />
             </Routes>
           </main>
         </div>

@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "commonjs",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "baseUrl": "./",
+      "paths": {
+        "@domain/*": ["domain/*"],
+        "@application/*": ["application/*"],
+        "@infrastructure/*": ["infrastructure/*"]
+      },
+      "declaration": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true
+    },
+    "exclude": ["node_modules", "dist"]
+  }
