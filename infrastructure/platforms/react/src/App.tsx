@@ -8,6 +8,7 @@ import ReparationManagementPage from "./pages/ReparationManagementPage";
 import PieceManagementPage from "./pages/PieceManagementPage";
 import ClientManagementPage from "./pages/ClientManagementPage";
 import EmployeManagementPage from "./pages/EmployeManagementPage";
+import StatisticsPage from "./pages/StatisticsPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 
@@ -84,6 +85,7 @@ function App() {
         <Route path="/pieces" element={<ProtectedLayout><PieceManagementPage /></ProtectedLayout>} />
         <Route path="/clients" element={<ProtectedLayout><ClientManagementPage /></ProtectedLayout>} />
         <Route path="/employes" element={<ProtectedLayout><EmployeManagementPage /></ProtectedLayout>} />
+        <Route path="/statistiques" element={<ProtectedLayout><StatisticsPage /></ProtectedLayout>} />
       </Routes>
     </Router>
   );

@@ -9,6 +9,7 @@ import GarantieManagementPage from './pages/GarantieManagementPage';
 import ClientManagementPage from './pages/ClientManagementPage';
 import EmployeManagementPage from './pages/EmployeManagementPage';
 import MaintenanceRuleManagementPage from './pages/MaintenanceRuleManagementPage';
+import StatisticsPage from './pages/StatisticsPage';
 
 const routes: RouteObject[] = [
   {
@@ -46,6 +47,10 @@ const routes: RouteObject[] = [
   {
     path: '/employes',
     element: <EmployeManagementPage />,
+  },
+  {
+    path: '/statistiques',
+    element: <StatisticsPage />,
   },
   {
     path: '/maintenance-rules',

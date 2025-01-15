@@ -7,6 +7,7 @@ import {
   Map,
   PieChart,
   Settings2,
+  ChartArea
 
 } from "lucide-react"
 
@@ -88,6 +89,11 @@ import { NavLink } from "react-router-dom"
         name: "Sales & Marketing",
         url: "#",
         icon: PieChart,
+      },
+      {
+        name: "Statistics",
+        url: "/statistiques",
+        icon: ChartArea,
       },
       {
         name: "Travel",
