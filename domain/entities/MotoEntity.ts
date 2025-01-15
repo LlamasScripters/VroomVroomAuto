@@ -4,7 +4,7 @@ export class Moto {
     constructor(
       public readonly motoId: UUID,
       public readonly marque: string,
-      public readonly modele: string,
+      public readonly model: string,
       public readonly kilometrage: number,
       public readonly dateMiseEnService: Date,
       public readonly statut: string,
@@ -14,13 +14,13 @@ export class Moto {
     public static create(
       motoId: UUID,
       marque: string,
-      modele: string,
+      model: string,
       kilometrage: number,
       dateMiseEnService: Date,
       statut: string,
       clientId: UUID
     ): Moto {
-      return new Moto(motoId, marque, modele, kilometrage, dateMiseEnService, statut, clientId);
+      return new Moto(motoId, marque, model, kilometrage, dateMiseEnService, statut, clientId);
     }
 
   }

@@ -8,6 +8,7 @@ import ReparationManagementPage from "./pages/ReparationManagementPage";
 import PieceManagementPage from "./pages/PieceManagementPage";
 import ClientManagementPage from "./pages/ClientManagementPage";
 import EmployeManagementPage from "./pages/EmployeManagementPage";
+import MaintenanceRuleManagementPage from "./pages/MaintenanceRuleManagementPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 

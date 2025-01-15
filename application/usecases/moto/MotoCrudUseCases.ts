@@ -5,7 +5,7 @@ import { UUID } from '../../../domain/value-objects/UUID';
 interface MotoData {
   motoId: UUID;
   marque: string;
-  modele: string;
+  model: string;
   kilometrage: number;
   dateMiseEnService: Date;
   statut: string;
@@ -15,8 +15,8 @@ interface MotoData {
 export class MotoUseCases {
   constructor(private motoRepository: MotoRepository) {}
 
-  async createMoto(marque: string, modele: string, kilometrage: number, dateMiseEnService: Date, statut: string, clientId: UUID): Promise<Moto> {
-    const moto = Moto.create(new UUID(), marque, modele, kilometrage, dateMiseEnService, statut, clientId);
+  async createMoto(marque: string, model: string, kilometrage: number, dateMiseEnService: Date, statut: string, clientId: UUID): Promise<Moto> {
+    const moto = Moto.create(new UUID(), marque, model, kilometrage, dateMiseEnService, statut, clientId);
     return this.motoRepository.save(moto);
   }
 
@@ -31,7 +31,7 @@ export class MotoUseCases {
     const updatedMoto = Moto.create(
       moto.motoId,
       updatedData.marque || moto.marque,
-      updatedData.modele || moto.modele,
+      updatedData.model || moto.model,
       updatedData.kilometrage || moto.kilometrage,
       updatedData.dateMiseEnService || moto.dateMiseEnService,
       updatedData.statut || moto.statut,
@@ -43,5 +43,9 @@ export class MotoUseCases {
 
   async deleteMoto(motoId: UUID): Promise<boolean> {
     return this.motoRepository.delete(motoId);
+  }
+
+  async getAllMotos(): Promise<Moto[]> {
+    return this.motoRepository.findAll();
   }
 }
