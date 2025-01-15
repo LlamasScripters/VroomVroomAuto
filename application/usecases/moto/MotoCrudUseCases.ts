@@ -9,14 +9,15 @@ interface MotoData {
   kilometrage: number;
   dateMiseEnService: Date;
   statut: string;
+  serialNumber: string;
   clientId: UUID;
 }
 
 export class MotoUseCases {
   constructor(private motoRepository: MotoRepository) {}
 
-  async createMoto(marque: string, model: string, kilometrage: number, dateMiseEnService: Date, statut: string, clientId: UUID): Promise<Moto> {
-    const moto = Moto.create(new UUID(), marque, model, kilometrage, dateMiseEnService, statut, clientId);
+  async createMoto(marque: string, model: string, kilometrage: number, dateMiseEnService: Date, statut: string, serialNumber: string, clientId: UUID): Promise<Moto> {
+    const moto = Moto.create(new UUID(), marque, model, kilometrage, dateMiseEnService, statut, serialNumber, clientId);
     return this.motoRepository.save(moto);
   }
 
@@ -35,6 +36,7 @@ export class MotoUseCases {
       updatedData.kilometrage || moto.kilometrage,
       updatedData.dateMiseEnService || moto.dateMiseEnService,
       updatedData.statut || moto.statut,
+      updatedData.serialNumber || moto.serialNumber,
       moto.clientId
     );
     

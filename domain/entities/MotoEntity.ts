@@ -8,6 +8,7 @@ export class Moto {
       public readonly kilometrage: number,
       public readonly dateMiseEnService: Date,
       public readonly statut: string,
+      public readonly serialNumber: string,
       public readonly clientId: UUID
     ) {}
 
@@ -18,9 +19,10 @@ export class Moto {
       kilometrage: number,
       dateMiseEnService: Date,
       statut: string,
+      serialNumber: string,
       clientId: UUID
     ): Moto {
-      return new Moto(motoId, marque, model, kilometrage, dateMiseEnService, statut, clientId);
+      return new Moto(motoId, marque, model, kilometrage, dateMiseEnService, statut, serialNumber, clientId);
     }
 
   }

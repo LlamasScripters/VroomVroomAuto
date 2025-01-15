@@ -13,6 +13,7 @@ interface MotoModel extends Model {
   kilometrage: number;
   dateMiseEnService: Date;
   statut: string;
+  serialNumber: string;
   clientId: string;
 }
 
@@ -26,6 +27,7 @@ export class SqlMotoRepository implements MotoRepository {
         kilometrage: moto.kilometrage,
         dateMiseEnService: moto.dateMiseEnService,
         statut: moto.statut,
+        serialNumber: moto.serialNumber,
         clientId: moto.clientId.toString()
       });
 
@@ -36,6 +38,7 @@ export class SqlMotoRepository implements MotoRepository {
         createdMoto.get('kilometrage') as number,
         createdMoto.get('dateMiseEnService') as Date,
         createdMoto.get('statut') as string,
+        createdMoto.get('serialNumber') as string,
         new UUID(createdMoto.get('clientId') as string)
       );
     } catch (error) {
@@ -54,6 +57,7 @@ export class SqlMotoRepository implements MotoRepository {
       moto.kilometrage,
       moto.dateMiseEnService,
       moto.statut,
+      moto.serialNumber,
       new UUID(moto.clientId)
     );
   }
@@ -67,6 +71,7 @@ export class SqlMotoRepository implements MotoRepository {
       moto.kilometrage,
       moto.dateMiseEnService,
       moto.statut,
+      moto.serialNumber,
       new UUID(moto.clientId)
     ));
   }
@@ -80,6 +85,7 @@ export class SqlMotoRepository implements MotoRepository {
         kilometrage: moto.kilometrage,
         dateMiseEnService: moto.dateMiseEnService,
         statut: moto.statut,
+        serialNumber: moto.serialNumber,
         clientId: moto.clientId.toString()
       },
       {

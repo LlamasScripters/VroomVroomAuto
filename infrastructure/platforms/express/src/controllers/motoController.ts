@@ -21,6 +21,7 @@ export class MotoController {
         req.body.kilometrage,
         req.body.dateMiseEnService,
         req.body.statut,
+        req.body.serialNumber,
         new UUID(req.body.clientId)
       );
       res.status(201).json(moto);

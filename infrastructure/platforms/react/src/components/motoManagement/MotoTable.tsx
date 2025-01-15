@@ -31,7 +31,7 @@ export function MotoTable({ motos, onEditMoto, onShowMaintenance, onShowHistory,
             <TableCell>{moto.model}</TableCell>
             <TableCell>{moto.serialNumber}</TableCell>
             <TableCell>{moto.kilometrage} km</TableCell>
-            <TableCell>{moto.status}</TableCell>
+            <TableCell>{moto.statut}</TableCell>
             <TableCell className="text-right">
               <Button
                 variant="outline"
