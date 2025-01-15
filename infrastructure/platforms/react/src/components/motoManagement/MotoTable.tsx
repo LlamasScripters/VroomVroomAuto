@@ -26,7 +26,7 @@ export function MotoTable({ motos, onEditMoto, onShowMaintenance, onShowHistory,
       </TableHeader>
       <TableBody>
         {motos.map((moto) => (
-          <TableRow key={moto.id} className={moto.kilometrage > 20000 ? 'bg-red-100' : ''}>
+          <TableRow key={moto.motoId} className={moto.kilometrage > 20000 ? 'bg-red-100' : ''}>
             <TableCell>{moto.marque}</TableCell>
             <TableCell>{moto.model}</TableCell>
             <TableCell>{moto.serialNumber}</TableCell>
@@ -61,9 +61,15 @@ export function MotoTable({ motos, onEditMoto, onShowMaintenance, onShowHistory,
                 <span className="sr-only">Historique</span>
               </Button>
               <Button
-                variant="outline"
+                variant="outline" 
                 size="icon"
-                onClick={() => onDeleteMoto(moto.id!)}
+                onClick={() => {
+                  if (moto.motoId) {
+                    onDeleteMoto(moto.motoId);
+                  } else {
+                    console.error('ID de moto manquant');
+                  }
+                }}
               >
                 <Trash2 className="h-4 w-4" />
                 <span className="sr-only">Supprimer</span>

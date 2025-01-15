@@ -49,7 +49,7 @@ export const MotoService = {
 
   async updateMoto(moto: Moto): Promise<Moto> {
     try {
-      const response = await fetch(`${API_URL}/motos/${moto.id}`, {
+      const response = await fetch(`${API_URL}/motos/${moto.motoId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -66,6 +66,9 @@ export const MotoService = {
   },
 
   async deleteMoto(id: string): Promise<void> {
+    if (!id) {
+      throw new Error('ID de moto invalide');
+    }
     try {
       const response = await fetch(`${API_URL}/motos/${id}`, {
         method: 'DELETE',
@@ -76,5 +79,5 @@ export const MotoService = {
     } catch (error) {
       throw new Error(`Erreur lors de la suppression de la moto: ${error}`);
     }
-  },
+  }
 };

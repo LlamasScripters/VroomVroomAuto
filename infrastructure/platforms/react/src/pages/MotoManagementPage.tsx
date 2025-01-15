@@ -53,7 +53,7 @@ export default function MotoManagementPage() {
   const handleEditMoto = async (motoData: Moto) => {
     try {
       const updatedMoto = await MotoService.updateMoto(motoData);
-      setMotos(motos.map(moto => moto.id === updatedMoto.id ? updatedMoto : moto));
+      setMotos(motos.map(moto => moto.motoId === updatedMoto.motoId ? updatedMoto : moto));
       setSelectedMoto(null);
       setError(null);
     } catch (err) {
@@ -62,14 +62,14 @@ export default function MotoManagementPage() {
     }
   };
 
-  const handleDeleteMoto = async (id: string) => {
+  const handleDeleteMoto = async (motoId: string) => {
     if (!window.confirm('Êtes-vous sûr de vouloir supprimer cette moto ?')) {
       return;
     }
 
     try {
-      await MotoService.deleteMoto(id);
-      setMotos(motos.filter(moto => moto.id !== id));
+      await MotoService.deleteMoto(motoId);
+      setMotos(motos.filter(moto => moto.motoId !== motoId));
       setError(null);
     } catch (err) {
       setError('Erreur lors de la suppression de la moto');

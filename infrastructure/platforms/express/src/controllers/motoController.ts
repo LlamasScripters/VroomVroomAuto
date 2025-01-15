@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { MotoUseCases } from '../../../../../application/usecases/moto/MotoCrudUseCases';
 import { SqlMotoRepository } from './../repositories/moto.repository.sql';
 import { UUID } from '../../../../../domain/value-objects/UUID';
+import { MotoMapper } from '../../../../../application/mappers/MotoMapper';
 
 export class MotoController {
   private motoUseCases: MotoUseCases;
@@ -62,6 +63,16 @@ export class MotoController {
     }
   }
 
+  async getAllMotos(req: Request, res: Response): Promise<void> {
+    try {
+      const motos = await this.motoUseCases.getAllMotos();
+      const motoDTOs = motos.map(moto => MotoMapper.toDTO(moto));
+      res.json(motoDTOs);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
   async deleteMoto(req: Request, res: Response): Promise<void> {
     try {
       const motoId = new UUID(req.params.id);
@@ -73,15 +84,6 @@ export class MotoController {
       }
 
       res.status(204).send();
-    } catch (error: any) {
-      res.status(400).json({ error: error.message });
-    }
-  }
-
-  async getAllMotos(req: Request, res: Response): Promise<void> {
-    try {
-      const motos = await this.motoUseCases.getAllMotos();
-      res.json(motos);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }
