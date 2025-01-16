@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { PlanificationEntretienUseCase } from '@application/usecases/maintenance/PlanificationEntretienUseCase';
 import { MaintenanceRuleSQLRepository } from '../repositories/maintenanceRule.repository.sql';
 import { EntretienSQLRepository } from '../repositories/entretien.repository.sql';
-import { UUID } from '@domain/value-objects/UUID';
+import { UUID } from '../../../../../domain/value-objects/UUID';
 
 export class MaintenanceRuleController {
   private planificationUseCase: PlanificationEntretienUseCase;

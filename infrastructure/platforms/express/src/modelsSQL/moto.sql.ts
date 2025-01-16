@@ -33,7 +33,7 @@ const MotoSQL = connection.define('Moto', {
   },
   clientId: {
     type: DataTypes.UUID,
-    allowNull: false,
+    allowNull: true,
   },
 }, {
   tableName: 'Motos',

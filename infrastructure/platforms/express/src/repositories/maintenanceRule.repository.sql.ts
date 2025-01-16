@@ -1,7 +1,7 @@
 // infrastructure/platforms/express/src/repositories/maintenanceRule.repository.sql.ts
 import { MaintenanceRuleRepository } from '@application/repositories/MaintenanceRuleRepository';
-import { MaintenanceRule } from '@domain/entities/MaintenanceRuleEntity';
-import { UUID } from '@domain/value-objects/UUID';
+import { MaintenanceRule } from '../../../../../domain/entities/MaintenanceRuleEntity';
+import { UUID } from '../../../../../domain/value-objects/UUID';
 import MaintenanceRuleSQL from '../modelsSQL/maintenanceRule.sql';
 import { MaintenanceRuleModel } from '../interfaces/maintenanceRule.interface';
 

@@ -3,8 +3,11 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { connectToDatabase } from './modelsSQL/database';
-import motoRoutes from './routes/moto.route';
 import db from "../src/modelsSQL/indexSQL";
+import './modelsSQL/associations';
+
+import motoRoutes from './routes/moto.route';
+import entretienRoutes from './routes/entretien.route';
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -18,7 +21,9 @@ app.use(bodyParser.json());
 // Utilisation du middleware cors
 app.use(cors());
 
+//Routes
 app.use('/api/motos', motoRoutes);
+app.use('/api/entretien', entretienRoutes);
 
 // Port
 const PORT = 3000;

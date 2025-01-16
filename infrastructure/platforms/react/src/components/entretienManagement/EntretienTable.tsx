@@ -13,25 +13,29 @@ export function EntretienTable({ entretiens, onEditEntretien, onDeleteEntretien 
   return (
     <Table>
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-[50px]">N°</TableHead>
-          <TableHead>Modèle de Moto</TableHead>
-          <TableHead>Type</TableHead>
-          <TableHead>Description</TableHead>
-          <TableHead>Date</TableHead>
-          <TableHead>Statut</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
-        </TableRow>
+      <TableRow>
+        <TableHead className="w-[50px]">N°</TableHead>
+        <TableHead>Moto</TableHead>
+        <TableHead>Type d'entretien</TableHead>
+        <TableHead>Date prévue</TableHead>
+        <TableHead>Date réalisée</TableHead>
+        <TableHead>Kilométrage</TableHead>
+        <TableHead>Coût</TableHead>
+        <TableHead>Statut</TableHead>
+        <TableHead className="text-right">Actions</TableHead>
+      </TableRow>
       </TableHeader>
       <TableBody>
         {entretiens.map((entretien, index) => (
           <TableRow key={entretien.id}>
             <TableCell className="font-medium">{index + 1}</TableCell>
             <TableCell>{entretien.motoId}</TableCell>
-            <TableCell>{entretien.type}</TableCell>
-            <TableCell>{entretien.description}</TableCell>
-            <TableCell>{entretien.date}</TableCell>
-            <TableCell>{entretien.status}</TableCell>
+            <TableCell>{entretien.typeEntretien}</TableCell>
+            <TableCell>{new Date(entretien.datePrevue).toLocaleDateString()}</TableCell>
+            <TableCell>{entretien.dateRealisee ? new Date(entretien.dateRealisee).toLocaleDateString() : '-'}</TableCell>
+            <TableCell>{entretien.kilometrageEntretien} km</TableCell>
+            <TableCell>{entretien.cout}€</TableCell>
+            <TableCell>{entretien.statut}</TableCell>
             <TableCell className="text-right">
               <Button
                 variant="outline"

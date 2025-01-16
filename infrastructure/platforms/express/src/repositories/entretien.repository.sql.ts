@@ -1,9 +1,16 @@
 // infrastructure/platforms/express/src/repositories/entretien.repository.sql.ts
 import { EntretienRepository } from '@application/repositories/EntretienRepository';
-import { Entretien } from '@domain/entities/EntretienEntity';
-import { UUID } from '@domain/value-objects/UUID';
+import { Entretien } from '../../../../../domain/entities/EntretienEntity';
+import { UUID } from '../../../../../domain/value-objects/UUID';
 import EntretienSQL from '../modelsSQL/entretien.sql';
+import MotoSQL from '../modelsSQL/moto.sql';
 import { Model } from 'sequelize';
+
+interface MotoAttributes {
+  marque: string;
+  model: string;
+  serialNumber: string;
+}
 
 interface EntretienAttributes {
   entretienId: string;
@@ -17,9 +24,18 @@ interface EntretienAttributes {
   cout: number;
   statut: string;
   userId: string;
+  moto?:{
+    marque: string;
+    model: string;
+    serialNumber: string;
+  }
 }
 
-export interface EntretienModel extends Model<EntretienAttributes>, EntretienAttributes {}
+
+
+export interface EntretienModel extends Model<EntretienAttributes>, EntretienAttributes {
+  moto?: MotoAttributes;
+}
 
 export class EntretienSQLRepository implements EntretienRepository {
   async save(entretien: Entretien): Promise<Entretien> {
@@ -47,7 +63,15 @@ export class EntretienSQLRepository implements EntretienRepository {
   }
 
   async findAll(): Promise<Entretien[]> {
-    const entretiens = await EntretienSQL.findAll();
+    const entretiens = await EntretienSQL.findAll({
+      include: [{
+        model: MotoSQL,
+        as: 'moto',
+        required: false, // Pour faire un LEFT JOIN
+        attributes: ['marque', 'model', 'serialNumber']
+      }]
+    });
+    
     return entretiens.map(entretien => this.toEntity(entretien as EntretienModel));
   }
 
@@ -73,8 +97,7 @@ export class EntretienSQLRepository implements EntretienRepository {
         userId: entretien.userId.toString()
       },
       { 
-        where: { entretienId: entretien.entretienId.toString() },
-        returning: true
+        where: { entretienId: entretien.entretienId.toString() }
       }
     );
 
@@ -82,6 +105,7 @@ export class EntretienSQLRepository implements EntretienRepository {
       throw new Error("Entretien non trouvé");
     }
 
+    // Récupérer l'entité mise à jour
     const updated = await EntretienSQL.findByPk(entretien.entretienId.toString());
     if (!updated) {
       throw new Error("Entretien non trouvé après mise à jour");
@@ -102,7 +126,12 @@ export class EntretienSQLRepository implements EntretienRepository {
       model.recommandationsGestionnaireClient,
       model.cout,
       model.statut,
-      new UUID(model.userId)
+      new UUID(model.userId),
+      model.moto ? {
+        marque: model.moto.marque,
+        model: model.moto.model,
+        serialNumber: model.moto.serialNumber
+      } : undefined
     );
   }
 }

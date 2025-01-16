@@ -9,10 +9,15 @@ export interface Client {
 export interface Entretien {
   id?: string;
   motoId: string;
-  type: string;
-  description: string;
-  date: string;
-  status: string;
+  typeEntretien: string;
+  datePrevue: string;
+  dateRealisee: string;
+  kilometrageEntretien: number;
+  recommandationsTechnicien: string;
+  recommandationsGestionnaireClient: string;
+  cout: number;
+  statut: string;
+  userId: string;
 }
 
 export interface Employe {

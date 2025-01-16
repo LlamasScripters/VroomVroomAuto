@@ -74,18 +74,42 @@ function EntretienManagementPage() {
   const handleSubmitEntretien = async (entretien: Entretien) => {
     try {
       setError(null);
+      
       if (entretien.id) {
+        // Mise à jour d'un entretien existant
         const updatedEntretien = await EntretienService.updateEntretien(entretien);
-        setEntretiens(entretiens.map((e) => (e.id === entretien.id ? updatedEntretien : e)));
-        setFilteredEntretiens(filteredEntretiens.map((e) => (e.id === entretien.id ? updatedEntretien : e)));
+        
+        setEntretiens(prevEntretiens => {
+          const newEntretiens = prevEntretiens.map(e => 
+            e.id === entretien.id ? updatedEntretien : e
+          );
+          return newEntretiens;
+        });
+  
+        setFilteredEntretiens(prevFiltered => {
+          const newFiltered = prevFiltered.map(e =>
+            e.id === entretien.id ? updatedEntretien : e
+          );
+          return newFiltered;
+        });
+  
         toast.success("Entretien modifié avec succès");
       } else {
+        // Création d'un nouvel entretien
         const newEntretien = await EntretienService.createEntretien(entretien);
-        setEntretiens([...entretiens, newEntretien]);
-        setFilteredEntretiens([...filteredEntretiens, newEntretien]);
+        
+        setEntretiens(prevEntretiens => [...prevEntretiens, newEntretien]);
+        setFilteredEntretiens(prevFiltered => [...prevFiltered, newEntretien]);
+        
         toast.success("Entretien ajouté avec succès");
       }
+  
+      // Fermer le formulaire
       setIsFormVisible(false);
+      
+      // Rafraîchir la liste des entretiens
+      await fetchEntretiens();
+  
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Une erreur est survenue';
       setError(errorMessage);
@@ -100,7 +124,8 @@ function EntretienManagementPage() {
 
   const handleSearch = (query: string) => {
     const filtered = entretiens.filter((entretien) =>
-      entretien.description.toLowerCase().includes(query.toLowerCase())
+      entretien.recommandationsTechnicien.toLowerCase().includes(query.toLowerCase()) ||
+      entretien.recommandationsGestionnaireClient.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredEntretiens(filtered);
     setCurrentPage(1);
@@ -110,7 +135,7 @@ function EntretienManagementPage() {
     if (filter === '') {
       setFilteredEntretiens(entretiens);
     } else {
-      const filtered = entretiens.filter((entretien) => entretien.type === filter);
+      const filtered = entretiens.filter((entretien) => entretien.typeEntretien === filter);
       setFilteredEntretiens(filtered);
     }
     setCurrentPage(1);

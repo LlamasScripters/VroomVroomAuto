@@ -7,7 +7,8 @@ const controller = new EntretienController();
 
 router.get('/', (req, res) => controller.getAllEntretiens(req, res));
 router.get('/:id', (req, res) => controller.getEntretienById(req, res));
-router.post('/planification', (req, res) => controller.planifierEntretien(req, res));
+router.post('/', (req, res) => controller.createEntretien(req, res));
 router.put('/:id', (req, res) => controller.updateEntretien(req, res));
+router.post('/planification', (req, res) => controller.planifierEntretien(req, res));
 
 export default router;

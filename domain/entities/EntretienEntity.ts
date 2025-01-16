@@ -1,5 +1,11 @@
 import { UUID } from '../value-objects/UUID';
 
+export interface MotoDetails {
+  marque: string;
+  model: string;
+  serialNumber: string;
+}
+
 export class Entretien {
     constructor(
       public readonly entretienId: UUID,
@@ -12,7 +18,8 @@ export class Entretien {
       public readonly recommandationsGestionnaireClient: string,
       public readonly cout: number,
       public readonly statut: string,
-      public readonly userId: UUID
+      public readonly userId: UUID,
+      public readonly motoDetails?: MotoDetails
     ) {}
 
     public static create(
@@ -26,8 +33,9 @@ export class Entretien {
       recommandationsGestionnaireClient: string,
       cout: number,
       statut: string,
-      userId: UUID
+      userId: UUID,
+      motoDetails?: MotoDetails
     ): Entretien {
-      return new Entretien(entretienId, motoId, typeEntretien, datePrevue, dateRealisee, kilometrageEntretien, recommandationsTechnicien, recommandationsGestionnaireClient, cout, statut, userId);
+      return new Entretien(entretienId, motoId, typeEntretien, datePrevue, dateRealisee, kilometrageEntretien, recommandationsTechnicien, recommandationsGestionnaireClient, cout, statut, userId, motoDetails);
     }
   }

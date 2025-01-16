@@ -17,19 +17,19 @@ ClientSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
 UserSQL.hasMany(CommandeSQL, { foreignKey: 'userId' });
 CommandeSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
 
-UserSQL.hasMany(EntretienSQL, { foreignKey: 'userId' });
-EntretienSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
+// UserSQL.hasMany(EntretienSQL, { foreignKey: 'userId' });
+// EntretienSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
 
 UserSQL.hasMany(ConducteurSQL, { foreignKey: 'userId' });
 ConducteurSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
 
 // Client associations
-ClientSQL.hasMany(MotoSQL, { foreignKey: 'clientId' });
-MotoSQL.belongsTo(ClientSQL, { foreignKey: 'clientId' });
+// ClientSQL.hasMany(MotoSQL, { foreignKey: { name: 'clientId', allowNull: true }, onDelete: 'SET NULL', onUpdate: 'CASCADE'});
+// MotoSQL.belongsTo(ClientSQL, { foreignKey: { name: 'clientId',allowNull: true }});
 
 // Moto associations
-MotoSQL.hasMany(EntretienSQL, { foreignKey: 'motoId' });
-EntretienSQL.belongsTo(MotoSQL, { foreignKey: 'motoId' });
+MotoSQL.hasMany(EntretienSQL, { foreignKey: 'motoId', as: 'entretiens' });
+EntretienSQL.belongsTo(MotoSQL, { foreignKey: 'motoId', as: 'moto' });
 
 MotoSQL.hasMany(EssaiSQL, { foreignKey: 'motoId' });
 EssaiSQL.belongsTo(MotoSQL, { foreignKey: 'motoId' });

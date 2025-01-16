@@ -1,11 +1,13 @@
 // infrastructure/platforms/express/src/controllers/entretienController.ts
 import { Request, Response } from 'express';
-import { PlanificationEntretienUseCase } from '@application/usecases/maintenance/PlanificationEntretienUseCase';
+import { PlanificationEntretienUseCase } from '../../../../../application/usecases/maintenance/PlanificationEntretienUseCase';
 import { EntretienRepository } from '@application/repositories/EntretienRepository';
 import { MaintenanceRuleRepository } from '@application/repositories/MaintenanceRuleRepository';
 import { EntretienSQLRepository } from '../repositories/entretien.repository.sql';
 import { MaintenanceRuleSQLRepository } from '../repositories/maintenanceRule.repository.sql';
-import { UUID } from '@domain/value-objects/UUID';
+import { UUID } from '../../../../../domain/value-objects/UUID';
+import { EntretienMapper } from '../../../../../application/mappers/EntretienMapper';
+import { Entretien } from '../../../../../domain/entities/EntretienEntity';
 
 export class EntretienController {
   private planificationUseCase: PlanificationEntretienUseCase;
@@ -64,11 +66,13 @@ export class EntretienController {
     }
   }
 
+  // Dans EntretienController
   async getAllEntretiens(req: Request, res: Response): Promise<void> {
     try {
       const entretienRepository = new EntretienSQLRepository();
       const entretiens = await entretienRepository.findAll();
-      res.status(200).json(entretiens);
+      const entretiensDTO = entretiens.map(entretien => EntretienMapper.toDTO(entretien));
+      res.status(200).json(entretiensDTO);
     } catch (error: any) {
       res.status(500).json({ 
         message: error.message || "Erreur lors de la récupération des entretiens" 
@@ -115,6 +119,36 @@ export class EntretienController {
     } catch (error: any) {
       res.status(500).json({ 
         message: error.message || "Erreur lors de la mise à jour de l'entretien" 
+      });
+    }
+  }
+  async createEntretien(req: Request, res: Response): Promise<void> {
+    try {
+      const entretienData = req.body;
+      const entretienRepository = new EntretienSQLRepository();
+      
+      // Créer un nouvel entretien avec l'entity
+      const newEntretien = Entretien.create(
+        new UUID(), // Génère un nouvel UUID pour l'entretien
+        new UUID(entretienData.motoId),
+        entretienData.typeEntretien,
+        new Date(entretienData.datePrevue),
+        new Date(entretienData.dateRealisee),
+        entretienData.kilometrageEntretien,
+        entretienData.recommandationsTechnicien,
+        entretienData.recommandationsGestionnaireClient,
+        entretienData.cout,
+        entretienData.statut,
+        new UUID(entretienData.userId)
+      );
+  
+      const savedEntretien = await entretienRepository.save(newEntretien);
+      const entretienDTO = EntretienMapper.toDTO(savedEntretien);
+      
+      res.status(201).json(entretienDTO);
+    } catch (error: any) {
+      res.status(500).json({ 
+        message: error.message || "Erreur lors de la création de l'entretien" 
       });
     }
   }
