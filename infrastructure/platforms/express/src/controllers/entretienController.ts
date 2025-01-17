@@ -154,4 +154,28 @@ export class EntretienController {
       });
     }
   }
+
+  async deleteEntretien(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const entretienRepository = new EntretienSQLRepository();
+      
+      const exists = await entretienRepository.findById(new UUID(id));
+      if (!exists) {
+        res.status(404).json({ message: "Entretien non trouvé" });
+        return;
+      }
+  
+      const success = await entretienRepository.delete(new UUID(id));
+      if (success) {
+        res.status(200).json({ message: "Entretien supprimé avec succès" });
+      } else {
+        res.status(500).json({ message: "Échec de la suppression de l'entretien" });
+      }
+    } catch (error: any) {
+      res.status(500).json({ 
+        message: error.message || "Erreur lors de la suppression de l'entretien" 
+      });
+    }
+  }
 }

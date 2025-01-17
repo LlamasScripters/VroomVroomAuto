@@ -57,6 +57,9 @@ function EntretienManagementPage() {
   };
 
   const handleDeleteEntretien = async (id: string) => {
+    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cette moto ?')) {
+      return;
+    }
     try {
       setError(null);
       await EntretienService.deleteEntretien(id);

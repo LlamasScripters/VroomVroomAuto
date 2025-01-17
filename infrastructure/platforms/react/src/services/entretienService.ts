@@ -40,7 +40,11 @@ export const EntretienService = {
     const response = await fetch(`${API_URL}/entretien/${id}`, {
       method: 'DELETE'
     });
+    
     if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error("L'entretien n'existe plus ou a déjà été supprimé");
+      }
       throw new Error('Erreur lors de la suppression de l\'entretien');
     }
   }

@@ -87,10 +87,21 @@ export class EntretienSQLRepository implements EntretienRepository {
   }
 
   async delete(entretienId: UUID): Promise<boolean> {
-    const deleted = await EntretienSQL.destroy({
-      where: { entretienId: entretienId.toString() }
-    });
-    return deleted > 0;
+    try {
+      const entretien = await EntretienSQL.findByPk(entretienId.toString());
+      if (!entretien) {
+        return false;
+      }
+  
+      const deleted = await EntretienSQL.destroy({
+        where: { entretienId: entretienId.toString() }
+      });
+      
+      return deleted > 0;
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error);
+      return false;
+    }
   }
 
   async update(entretien: Entretien): Promise<Entretien> {
