@@ -25,7 +25,7 @@ export const EntretienService = {
   },
 
   async updateEntretien(entretien: Entretien): Promise<Entretien> {
-    const response = await fetch(`${API_URL}/entretien/${entretien.id}`, {
+    const response = await fetch(`${API_URL}/entretien/${entretien.entretienId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(entretien)

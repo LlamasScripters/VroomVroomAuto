@@ -7,7 +7,7 @@ export interface Client {
 }
 
 export interface Entretien {
-  id?: string;
+  entretienId?: string;
   motoId: string;
   typeEntretien: string;
   datePrevue: string;
@@ -18,6 +18,11 @@ export interface Entretien {
   cout: number;
   statut: string;
   userId: string;
+  motoDetails?: {
+    marque: string;
+    model: string;
+    serialNumber: string;
+  };
 }
 
 export interface Employe {

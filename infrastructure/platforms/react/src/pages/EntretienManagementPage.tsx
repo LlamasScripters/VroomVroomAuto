@@ -60,8 +60,8 @@ function EntretienManagementPage() {
     try {
       setError(null);
       await EntretienService.deleteEntretien(id);
-      setEntretiens(entretiens.filter((entretien) => entretien.id !== id));
-      setFilteredEntretiens(filteredEntretiens.filter((entretien) => entretien.id !== id));
+      setEntretiens(entretiens.filter((entretien) => entretien.entretienId !== id));
+      setFilteredEntretiens(filteredEntretiens.filter((entretien) => entretien.entretienId !== id));
       toast.success("Entretien supprimé avec succès");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Une erreur est survenue';
@@ -75,41 +75,23 @@ function EntretienManagementPage() {
     try {
       setError(null);
       
-      if (entretien.id) {
+      if (currentEntretien?.entretienId) {
         // Mise à jour d'un entretien existant
-        const updatedEntretien = await EntretienService.updateEntretien(entretien);
+        await EntretienService.updateEntretien({
+          ...entretien,
+          entretienId: currentEntretien.entretienId
+        });
         
-        setEntretiens(prevEntretiens => {
-          const newEntretiens = prevEntretiens.map(e => 
-            e.id === entretien.id ? updatedEntretien : e
-          );
-          return newEntretiens;
-        });
-  
-        setFilteredEntretiens(prevFiltered => {
-          const newFiltered = prevFiltered.map(e =>
-            e.id === entretien.id ? updatedEntretien : e
-          );
-          return newFiltered;
-        });
-  
+        await fetchEntretiens(); // Recharger tous les entretiens pour avoir les données à jour
         toast.success("Entretien modifié avec succès");
       } else {
         // Création d'un nouvel entretien
-        const newEntretien = await EntretienService.createEntretien(entretien);
-        
-        setEntretiens(prevEntretiens => [...prevEntretiens, newEntretien]);
-        setFilteredEntretiens(prevFiltered => [...prevFiltered, newEntretien]);
-        
+        await EntretienService.createEntretien(entretien);
+        await fetchEntretiens(); // Recharger tous les entretiens
         toast.success("Entretien ajouté avec succès");
       }
   
-      // Fermer le formulaire
       setIsFormVisible(false);
-      
-      // Rafraîchir la liste des entretiens
-      await fetchEntretiens();
-  
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Une erreur est survenue';
       setError(errorMessage);

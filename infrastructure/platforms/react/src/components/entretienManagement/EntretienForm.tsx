@@ -4,7 +4,6 @@ import { MotoService } from '../../services/motoService';
 
 interface EntretienFormProps {
   onSubmit: (entretien: { 
-    id?: string; 
     motoId: string; 
     typeEntretien: string; 
     datePrevue: string;
@@ -18,7 +17,6 @@ interface EntretienFormProps {
   }) => void;
   onCancel: () => void;
   initialData?: {
-    id?: string;
     motoId: string;
     typeEntretien: string;
     datePrevue: string;
@@ -35,11 +33,10 @@ interface EntretienFormProps {
 function EntretienForm({ onSubmit, onCancel, initialData }: EntretienFormProps) {
   const [motos, setMotos] = useState<Moto[]>([]);
   const [formData, setFormData] = useState({
-    id: initialData?.id || '',
     motoId: initialData?.motoId || '',
     typeEntretien: initialData?.typeEntretien || 'Préventif',
-    datePrevue: initialData?.datePrevue || '',
-    dateRealisee: initialData?.dateRealisee || '',
+    datePrevue: initialData?.datePrevue ? new Date(initialData.datePrevue).toISOString().split('T')[0] : '',
+    dateRealisee: initialData?.dateRealisee ? new Date(initialData.dateRealisee).toISOString().split('T')[0] : '',
     kilometrageEntretien: initialData?.kilometrageEntretien || 0,
     recommandationsTechnicien: initialData?.recommandationsTechnicien || '',
     recommandationsGestionnaireClient: initialData?.recommandationsGestionnaireClient || '',

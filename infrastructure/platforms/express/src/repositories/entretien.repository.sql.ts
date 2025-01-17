@@ -53,6 +53,17 @@ export class EntretienSQLRepository implements EntretienRepository {
       userId: entretien.userId.toString()
     });
 
+    await saved.reload({
+      include: [
+        {
+          model: MotoSQL,
+          as: 'moto',
+          required: false,
+          attributes: ['marque', 'model', 'serialNumber']
+        }
+      ]
+    });
+
     return this.toEntity(saved as EntretienModel);
   }
 
@@ -100,17 +111,24 @@ export class EntretienSQLRepository implements EntretienRepository {
         where: { entretienId: entretien.entretienId.toString() }
       }
     );
-
+  
     if (updatedCount === 0) {
       throw new Error("Entretien non trouvé");
     }
-
-    // Récupérer l'entité mise à jour
-    const updated = await EntretienSQL.findByPk(entretien.entretienId.toString());
+  
+    // Récupérer l'entité mise à jour avec les détails de la moto
+    const updated = await EntretienSQL.findByPk(entretien.entretienId.toString(), {
+      include: [{
+        model: MotoSQL,
+        as: 'moto',
+        attributes: ['marque', 'model', 'serialNumber']
+      }]
+    });
+  
     if (!updated) {
       throw new Error("Entretien non trouvé après mise à jour");
     }
-
+  
     return this.toEntity(updated as EntretienModel);
   }
 

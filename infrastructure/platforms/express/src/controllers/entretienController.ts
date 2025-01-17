@@ -109,19 +109,21 @@ export class EntretienController {
         res.status(404).json({ message: "Entretien non trouvé" });
         return;
       }
-
+  
       const updatedEntretien = await entretienRepository.update({
         ...existingEntretien,
         ...entretienData
       });
-
-      res.status(200).json(updatedEntretien);
+  
+      const updatedEntretienDTO = EntretienMapper.toDTO(updatedEntretien);
+      res.status(200).json(updatedEntretienDTO);
     } catch (error: any) {
       res.status(500).json({ 
         message: error.message || "Erreur lors de la mise à jour de l'entretien" 
       });
     }
   }
+
   async createEntretien(req: Request, res: Response): Promise<void> {
     try {
       const entretienData = req.body;

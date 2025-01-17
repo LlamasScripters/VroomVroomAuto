@@ -27,9 +27,14 @@ export function EntretienTable({ entretiens, onEditEntretien, onDeleteEntretien 
       </TableHeader>
       <TableBody>
         {entretiens.map((entretien, index) => (
-          <TableRow key={entretien.id}>
+          <TableRow key={entretien.entretienId}>
             <TableCell className="font-medium">{index + 1}</TableCell>
-            <TableCell>{entretien.motoId}</TableCell>
+            <TableCell>
+              {entretien.motoDetails
+                ? `${entretien.motoDetails.marque} ${entretien.motoDetails.model}`
+                : entretien.motoId
+              }
+            </TableCell>
             <TableCell>{entretien.typeEntretien}</TableCell>
             <TableCell>{new Date(entretien.datePrevue).toLocaleDateString()}</TableCell>
             <TableCell>{entretien.dateRealisee ? new Date(entretien.dateRealisee).toLocaleDateString() : '-'}</TableCell>
@@ -49,7 +54,7 @@ export function EntretienTable({ entretiens, onEditEntretien, onDeleteEntretien 
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => onDeleteEntretien(entretien.id!)}
+                onClick={() => onDeleteEntretien(entretien.entretienId!)}
               >
                 <Trash2 className="h-4 w-4" />
                 <span className="sr-only">Supprimer</span>
