@@ -1,51 +1,41 @@
 // infrastructure/platforms/express/controllers/MotoController.ts
 
 import { Request, Response } from 'express';
-import { MotoUseCases } from '../../../../../application/usecases/moto/MotoCrudUseCases';
-import { SqlMotoRepository } from './../repositories/moto.repository.sql';
-import { UUID } from '../../../../../domain/value-objects/UUID';
-import { MotoMapper } from '../../../../../application/mappers/MotoMapper';
+import { MotoCrudUseCases } from '@application/usecases/moto/MotoCrudUseCases';
+import { SqlMotoRepository } from '../repositories/moto.repository.sql';
+import * as MotoMapper from '@application/mappers/MotoMapper';
+import { CreateMotoDTO, GetMotoDTO, UpdateMotoDTO } from '@application/dtos/MotoDTO';
 
 export class MotoController {
-  private motoUseCases: MotoUseCases;
+  private motoUseCases: MotoCrudUseCases;
 
   constructor() {
     const motoRepository = new SqlMotoRepository();
-    this.motoUseCases = new MotoUseCases(motoRepository);
+    this.motoUseCases = new MotoCrudUseCases(motoRepository);
   }
 
   async createMoto(req: Request, res: Response): Promise<void> {
     try {
-      const moto = await this.motoUseCases.createMoto(
-        req.body.marque,
-        req.body.model,
-        req.body.kilometrage,
-        req.body.dateMiseEnService,
-        req.body.statut,
-        req.body.serialNumber,
-        new UUID(req.body.clientId)
-      );
-    
-     const motoDTO = MotoMapper.toDTO(moto);
-     res.status(201).json(motoDTO);
-  
+      const motoDTO: CreateMotoDTO = req.body;
+      const motoResponse = await this.motoUseCases.createMoto(motoDTO);
+      res.status(201).json(motoResponse);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }
   }
-  
 
   async getMoto(req: Request, res: Response): Promise<void> {
     try {
-      const motoId = new UUID(req.params.id);
-      const moto = await this.motoUseCases.getMotoById(motoId);
+      const getMotoDTO: GetMotoDTO = { motoId: req.params.id };
+      const moto = await this.motoUseCases.getMotoById(getMotoDTO);
 
       if (!moto) {
         res.status(404).json({ error: 'Moto non trouvée' });
         return;
       }
 
-      res.json(moto);
+      const motoDTO = MotoMapper.toDTO(moto);
+      res.json(motoDTO);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }
@@ -53,27 +43,29 @@ export class MotoController {
 
   async updateMoto(req: Request, res: Response): Promise<void> {
     try {
-      const motoId = new UUID(req.params.id);
-      // Convertir les données reçues en DTO
-      const updatedMoto = await this.motoUseCases.updateMoto(motoId, req.body);
+      const updateMotoDTO: UpdateMotoDTO = {
+        motoId: req.params.id,
+        ...req.body
+      };
+
+      const updatedMoto = await this.motoUseCases.updateMoto(updateMotoDTO);
 
       if (!updatedMoto) {
         res.status(404).json({ error: 'Moto non trouvée' });
         return;
       }
 
-      // Convertir en DTO avant de renvoyer
       const motoDTO = MotoMapper.toDTO(updatedMoto);
       res.json(motoDTO);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }
-}
+  }
 
   async getAllMotos(req: Request, res: Response): Promise<void> {
     try {
       const motos = await this.motoUseCases.getAllMotos();
-      const motoDTOs = motos.map(moto => MotoMapper.toDTO(moto));
+      const motoDTOs = motos.map(MotoMapper.toDTO);
       res.json(motoDTOs);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
@@ -82,8 +74,7 @@ export class MotoController {
 
   async deleteMoto(req: Request, res: Response): Promise<void> {
     try {
-      const motoId = new UUID(req.params.id);
-      const deleted = await this.motoUseCases.deleteMoto(motoId);
+      const deleted = await this.motoUseCases.deleteMoto(req.params.id);
 
       if (!deleted) {
         res.status(404).json({ error: 'Moto non trouvée' });

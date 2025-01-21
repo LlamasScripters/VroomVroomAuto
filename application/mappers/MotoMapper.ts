@@ -1,32 +1,31 @@
 // application/mappers/MotoMapper.ts
-import { Moto } from '../../domain/entities/MotoEntity';
-import { MotoDTO } from '../dtos/MotoDTO';
-import { UUID } from '../../domain/value-objects/UUID';
 
-export class MotoMapper {
-  static toDTO(moto: Moto): MotoDTO {
-    return {
-      motoId: moto.motoId.toString(),
-      marque: moto.marque,
-      model: moto.model,
-      serialNumber: moto.serialNumber,
-      kilometrage: moto.kilometrage,
-      dateMiseEnService: moto.dateMiseEnService.toISOString(),
-      statut: moto.statut,
-      clientId: moto.clientId.toString()
-    };
-  }
+import { Moto } from '@domain/entities/MotoEntity';
+import { UUID } from '@domain/value-objects/UUID';
+import { MotoDTO } from '@application/dtos/MotoDTO';
 
-  static toDomain(dto: MotoDTO): Moto {
-    return Moto.create(
-      new UUID(dto.motoId),
-      dto.marque,
-      dto.model,
-      dto.kilometrage,
-      new Date(dto.dateMiseEnService),
-      dto.statut,
-      dto.serialNumber,
-      new UUID(dto.clientId)
-    );
-  }
+export function toDTO(moto: Moto): MotoDTO {
+  return {
+    motoId: moto.motoId.toString(),
+    marque: moto.marque,
+    model: moto.model,
+    serialNumber: moto.serialNumber,
+    kilometrage: moto.kilometrage,
+    dateMiseEnService: moto.dateMiseEnService.toISOString(),
+    statut: moto.statut,
+    clientId: moto.clientId.toString()
+  };
+}
+
+export function toDomain(dto: MotoDTO): Moto {
+  return Moto.create(
+    new UUID(dto.motoId),
+    dto.marque,
+    dto.model,
+    dto.kilometrage,
+    new Date(dto.dateMiseEnService),
+    dto.statut,
+    dto.serialNumber, 
+    new UUID(dto.clientId)
+  );
 }

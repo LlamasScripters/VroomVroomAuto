@@ -1,54 +1,64 @@
 import { Moto } from '../../../domain/entities/MotoEntity';
 import { MotoRepository } from '../../repositories/MotoRepository';
 import { UUID } from '../../../domain/value-objects/UUID';
+import { CreateMotoDTO, UpdateMotoDTO, GetMotoDTO } from '@application/dtos/MotoDTO';
+import { MotoResponse } from '@application/response/MotoResponse';
 
-interface MotoData {
-  motoId: UUID;
-  marque: string;
-  model: string;
-  kilometrage: number;
-  dateMiseEnService: Date;
-  statut: string;
-  serialNumber: string;
-  clientId: UUID;
-}
+export class MotoCrudUseCases {
+  constructor(
+    private motoRepository: MotoRepository
+  ) {}
 
-export class MotoUseCases {
-  constructor(private motoRepository: MotoRepository) {}
+  async createMoto(motoData: CreateMotoDTO): Promise<MotoResponse> {
+    const moto = Moto.create(
+      new UUID(),
+      motoData.marque,
+      motoData.model,
+      motoData.kilometrage,
+      new Date(motoData.dateMiseEnService),
+      motoData.statut,
+      motoData.serialNumber,
+      new UUID(motoData.clientId)
+    );
 
-  async createMoto(marque: string, model: string, kilometrage: number, dateMiseEnService: Date, statut: string, serialNumber: string, clientId: UUID): Promise<Moto> {
-    const moto = Moto.create(new UUID(), marque, model, kilometrage, dateMiseEnService, statut, serialNumber, clientId);
-    return this.motoRepository.save(moto);
+    try {
+      const savedMoto = await this.motoRepository.save(moto);
+      return { motoId: savedMoto.motoId.toString() };
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async getMotoById(motoId: UUID): Promise<Moto | null> {
-    return this.motoRepository.findById(motoId);
+  async getMotoById(motoData: GetMotoDTO): Promise<Moto | null> {
+    const motoIdentifier = new UUID(motoData.motoId);
+    return await this.motoRepository.findById(motoIdentifier);
   }
 
-  async updateMoto(motoId: UUID, updatedData: Partial<MotoData>): Promise<Moto | null> {
-    const existingMoto = await this.motoRepository.findById(motoId);
-    if (!existingMoto) return null;
+  async updateMoto(updatedData: UpdateMotoDTO): Promise<Moto | null> {
+    const motoIdentifier = new UUID(updatedData.motoId);
+    const moto = await this.motoRepository.findById(motoIdentifier);
+    if (!moto) return null;
 
-    // Créer une nouvelle instance avec les données mises à jour
     const updatedMoto = Moto.create(
-        motoId,
-        updatedData.marque ?? existingMoto.marque,
-        updatedData.model ?? existingMoto.model,
-        updatedData.kilometrage ?? existingMoto.kilometrage,
-        updatedData.dateMiseEnService ? new Date(updatedData.dateMiseEnService) : existingMoto.dateMiseEnService,
-        updatedData.statut ?? existingMoto.statut,
-        updatedData.serialNumber ?? existingMoto.serialNumber,
-        existingMoto.clientId
+      moto.motoId,
+      updatedData.marque ?? moto.marque,
+      updatedData.model ?? moto.model,
+      updatedData.kilometrage ?? moto.kilometrage,
+      updatedData.dateMiseEnService ? new Date(updatedData.dateMiseEnService) : moto.dateMiseEnService,
+      updatedData.statut ?? moto.statut,
+      updatedData.serialNumber ?? moto.serialNumber,
+      updatedData.clientId ? new UUID(updatedData.clientId) : moto.clientId
     );
     
-    return this.motoRepository.update(updatedMoto);
+    return await this.motoRepository.update(updatedMoto);
   }
 
-  async deleteMoto(motoId: UUID): Promise<boolean> {
-    return this.motoRepository.delete(motoId);
+  async deleteMoto(motoId: string): Promise<boolean> {
+    const motoIdentifier = new UUID(motoId);
+    return await this.motoRepository.delete(motoIdentifier);
   }
 
   async getAllMotos(): Promise<Moto[]> {
-    return this.motoRepository.findAll();
+    return await this.motoRepository.findAll();
   }
 }

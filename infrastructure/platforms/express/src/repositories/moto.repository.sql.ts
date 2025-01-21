@@ -1,11 +1,10 @@
-// infrastructure/platforms/express/repositories/moto.repository.sql.ts
-import { Moto } from '../../../../../domain/entities/MotoEntity';
+// infrastructure/repositories/moto.repository.sql.ts
+import { Moto } from '@domain/entities/MotoEntity';
 import { MotoRepository } from '@application/repositories/MotoRepository';
-import { UUID } from '../../../../../domain/value-objects/UUID';
+import { UUID } from '@domain/value-objects/UUID';
 import MotoSQL from '../modelsSQL/moto.sql';
 import { Model } from 'sequelize';
 
-// Interface pour le modèle Sequelize
 interface MotoModel extends Model {
   motoId: string;
   marque: string;
@@ -31,16 +30,7 @@ export class SqlMotoRepository implements MotoRepository {
         clientId: moto.clientId.toString()
       });
 
-      return Moto.create(
-        new UUID(createdMoto.get('motoId') as string),
-        createdMoto.get('marque') as string,
-        createdMoto.get('model') as string,
-        createdMoto.get('kilometrage') as number,
-        createdMoto.get('dateMiseEnService') as Date,
-        createdMoto.get('statut') as string,
-        createdMoto.get('serialNumber') as string,
-        new UUID(createdMoto.get('clientId') as string)
-      );
+      return this.toDomain(createdMoto as MotoModel);
     } catch (error) {
       throw new Error(`Erreur lors de la sauvegarde de la moto: ${error}`);
     }
@@ -50,73 +40,56 @@ export class SqlMotoRepository implements MotoRepository {
     const moto = await MotoSQL.findByPk(motoId.toString()) as MotoModel | null;
     if (!moto) return null;
 
-    return Moto.create(
-      new UUID(moto.motoId),
-      moto.marque,
-      moto.model,
-      moto.kilometrage,
-      moto.dateMiseEnService,
-      moto.statut,
-      moto.serialNumber,
-      new UUID(moto.clientId)
-    );
+    return this.toDomain(moto);
   }
 
   async findAll(): Promise<Moto[]> {
     const motos = await MotoSQL.findAll() as MotoModel[];
-    return motos.map(moto => Moto.create(
-      new UUID(moto.motoId),
-      moto.marque,
-      moto.model,
-      moto.kilometrage,
-      moto.dateMiseEnService,
-      moto.statut,
-      moto.serialNumber,
-      new UUID(moto.clientId)
-    ));
+    return motos.map(moto => this.toDomain(moto));
   }
-
 
   async update(moto: Moto): Promise<Moto> {
     const [numberOfAffectedRows] = await MotoSQL.update(
-        {
-            marque: moto.marque,
-            model: moto.model,
-            kilometrage: moto.kilometrage,
-            dateMiseEnService: moto.dateMiseEnService,
-            statut: moto.statut,
-            serialNumber: moto.serialNumber,
-            clientId: moto.clientId.toString()
-        },
-        {
-            where: { motoId: moto.motoId.toString() },
-            returning: true
-        }
+      {
+        marque: moto.marque,
+        model: moto.model,
+        kilometrage: moto.kilometrage,
+        dateMiseEnService: moto.dateMiseEnService,
+        statut: moto.statut,
+        serialNumber: moto.serialNumber,
+        clientId: moto.clientId.toString()
+      },
+      {
+        where: { motoId: moto.motoId.toString() },
+        returning: true
+      }
     );
 
     if (numberOfAffectedRows === 0) {
-        throw new Error('Moto non trouvée');
+      throw new Error('Moto non trouvée');
     }
 
-    // Récupérer la moto mise à jour
     const updatedMoto = await MotoSQL.findByPk(moto.motoId.toString()) as MotoModel;
-    
-    return Moto.create(
-        new UUID(updatedMoto.motoId),
-        updatedMoto.marque,
-        updatedMoto.model,
-        updatedMoto.kilometrage,
-        updatedMoto.dateMiseEnService,
-        updatedMoto.statut,
-        updatedMoto.serialNumber,
-        new UUID(updatedMoto.clientId)
-    );
-}
+    return this.toDomain(updatedMoto);
+  }
 
   async delete(motoId: UUID): Promise<boolean> {
     const deleted = await MotoSQL.destroy({
       where: { motoId: motoId.toString() }
     });
     return deleted > 0;
+  }
+
+  private toDomain(model: MotoModel): Moto {
+    return Moto.create(
+      new UUID(model.motoId),
+      model.marque,
+      model.model,
+      model.kilometrage,
+      model.dateMiseEnService,
+      model.statut,
+      model.serialNumber,
+      new UUID(model.clientId)
+    );
   }
 }
