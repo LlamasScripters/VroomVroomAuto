@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "dev": "nodemon -L --exec ts-node --project ./tsconfig.json src/index.ts",
-    "build": "tsc",
+    "dev": "nodemon -L --exec ts-node -r tsconfig-paths/register --project ./tsconfig.json src/index.ts",
+    "build": "tsc && tsc-alias",
     "start": "node dist/index.js"
   },
   "dependencies": {
@@ -28,6 +28,8 @@
     "@types/node": "^20.9.0",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.2"
   }
 }
