@@ -10,6 +10,6 @@ router.get('/:id', (req, res) => controller.getEntretienById(req, res));
 router.post('/', (req, res) => controller.createEntretien(req, res));
 router.put('/:id', (req, res) => controller.updateEntretien(req, res));
 router.delete('/:id', (req, res) => controller.deleteEntretien(req, res));
-router.post('/planification', (req, res) => controller.planifierEntretien(req, res));
+// router.post('/planification', (req, res) => controller.planifierEntretien(req, res));
 
 export default router;
