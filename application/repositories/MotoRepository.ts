@@ -1,5 +1,5 @@
-import { Moto } from '../../domain/entities/MotoEntity';
-import { UUID } from '../../domain/value-objects/UUID';
+import { Moto } from '@domain/entities/MotoEntity';
+import { UUID } from '@domain/value-objects/UUID';
 
 export interface MotoRepository {
   save(moto: Moto): Promise<Moto>;

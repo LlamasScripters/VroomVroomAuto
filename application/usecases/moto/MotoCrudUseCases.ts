@@ -1,6 +1,6 @@
-import { Moto } from '../../../domain/entities/MotoEntity';
-import { MotoRepository } from '../../repositories/MotoRepository';
-import { UUID } from '../../../domain/value-objects/UUID';
+import { Moto } from '@domain/entities/MotoEntity';
+import { MotoRepository } from '@application/repositories/MotoRepository';
+import { UUID } from '@domain/value-objects/UUID';
 import { CreateMotoDTO, UpdateMotoDTO, GetMotoDTO } from '@application/dtos/MotoDTO';
 import { MotoResponse } from '@application/response/MotoResponse';
 
