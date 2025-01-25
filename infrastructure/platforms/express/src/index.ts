@@ -2,8 +2,9 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { connectToDatabase } from './modelsSQL/database';
-import db from "../src/modelsSQL/indexSQL";
+import { connection, connectToDatabase } from './modelsSQL/database';
+import { initializeModels } from "./modelsMongo/indexMongo";
+import { denormalizeData } from "./bin/denormalizeIntoMongo";
 import './modelsSQL/associations';
 
 import motoRoutes from './routes/moto.route';
@@ -28,16 +29,32 @@ app.use('/api/entretien', entretienRoutes);
 // Port
 const PORT = 3000;
 
-db.connection
-  .sync({ alter: true })
-  .then(() => console.log("Database synced"))
+// Connection à la base de données SQL et MongoDB
+connectToDatabase()
+  .then(() => {
+    console.log("Connected to SQL database successfully.");
 
-// Connect to Database and Start Server
-connectToDatabase().then(() => {
-  app.listen(PORT, host, () => {
-    console.log(`Server listening on http://${host}:${PORT}`);
-    console.log("test");
+    return connection.sync();
+  })
+  .then(() => {
+    console.log("SQL database & tables created!");
+
+    return initializeModels();
+  })
+  .then(() => {
+    console.log("MongoDB models initialized.");
+
+    return denormalizeData();
+  })
+  .then(() => {
+    console.log("MongoDB migrations completed.");
+
+    // Lancement du serveur Express
+    app.listen(PORT, host, () => {
+      console.log(`Server listening on http://${host}:${PORT}`);
+      console.log("Initial setup completed successfully.");
+    });
+  })
+  .catch((err: unknown) => {
+    console.error("An error occurred during setup:", err);
   });
-}).catch((err: unknown) => {
-  console.error('Failed to connect to the database', err);
-});
