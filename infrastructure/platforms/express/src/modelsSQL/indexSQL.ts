@@ -1,4 +1,5 @@
 import { connection } from './database';
+import './associations';
 import UserSQL from './user.sql';
 import ClientSQL from './client.sql';
 import MotoSQL from './moto.sql';
