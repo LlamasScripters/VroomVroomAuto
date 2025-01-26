@@ -2,12 +2,12 @@ import { UUID } from '../value-objects/UUID';
 
 export class Client {
   // déplacer le nodeModules dans domain
-  // utiliser validator pour les emails au lieu de regex
+  // utiliser validator pour les eemails au lieu de regex
     constructor(
       public readonly clientId: UUID,
       public readonly nom: string,
       public readonly prenom: string,
-      public readonly mail: string,
+      public readonly email: string,
       public readonly telephone: string,
       public readonly numeroDeRue: number,
       public readonly nomDeRue: string,
@@ -21,7 +21,7 @@ export class Client {
       clientId: UUID,
       nom: string,
       prenom: string,
-      mail: string,
+      email: string,
       telephone: string,
       numeroDeRue: number,
       nomDeRue: string,
@@ -30,7 +30,7 @@ export class Client {
       pays: string,
       userId: UUID
     ): Client {
-      return new Client(clientId, nom, prenom, mail, telephone, numeroDeRue, nomDeRue, codePostal, ville, pays, userId);
+      return new Client(clientId, nom, prenom, email, telephone, numeroDeRue, nomDeRue, codePostal, ville, pays, userId);
     }
 
     public getFullAddress(): string {

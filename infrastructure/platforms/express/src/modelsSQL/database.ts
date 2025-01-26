@@ -1,10 +1,15 @@
+import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 dotenv.config();
-import { Sequelize } from 'sequelize';
 
-export const connection = new Sequelize("postgres://user:password@postgres:5432/mydatabase", { dialect: 'postgres' });
+const connectionString = process.env.POSTGRES_LINK;
+if (!connectionString) {
+  throw new Error('POSTGRES_LINK environment variable is not defined');
+}
 
-export const connectToDatabase = async () => {
+const connection = new Sequelize(connectionString, {dialect: 'postgres'});
+
+const connectToDatabase = async () => {
   try {
     await connection.authenticate();
     console.log('Connection has been established successfully.');
@@ -12,3 +17,5 @@ export const connectToDatabase = async () => {
     console.error('Unable to connect to the database:', error);
   }
 };
+
+export { connectToDatabase, connection };

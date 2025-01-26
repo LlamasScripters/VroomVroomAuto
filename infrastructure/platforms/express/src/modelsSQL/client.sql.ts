@@ -15,7 +15,7 @@ const ClientSQL = connection.define('Client', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  mail: {
+  email: {
     type: DataTypes.STRING,
     allowNull: false,
   },
