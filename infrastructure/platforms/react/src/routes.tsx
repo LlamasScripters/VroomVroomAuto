@@ -10,6 +10,7 @@ import ClientManagementPage from './pages/ClientManagementPage';
 import EmployeManagementPage from './pages/EmployeManagementPage';
 import MaintenanceRuleManagementPage from './pages/MaintenanceRuleManagementPage';
 import StatisticsPage from './pages/StatisticsPage';
+import EntretienPlanificationPage from './pages/EntretienPlanificationPage';
 
 const routes: RouteObject[] = [
   {
@@ -21,7 +22,7 @@ const routes: RouteObject[] = [
     element: <MotoManagementPage />,
   },
   {
-    path: '/entretien',
+    path: '/entretiens',
     element: <EntretienManagementPage />,
   },
   {
@@ -55,6 +56,10 @@ const routes: RouteObject[] = [
   {
     path: '/maintenance-rules',
     element: <MaintenanceRuleManagementPage />,
+  },
+  {
+    path: '/entretiens/planification',
+    element: <EntretienPlanificationPage />,
   }
 ];
 

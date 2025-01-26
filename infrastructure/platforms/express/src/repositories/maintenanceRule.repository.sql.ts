@@ -39,6 +39,38 @@ export class MaintenanceRuleSQLRepository implements MaintenanceRuleRepository {
     return deleted > 0;
   }
 
+  async findById(ruleId: UUID): Promise<MaintenanceRule | null> {
+    const rule = await MaintenanceRuleSQL.findOne({
+      where: { ruleId: ruleId.toString() }
+    });
+
+    if (!rule) return null;
+    return this.toEntity(rule);
+  }
+
+  async update(rule: MaintenanceRule): Promise<MaintenanceRule> {
+    // Effectuer la mise à jour
+    await MaintenanceRuleSQL.update({
+      modele: rule.modele,
+      intervalleKilometrage: rule.intervalleKilometrage,
+      intervalleTemps: rule.intervalleTemps,
+      typeEntretien: rule.typeEntretien
+    }, {
+      where: { ruleId: rule.ruleId.toString() }
+    });
+  
+    // Récupérer l'entité mise à jour
+    const updatedRule = await MaintenanceRuleSQL.findOne({
+      where: { ruleId: rule.ruleId.toString() }
+    });
+  
+    if (!updatedRule) {
+      throw new Error('Rule not found');
+    }
+  
+    return this.toEntity(updatedRule);
+  }
+
   private toEntity(model: MaintenanceRuleModel): MaintenanceRule {
     return MaintenanceRule.create(
       new UUID(model.ruleId),

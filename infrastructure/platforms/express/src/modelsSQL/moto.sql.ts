@@ -14,6 +14,7 @@ const MotoSQL = connection.define('Moto', {
   model: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
   kilometrage: {
     type: DataTypes.FLOAT,

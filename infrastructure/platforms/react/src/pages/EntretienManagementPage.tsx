@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Entretien } from '../types';
 import { EntretienService } from '../services/entretienService';
 import EntretienTable from '../components/entretienManagement/EntretienTable';
@@ -7,6 +8,7 @@ import SearchAndFilters from '../components/shared/SearchAndFilters';
 import { toast } from "react-hot-toast";
 
 function EntretienManagementPage() {
+  const navigate = useNavigate();
   const [entretiens, setEntretiens] = useState<Entretien[]>([]);
   const [filteredEntretiens, setFilteredEntretiens] = useState<Entretien[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -128,7 +130,23 @@ function EntretienManagementPage() {
 
   return (
     <div className="">
-      <h1 className="text-2xl font-bold mb-4">Gestion des Entretiens</h1>
+      <div className="sm:flex sm:items-center sm:justify-between mb-6">
+        <h1 className="text-2xl font-bold">Gestion des Entretiens</h1>
+        <div className="space-x-4">
+          <button
+            onClick={() => navigate('/entretiens/planification')}
+            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+          >
+            Planifier un entretien
+          </button>
+          <button
+            onClick={handleAddEntretien}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+          >
+            Ajouter un entretien
+          </button>
+        </div>
+      </div>
 
       {error && (
         <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
@@ -146,12 +164,12 @@ function EntretienManagementPage() {
         placeholder="Rechercher un entretien..."
       />
 
-      <button
+      {/* <button
         onClick={handleAddEntretien}
         className="bg-blue-500 text-white py-2 px-4 rounded my-4"
       >
         Ajouter un entretien
-      </button>
+      </button> */}
 
       {isLoading ? (
         <div className="flex justify-center items-center py-8">

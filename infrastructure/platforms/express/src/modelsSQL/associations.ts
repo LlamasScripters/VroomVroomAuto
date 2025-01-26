@@ -9,6 +9,7 @@ import EssaiSQL from './essaie.sql';
 import IncidentSQL from './incident.sql';
 import PanneSQL from './panne.sql';
 import ReparationSQL from './reparation.sql';
+import MaintenanceRuleSQL from './maintenanceRule.sql';
 
 // User associations
 UserSQL.hasMany(ClientSQL, { foreignKey: 'userId' });
@@ -22,6 +23,12 @@ CommandeSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
 
 UserSQL.hasMany(ConducteurSQL, { foreignKey: 'userId' });
 ConducteurSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
+
+MaintenanceRuleSQL.hasMany(EntretienSQL, { foreignKey: 'ruleId', as: 'entretiens' });
+EntretienSQL.belongsTo(MaintenanceRuleSQL, { foreignKey: 'ruleId', as: 'maintenanceRule' });
+
+MotoSQL.hasOne(MaintenanceRuleSQL, { foreignKey: 'modele', sourceKey: 'model', as: 'maintenanceRule' });
+MaintenanceRuleSQL.belongsTo(MotoSQL, { foreignKey: 'modele', targetKey: 'model', as: 'moto' });
 
 // Client associations
 // ClientSQL.hasMany(MotoSQL, { foreignKey: { name: 'clientId', allowNull: true }, onDelete: 'SET NULL', onUpdate: 'CASCADE'});

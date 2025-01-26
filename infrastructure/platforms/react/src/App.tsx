@@ -11,6 +11,8 @@ import EmployeManagementPage from "./pages/EmployeManagementPage";
 import StatisticsPage from "./pages/StatisticsPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import EntretienPlanificationPage from "./pages/EntretienPlanificationPage";
+import MaintenanceRuleManagementPage from "./pages/MaintenanceRuleManagementPage";
 
 import { AppSidebar } from "../src/components/sideBar/appSidebar";
 import {
@@ -78,7 +80,9 @@ function App() {
         {/* Routes protégées avec sidebar */}
         <Route path="/" element={<ProtectedLayout><DashboardPage /></ProtectedLayout>} />
         <Route path="/moto-management" element={<ProtectedLayout><MotoManagementPage /></ProtectedLayout>} />
-        <Route path="/entretien" element={<ProtectedLayout><EntretienManagementPage /></ProtectedLayout>} />
+        <Route path="/entretiens/planification" element={<ProtectedLayout><EntretienPlanificationPage /></ProtectedLayout>} />
+        <Route path="/entretiens" element={<ProtectedLayout><EntretienManagementPage /></ProtectedLayout>} />
+        <Route path="/maintenance-rules" element={<ProtectedLayout><MaintenanceRuleManagementPage /></ProtectedLayout>} />
         <Route path="/pannes" element={<ProtectedLayout><PanneManagementPage /></ProtectedLayout>} />
         <Route path="/garanties" element={<ProtectedLayout><GarantieManagementPage /></ProtectedLayout>} />
         <Route path="/reparations" element={<ProtectedLayout><ReparationManagementPage /></ProtectedLayout>} />

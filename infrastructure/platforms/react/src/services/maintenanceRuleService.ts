@@ -1,5 +1,5 @@
-// infrastructure/platforms/react/src/services/maintenanceRuleService.ts
 import { MaintenanceRule } from '../types';
+import { MaintenancePlanningResultDTO } from '../../../../../application/dtos/MaintenancePlanningDTO';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
@@ -48,4 +48,26 @@ export const MaintenanceRuleService = {
       throw new Error('Erreur lors de la suppression de la règle');
     }
   },
+
+  async planifierEntretien(planification: {
+    motoId: string;
+    datePrevue?: string;
+    kilometragePrevu?: number;
+    typeEntretien?: string;
+    notes?: string;
+  }): Promise<MaintenancePlanningResultDTO> {
+    const response = await fetch(`${API_URL}/maintenance/planification`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(planification),
+    });
+
+    if (!response.ok) {
+      throw new Error('Erreur lors de la planification de l\'entretien');
+    }
+
+    return response.json();
+  }
 };

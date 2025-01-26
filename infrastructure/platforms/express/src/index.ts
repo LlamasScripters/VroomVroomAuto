@@ -8,6 +8,7 @@ import './modelsSQL/associations';
 
 import motoRoutes from './routes/moto.route';
 import entretienRoutes from './routes/entretien.route';
+import maintenanceRuleRoutes from './routes/maintenanceRule.route';
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(cors());
 //Routes
 app.use('/api/motos', motoRoutes);
 app.use('/api/entretien', entretienRoutes);
+app.use('/api/maintenance', maintenanceRuleRoutes);
 
 // Port
 const PORT = 3000;

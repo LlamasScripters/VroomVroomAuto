@@ -43,7 +43,7 @@ import { NavLink } from "react-router-dom"
           },
           {
             title: "Entretien",
-            url: "/entretien",
+            url: "/entretiens",
           },
           {
             title: "Pannes",

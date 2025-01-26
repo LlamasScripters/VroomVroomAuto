@@ -1,67 +1,96 @@
-// infrastructure/platforms/express/src/controllers/maintenanceRuleController.ts
+// infrastructure/platforms/express/controllers/maintenanceRuleController.ts
+
 import { Request, Response } from 'express';
-import { PlanificationEntretienUseCase } from '@application/usecases/maintenance/PlanificationEntretienUseCase';
+import { MaintenanceRuleCrudUseCase } from '@application/usecases/maintenance/MaintenanceRuleCrudUseCases';
+import { PlanifierEntretienUseCase } from '@application/usecases/maintenance/PlanifierEntretienUseCase';
 import { MaintenanceRuleSQLRepository } from '../repositories/maintenanceRule.repository.sql';
+import { SqlMotoRepository } from '../repositories/moto.repository.sql';
 import { EntretienSQLRepository } from '../repositories/entretien.repository.sql';
-import { UUID } from '../../../../../domain/value-objects/UUID';
+import { CreateMaintenanceRuleDTO, UpdateMaintenanceRuleDTO } from '@application/dtos/MaintenanceRuleDTO';
+import { PlanifierEntretienDTO } from '@application/dtos/MaintenancePlanningDTO';
 
 export class MaintenanceRuleController {
-  private planificationUseCase: PlanificationEntretienUseCase;
+  private maintenanceRuleCrudUseCase: MaintenanceRuleCrudUseCase;
+  private planifierEntretienUseCase: PlanifierEntretienUseCase;
 
   constructor() {
-    const maintenanceRuleRepo = new MaintenanceRuleSQLRepository();
-    const entretienRepo = new EntretienSQLRepository();
-    this.planificationUseCase = new PlanificationEntretienUseCase(
-      maintenanceRuleRepo,
-      entretienRepo
+    const maintenanceRuleRepository = new MaintenanceRuleSQLRepository();
+    const motoRepository = new SqlMotoRepository();
+    const entretienRepository = new EntretienSQLRepository();
+
+    this.maintenanceRuleCrudUseCase = new MaintenanceRuleCrudUseCase(maintenanceRuleRepository);
+    this.planifierEntretienUseCase = new PlanifierEntretienUseCase(
+      maintenanceRuleRepository,
+      motoRepository,
+      entretienRepository
     );
   }
 
   async createMaintenanceRule(req: Request, res: Response): Promise<void> {
     try {
-      const { modele, intervalleKilometrage, intervalleTemps, typeEntretien } = req.body;
-      
-      const rule = await this.planificationUseCase.createMaintenanceRule(
-        modele,
-        intervalleKilometrage,
-        intervalleTemps,
-        typeEntretien
-      );
-      
+      const ruleDTO: CreateMaintenanceRuleDTO = req.body;
+      const rule = await this.maintenanceRuleCrudUseCase.createRule(ruleDTO);
       res.status(201).json(rule);
-    } catch (error: any) { 
+    } catch (error: any) {
       res.status(400).json({ 
-        message: error?.message || "Une erreur est survenue" 
+        error: error.message || "Erreur lors de la création de la règle de maintenance" 
+      });
+    }
+  }
+
+  async getAllRules(req: Request, res: Response): Promise<void> {
+    try {
+      const rules = await this.maintenanceRuleCrudUseCase.getAllRules();
+      res.json(rules);
+    } catch (error: any) {
+      res.status(400).json({ 
+        error: error.message || "Erreur lors de la récupération des règles" 
+      });
+    }
+  }
+
+  async updateMaintenanceRule(req: Request, res: Response): Promise<void> {
+    try {
+      const updateDTO: UpdateMaintenanceRuleDTO = {
+        ruleId: req.params.id,
+        ...req.body
+      };
+      const rule = await this.maintenanceRuleCrudUseCase.updateRule(updateDTO);
+      if (!rule) {
+        res.status(404).json({ error: "Règle de maintenance non trouvée" });
+        return;
+      }
+      res.json(rule);
+    } catch (error: any) {
+      res.status(400).json({ 
+        error: error.message || "Erreur lors de la mise à jour de la règle" 
+      });
+    }
+  }
+
+  async deleteMaintenanceRule(req: Request, res: Response): Promise<void> {
+    try {
+      const deleted = await this.maintenanceRuleCrudUseCase.deleteRule(req.params.id);
+      if (!deleted) {
+        res.status(404).json({ error: "Règle de maintenance non trouvée" });
+        return;
+      }
+      res.status(204).send();
+    } catch (error: any) {
+      res.status(400).json({ 
+        error: error.message || "Erreur lors de la suppression de la règle" 
       });
     }
   }
 
   async planifierEntretien(req: Request, res: Response): Promise<void> {
     try {
-      const {
-        motoId,
-        modele,
-        kilometrageActuel,
-        lastMaintenanceKm,
-        lastMaintenanceDate
-      } = req.body;
-
-      const entretien = await this.planificationUseCase.planifierEntretien(
-        new UUID(motoId),
-        modele,
-        kilometrageActuel,
-        lastMaintenanceKm,
-        new Date(lastMaintenanceDate)
-      );
-
-      if (entretien) {
-        res.status(201).json(entretien);
-      } else {
-        res.status(200).json({ message: "Aucun entretien nécessaire pour le moment" });
-      }
+      const planificationDTO: PlanifierEntretienDTO = req.body;
+      const result = await this.planifierEntretienUseCase.planifier(planificationDTO);
+      res.status(201).json(result);
     } catch (error: any) {
       res.status(400).json({ 
-        message: error?.message || "Une erreur est survenue" 
+        error: error.message || "Erreur lors de la planification de l'entretien" 
       });
     }
   }
