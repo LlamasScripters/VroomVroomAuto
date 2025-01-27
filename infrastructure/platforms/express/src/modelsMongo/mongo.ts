@@ -11,8 +11,6 @@ export const connectMongo = async (): Promise<void> => {
             throw new Error("Missing MongoDB environment variables");
         }
 
-        console.log("Connecting to MongoDB with connection string:", MONGODB_CONNECTION_STRING);
-
         await mongoose.connect(MONGODB_CONNECTION_STRING, {
             dbName: 'mydatabase',
             auth: {
