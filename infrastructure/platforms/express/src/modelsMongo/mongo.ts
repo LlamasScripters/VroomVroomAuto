@@ -5,23 +5,26 @@ dotenv.config();
 
 export const connectMongo = async (): Promise<void> => {
     try {
-        if (!process.env.MONGODB_CONNECTION_STRING || !process.env.MONGODB_USER || !process.env.MONGODB_PASSWORD) {
+        const { MONGODB_CONNECTION_STRING, MONGODB_USER, MONGODB_PASSWORD } = process.env;
+
+        if (!MONGODB_CONNECTION_STRING || !MONGODB_USER || !MONGODB_PASSWORD) {
             throw new Error("Missing MongoDB environment variables");
         }
 
-        await mongoose.connect(
-            process.env.MONGODB_CONNECTION_STRING!,
-            {
-                dbName: 'mydatabase',
-                auth: {
-                    username: process.env.MONGODB_USER!,
-                    password: process.env.MONGODB_PASSWORD!,
-                },
+        console.log("Connecting to MongoDB with connection string:", MONGODB_CONNECTION_STRING);
+
+        await mongoose.connect(MONGODB_CONNECTION_STRING, {
+            dbName: 'mydatabase',
+            auth: {
+                username: MONGODB_USER,
+                password: MONGODB_PASSWORD,
             },
-        );
+        });
+
         console.log("MongoDB connection successful");
     } catch (error) {
         console.error("MongoDB connection error:", error);
+        process.exit(1);
     }
 };
 
