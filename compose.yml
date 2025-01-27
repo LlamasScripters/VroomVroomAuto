@@ -10,7 +10,7 @@ services:
     command: sh -c "npm install && npm run dev"
     environment:
       - POSTGRES_LINK=postgres://user:password@postgres:5432/mydatabase
-      - MONGO_URI=mongodb://mongo:27017/mydatabase?authSource=admin
+      - MONGODB_CONNECTION_STRING=mongodb://mongo:27017/mydatabase?authSource=admin
       - NODE_ENV=development
     depends_on:
       - postgres
@@ -27,7 +27,7 @@ services:
     command: "sh -c 'npm install && npm run start:dev'"
     environment:
       - POSTGRES_LINK=postgres://user:password@postgres:5432/mydatabase
-      - MONGO_URI=mongodb://mongo:27017/mydatabase?authSource=admin
+      - MONGODB_CONNECTION_STRING=mongodb://mongo:27017/mydatabase?authSource=admin
     depends_on:
       - postgres
       - mongo
