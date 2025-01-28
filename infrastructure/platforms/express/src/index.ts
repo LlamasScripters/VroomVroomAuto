@@ -10,6 +10,9 @@ import './modelsSQL/associations';
 import motoRoutes from './routes/moto.route';
 import entretienRoutes from './routes/entretien.route';
 import maintenanceRuleRoutes from './routes/maintenanceRule.route';
+import userRoute from './routes/user.route';
+import authRouter from "./routes/auth.route";
+
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -17,6 +20,7 @@ dotenv.config();
 // Initialiser l'application express
 const app = express();
 const host = "0.0.0.0";
+
 // Middleware
 app.use(bodyParser.json());
 
@@ -27,6 +31,8 @@ app.use(cors());
 app.use('/api/motos', motoRoutes);
 app.use('/api/entretien', entretienRoutes);
 app.use('/api/maintenance', maintenanceRuleRoutes);
+app.use('/api/user', userRoute);
+app.use('/api/auth', authRouter);
 
 // Port
 const PORT = 3000;
