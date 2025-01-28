@@ -9,6 +9,7 @@ import './modelsSQL/associations';
 
 import motoRoutes from './routes/moto.route';
 import entretienRoutes from './routes/entretien.route';
+import panneRoutes from './routes/panne.route';
 import maintenanceRuleRoutes from './routes/maintenanceRule.route';
 import userRoute from './routes/user.route';
 import authRouter from "./routes/auth.route";
@@ -30,6 +31,7 @@ app.use(cors());
 //Routes
 app.use('/api/motos', motoRoutes);
 app.use('/api/entretien', entretienRoutes);
+app.use('/api/panne', panneRoutes);
 app.use('/api/maintenance', maintenanceRuleRoutes);
 app.use('/api/user', userRoute);
 app.use('/api/auth', authRouter);

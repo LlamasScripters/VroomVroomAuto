@@ -1,48 +1,60 @@
 import { Panne } from '../../../domain/entities/PanneEntity';
-import { PanneRepository } from '../../repositories/PanneRepository';
+import { PanneRepository } from '@application/repositories/PanneRepository';
 import { UUID } from '../../../domain/value-objects/UUID';
+import { CreatePanneDTO, UpdatePanneDTO, GetPanneDTO } from '@application/dtos/PanneDTO';
+import { PanneResponse } from '@application/response/PanneResponse';
 
-interface PanneData {
-  panneId: UUID;
-  motoId: UUID;
-  description: string;
-  date: Date;
-  actionCorrective: string;
-  status: string;
-  userId: UUID;
-}
 
 export class PanneUseCases {
-  constructor(private panneRepository: PanneRepository) {}
+  constructor(
+    private panneRepository: PanneRepository
+  ) {}
 
-  async createPanne(motoId: UUID, description: string, date: Date, actionCorrective: string, status: string, userId: UUID): Promise<Panne> {
-    const panne = Panne.create(new UUID(), motoId, description, date, actionCorrective, status, userId);
-    return this.panneRepository.save(panne);
+  async createPanne(panneData: CreatePanneDTO): Promise<PanneResponse> {
+    const panne = Panne.create(
+      new UUID(),
+      new UUID(panneData.motoId),
+      panneData.description,
+      panneData.date,
+      panneData.actionCorrective,
+      panneData.status,
+      new UUID(panneData.userId)
+    );
+    
+    try {
+      const savedPanne = await this.panneRepository.save(panne);
+      return { panneId: savedPanne.panneId.toString() };
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async getPanneById(panneId: UUID): Promise<Panne | null> {
-    return this.panneRepository.findById(panneId);
+  async getPanneById(panneData: GetPanneDTO): Promise<Panne | null> {
+    const panneIdentifier = new UUID(panneData.panneId);
+    return await this.panneRepository.findById(panneIdentifier);
   }
 
-  async updatePanne(panneId: UUID, updatedData: Partial<PanneData>): Promise<Panne | null> {
-    const panne = await this.panneRepository.findById(panneId);
+  async updatePanne(updatedData: UpdatePanneDTO): Promise<Panne | null> {
+    const panneIdentifier = new UUID(updatedData.panneId);
+    const panne = await this.panneRepository.findById(panneIdentifier);
     if (!panne) return null;
 
     const updatedPanne = Panne.create(
       panne.panneId,
-      updatedData.motoId || panne.motoId,
-      updatedData.description || panne.description,
-      updatedData.date || panne.date,
-      updatedData.actionCorrective || panne.actionCorrective,
-      updatedData.status || panne.status,
+      updatedData.motoId ? new UUID(updatedData.motoId) : panne.motoId,
+      updatedData.description ?? panne.description,
+      updatedData.date ? new Date(updatedData.date) : panne.date,
+      updatedData.actionCorrective ?? panne.actionCorrective,
+      updatedData.status ?? panne.status,
       panne.userId
     );
 
-    return this.panneRepository.update(updatedPanne);
+    return await this.panneRepository.update(updatedPanne);
   }
 
-  async deletePanne(panneId: UUID): Promise<boolean> {
-    return this.panneRepository.delete(panneId);
+  async deletePanne(panneId: string): Promise<boolean> {
+    const panneIdentifier = new UUID(panneId);
+    return await this.panneRepository.delete(panneIdentifier);
   }
 
   async listAllPannes(): Promise<Panne[]> {
