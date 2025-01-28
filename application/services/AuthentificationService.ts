@@ -1,4 +1,4 @@
-export interface AuthenticationService {
-    readonly createAuthenticationToken: (userIdentifier: string) => Promise<string>
-    readonly verifyAuthenticationToken: (authenticationToken: string) => Promise<string>
-  }
+export interface AuthentificationService {
+  createAuthenticationToken(userId: string): Promise<string>;
+  verifyAuthenticationToken(token: string): Promise<string | null>;
+}
