@@ -1,19 +1,19 @@
-import { User } from '../../../domain/entities/UserEntity';
+import { User } from '@domain/entities/UserEntity';
 import { UserRepository } from '../../repositories/UserRepository';
-import { UUID } from '../../../domain/value-objects/UUID';
-import { Email } from '../../../domain/value-objects/EMAIL';
-import { Password } from '../../../domain/value-objects/PASSWORD';
+import { UUID } from '@domain/value-objects/UUID';
+import { Email } from '@domain/value-objects/EMAIL';
+import { Password } from '@domain/value-objects/PASSWORD';
 import { Role } from '@domain/value-objects/ROLE';
 import { CreateUserDTO, UpdateUserDTO, GetUserDTO } from '@application/dtos/UserDTO';
 import { Username } from '@domain/value-objects/USERNAME';
 import { UserResponse } from '@application/response/UserResponse';
-import { AuthenticationService } from '@application/services/AuthentificationService';
-import { PasswordService } from '@application/services/PasswordService';
+import { AuthentificationService }  from "@application/services/AuthentificationService";
+import { PasswordService} from "@application/services/PasswordService";
 
 export class UserCrudUseCases {
   constructor(
     private userRepository: UserRepository,
-    private authenticationService: AuthenticationService,
+    private authenticationService: AuthentificationService,
     private passwordService: PasswordService
   ) {}
 
