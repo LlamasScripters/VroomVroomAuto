@@ -108,6 +108,7 @@ export interface UserSQL {
     email: string;
     password: string;
     role: string;
+    isValidated: boolean;
     dateCreation: Date;
     derniereConnexion: Date;
 }

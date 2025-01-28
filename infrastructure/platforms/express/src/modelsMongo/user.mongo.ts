@@ -25,7 +25,18 @@ const userSchema = new mongoose.Schema(
         },
         role: {
             type: String,
+            default: "user",
+            validate: {
+                validator: (role: string) => {
+                    return role === "user" || role === "admin";
+                },
+                message: "Role is not valid",
+            },
             required: true,
+        },
+        isValidated: {
+            type: Boolean,
+            default: false,
         },
         dateCreation: {
             type: Date,

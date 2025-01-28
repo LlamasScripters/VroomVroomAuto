@@ -11,6 +11,7 @@ async function insertOrUpdateUserInMongo(userSQL: UserSQL): Promise<void> {
         username: userSQL.username,
         email: userSQL.email,
         role: userSQL.role,
+        isValidated: userSQL.isValidated,
         dateCreation: userSQL.dateCreation,
         derniereConnexion: userSQL.derniereConnexion,
     };
