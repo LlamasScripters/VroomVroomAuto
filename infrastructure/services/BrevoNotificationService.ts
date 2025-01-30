@@ -19,19 +19,15 @@ export class BrevoNotificationService implements NotificationService {
   private apiInstance: TransactionalEmailsApi;
 
   constructor() {
-    // On récupère la clé dans BREVO_API_KEY
     const apiKey = process.env.BREVO_API_KEY;
-    console.log("API KEY BREVO ->", apiKey);
+    // console.log("API KEY BREVO ->", apiKey);
     if (!apiKey) {
       throw new Error("BREVO_API_KEY is not defined in environment variables");
     }
 
-    // 1) On instancie l'API (pas de config objet à passer)
     this.apiInstance = new TransactionalEmailsApi();
-    console.log("API INSTANCE ->", this.apiInstance);
-    // 2) On assigne la clé API grâce à la constante TransactionalEmailsApiApiKeys.apiKey
     this.apiInstance.setApiKey(TransactionalEmailsApiApiKeys.apiKey, apiKey);
-    console.log("API INSTANCE ->", this.apiInstance);
+    // console.log("API INSTANCE ->", this.apiInstance);
   }
 
   async sendEmailNotification(to: string, subject: string, body: string): Promise<void> {

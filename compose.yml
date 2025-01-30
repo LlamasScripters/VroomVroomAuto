@@ -12,6 +12,8 @@ services:
       - POSTGRES_LINK=postgres://user:password@postgres:5432/mydatabase
       - MONGODB_CONNECTION_STRING=mongodb://mongodb:27017/mydatabase?authSource=admin
       - NODE_ENV=development
+    env_file:
+      - .env
     depends_on:
       - postgres
       - mongo

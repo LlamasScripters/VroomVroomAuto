@@ -56,7 +56,7 @@ export class UserAuthUseCases {
       user.role,
       user.isValidated,
       user.dateCreation,
-      new Date() // Mise à jour de la dernière connexion
+      new Date() 
     );
 
     return await this.userRepository.update(updatedUser);
