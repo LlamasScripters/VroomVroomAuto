@@ -25,12 +25,16 @@ export class UserAuthUseCases {
 
     const user = await this.userRepository.findByEmail(email);
     if (!user) return null;
+    console.log(user);  
+    const userPassword = user.password.toString();
 
     const isPasswordValid = await this.passwordService.verifyPassword(
       password.toString(),
-      user.password.toString()
+      userPassword
     );
-    if (!isPasswordValid) return null;
+
+    console.log(isPasswordValid);
+    if (!isPasswordValid) return null;  
 
     return await this.authenticationService.createAuthenticationToken(user.userId.toString());
   }

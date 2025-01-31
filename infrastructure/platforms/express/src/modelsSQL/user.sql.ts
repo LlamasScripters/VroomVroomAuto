@@ -52,9 +52,9 @@ const UserSQL = connection.define('User', {
   tableName: 'Users',
 });
 
-UserSQL.addHook('beforeCreate', async (user: any) => {
-  user.password = await bcrypt.hash(user.password, await bcrypt.genSalt());
-});
+// UserSQL.addHook('beforeCreate', async (user: any) => {
+//   user.password = await bcrypt.hash(user.password, await bcrypt.genSalt());
+// });
 
 UserSQL.addHook('beforeUpdate', async (user: any) => {
   if (user.changed('password')) {
