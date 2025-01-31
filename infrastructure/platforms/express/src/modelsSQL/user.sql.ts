@@ -28,12 +28,17 @@ const UserSQL = connection.define('User', {
   role: {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: 'user',
     validate: {
       isIn: [['admin', 'user']],
     },
     set(value: string) {
-      this.setDataValue('role', value.toLowerCase());
-    },
+      if (typeof value !== 'string') {
+        this.setDataValue('role', 'user');
+      } else {
+        this.setDataValue('role', value.toLowerCase());
+      }
+    }
   },
   isValidated: {
     type: DataTypes.BOOLEAN,

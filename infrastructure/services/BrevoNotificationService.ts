@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: '.env' });
 
 import {
   TransactionalEmailsApi,
@@ -20,7 +20,7 @@ export class BrevoNotificationService implements NotificationService {
 
   constructor() {
     const apiKey = process.env.BREVO_API_KEY;
-    // console.log("API KEY BREVO ->", apiKey);
+    console.log("API KEY BREVO ->", apiKey);
     if (!apiKey) {
       throw new Error("BREVO_API_KEY is not defined in environment variables");
     }

@@ -27,11 +27,11 @@ export class UserRepositorySQL implements UserRepository {
     async save(user: User): Promise<User> {
         try {
             const createdUser = await UserSQL.create({
-                userId: user.userId,
-                username: user.username,
-                email: user.email,
-                password: user.password,
-                role: user.role,
+                userId: user.userId.toString(),              
+                username: user.username.toString(),          
+                email: user.email.toString(),                
+                password: user.password.toString(),          
+                role: user.role.toString(),
                 isValidated: user.isValidated,
                 dateCreation: user.dateCreation,
                 derniereConnexion: user.derniereConnexion
@@ -40,7 +40,7 @@ export class UserRepositorySQL implements UserRepository {
             return this.toDomain(createdUser as UserModel);
 
         } catch (error) {
-            throw new Error(`Erreur lors de la sauvegarde du user: ${error}`);
+            throw new Error(`Erreur lors de la sauvegarde du user test: ${error}`);
         }
     }
 
@@ -74,9 +74,9 @@ export class UserRepositorySQL implements UserRepository {
 
     async update(user: User): Promise<User> {
         await UserSQL.update({
-            username: user.username,
-            email: user.email,
-            password: user.password,
+            username: user.username.toString(),
+            email: user.email.toString(),
+            password: user.password.toString(),
             role: user.role,
             dateCreation: user.dateCreation,
             derniereConnexion: user.derniereConnexion
