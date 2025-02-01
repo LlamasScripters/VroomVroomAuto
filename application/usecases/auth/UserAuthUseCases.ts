@@ -114,7 +114,6 @@ export class UserAuthUseCases {
     return;
   }
 
-  // Dans UserAuthUseCases.ts (optionnel si tu veux valider un email via un token)
   async validateEmail(token: string): Promise<boolean> {
     const userId = await this.authenticationService.verifyAuthenticationToken(token);
     if (!userId) {
@@ -138,6 +137,14 @@ export class UserAuthUseCases {
     await this.userRepository.update(updatedUser);
 
     return true;
+  }
+
+  async verifyToken(token: string): Promise<string | null> {
+    return await this.authenticationService.verifyAuthenticationToken(token);
+  }
+  
+  async getUserById(userId: string): Promise<User | null> {
+    return await this.userRepository.findById(new UUID(userId));
   }
 
 }

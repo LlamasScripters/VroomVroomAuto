@@ -17,7 +17,6 @@ export class AuthController {
   private authUseCases: UserAuthUseCases;
 
   constructor() {
-    // Instances concrètes
     const authRepository = new AuthRepositorySQL();
     const authService: AuthentificationService = new JwtAuthentificationService();
     const passService: PasswordService = new BcryptPasswordService();
@@ -108,4 +107,41 @@ export class AuthController {
       res.status(400).json({ error: error.message });
     }
   }
+
+  async me(req: Request, res: Response): Promise<void> {
+    try {
+      
+      const token = req.headers.authorization?.split(" ")[1];
+      if (!token) {
+         res.status(401).json({ error: "No token provided" });
+         return;
+      }
+  
+      // Vérifier le token (authService)
+      const userId = await this.authUseCases.verifyToken(token); 
+  
+      if (!userId) {
+        res.status(401).json({ error: "Token invalid or expired" });
+        return;
+      }
+  
+      const user = await this.authUseCases.getUserById(userId);
+  
+      if (!user) {
+         res.status(404).json({ error: "User not found" });
+         return;
+      }
+  
+      res.json({
+        id: user.userId.toString(),
+        email: user.email.toString(),
+        role: user.role.toString(),
+
+      });
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+
 }

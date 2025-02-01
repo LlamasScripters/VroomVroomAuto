@@ -19,4 +19,9 @@ authRouter.post("/reset-password", (req, res) => controller.resetPassword(req, r
 // VALIDATE EMAIL
 authRouter.get("/validate-email", (req, res) => controller.validateEmail(req, res));
 
+// CHECK USER TOKEN VALIDITY
+authRouter.get("/me", (req, res) => controller.me(req, res));
+
+
+
 export default authRouter;
