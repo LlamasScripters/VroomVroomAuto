@@ -26,7 +26,6 @@ import { useAuthStore } from './stores/authStore';
 import { useNavigate } from 'react-router-dom';
 
 const ProtectedLayout = ({ children, requiredRole } : { children: JSX.Element, requiredRole?: string | string[] }) => {
-  
   const { token, user, validateToken } = useAuthStore();
   const navigate = useNavigate();
 
@@ -35,8 +34,11 @@ const ProtectedLayout = ({ children, requiredRole } : { children: JSX.Element, r
       const isValid = await validateToken();
       if (!isValid) navigate('/login');
       
-      if (requiredRole && user?.role !== requiredRole) {
-        navigate('/');
+      if (requiredRole && user?.role) {
+        const roles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+        if (!roles.includes(user.role)) {
+          navigate('/');
+        }
       }
     };
     
