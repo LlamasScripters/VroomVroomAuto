@@ -1,7 +1,5 @@
 import { DataTypes } from 'sequelize';
 import { connection } from './database';
-import bcrypt from 'bcryptjs';
-
 
 const UserSQL = connection.define('User', {
   userId: {
@@ -30,7 +28,7 @@ const UserSQL = connection.define('User', {
     allowNull: false,
     defaultValue: 'user',
     validate: {
-      isIn: [['admin', 'user']],
+      isIn: [['admin', 'user', 'gestionnaire']],
     },
     set(value: string) {
       if (typeof value !== 'string') {
@@ -55,16 +53,6 @@ const UserSQL = connection.define('User', {
   },
 }, {
   tableName: 'Users',
-});
-
-// UserSQL.addHook('beforeCreate', async (user: any) => {
-//   user.password = await bcrypt.hash(user.password, await bcrypt.genSalt());
-// });
-
-UserSQL.addHook('beforeUpdate', async (user: any) => {
-  if (user.changed('password')) {
-    user.password = await bcrypt.hash(user.password, await bcrypt.genSalt());
-  }
 });
 
 export default UserSQL;

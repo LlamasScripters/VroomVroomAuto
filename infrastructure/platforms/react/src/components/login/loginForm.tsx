@@ -27,16 +27,12 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
       })
 
       if (!response.ok) {
-        // Erreur renvoyée par le serveur, on récupère éventuellement le message
         const data = await response.json()
         throw new Error(data.error || "Une erreur est survenue")
       }
-
-      // Si c'est ok, on récupère la réponse (par ex. le token)
       const result = await response.json()
       console.log("Login success", result)
 
-      // Exemple : on stocke le token, on redirige
       // localStorage.setItem("token", result.token)
       navigate("/") 
     } catch (error: any) {

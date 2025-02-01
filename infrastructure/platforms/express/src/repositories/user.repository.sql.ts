@@ -99,7 +99,7 @@ private toDomain(model: UserModel): User {
     new Username(model.username),
     new Email(model.email),
     new Password(model.password),
-    new Role(model.role as 'USER' | 'ADMIN'),
+    new Role(model.role as "admin" | "user" | "gestionnaire"),
     model.isValidated,
     model.dateCreation,
     model.derniereConnexion

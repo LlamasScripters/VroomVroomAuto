@@ -90,7 +90,7 @@ export class UserAuthUseCases {
 
     const email = new Email(registerDTO.email);
     const username = new Username(registerDTO.username);
-    const role = new Role("USER");
+    const role = new Role("user");
     const hashedPassword = await this.passwordService.hashPassword(registerDTO.password);
 
     const user = User.create(
