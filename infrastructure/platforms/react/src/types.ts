@@ -53,7 +53,7 @@ export interface Moto {
   kilometrage: number;
   dateMiseEnService: string;
   statut: string;
-  clientId?: string;
+  userId?: string;
 }
 
 export interface Panne {

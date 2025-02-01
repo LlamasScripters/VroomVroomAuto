@@ -1,5 +1,4 @@
 import UserSQL from './user.sql';
-import ClientSQL from './client.sql';
 import MotoSQL from './moto.sql';
 import EntretienSQL from './entretien.sql';
 import PieceSQL from './piece.sql';
@@ -11,9 +10,9 @@ import PanneSQL from './panne.sql';
 import ReparationSQL from './reparation.sql';
 import MaintenanceRuleSQL from './maintenanceRule.sql';
 
-// User associations
-UserSQL.hasMany(ClientSQL, { foreignKey: 'userId' });
-ClientSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
+// User associations 
+// UserSQL.hasMany(MotoSQL, { foreignKey: 'userId' });  // à décommenter quand la gestion des utilisateurs sera implémentée
+// MotoSQL.belongsTo(UserSQL, { foreignKey: 'userId' }); // puis à lier lors de la création d'une moto en associant un user
 
 UserSQL.hasMany(CommandeSQL, { foreignKey: 'userId' });
 CommandeSQL.belongsTo(UserSQL, { foreignKey: 'userId' });

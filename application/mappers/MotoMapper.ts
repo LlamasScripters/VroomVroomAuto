@@ -13,7 +13,7 @@ export function toDTO(moto: Moto): MotoDTO {
     kilometrage: moto.kilometrage,
     dateMiseEnService: moto.dateMiseEnService.toISOString(),
     statut: moto.statut,
-    clientId: moto.clientId.toString()
+    userId: moto.userId.toString()
   };
 }
 
@@ -26,6 +26,6 @@ export function toDomain(dto: MotoDTO): Moto {
     new Date(dto.dateMiseEnService),
     dto.statut,
     dto.serialNumber, 
-    new UUID(dto.clientId)
+    new UUID(dto.userId)
   );
 }

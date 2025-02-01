@@ -6,7 +6,7 @@ export interface CreateMotoDTO {
   kilometrage: number;
   dateMiseEnService: string;
   statut: string;
-  clientId: string;
+  userId: string;
 }
 
 export interface UpdateMotoDTO {
@@ -17,7 +17,7 @@ export interface UpdateMotoDTO {
   kilometrage?: number;
   dateMiseEnService?: string;
   statut?: string;
-  clientId?: string;
+  userId?: string;
 }
 
 export interface DeleteMotoDTO {
@@ -36,5 +36,5 @@ export interface MotoDTO {
   kilometrage: number;
   dateMiseEnService: string;
   statut: string;
-  clientId: string;
+  userId: string;
 }

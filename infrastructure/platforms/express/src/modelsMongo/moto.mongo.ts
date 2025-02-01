@@ -32,7 +32,7 @@ const motoSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    client: {
+    user: {
       type: {
         _id: {
           type: String,

@@ -13,7 +13,7 @@ interface MotoModel extends Model {
   dateMiseEnService: Date;
   statut: string;
   serialNumber: string;
-  clientId: string;
+  userId: string;
 }
 
 export class SqlMotoRepository implements MotoRepository {
@@ -27,7 +27,7 @@ export class SqlMotoRepository implements MotoRepository {
         dateMiseEnService: moto.dateMiseEnService,
         statut: moto.statut,
         serialNumber: moto.serialNumber,
-        clientId: moto.clientId.toString()
+        userId: moto.userId.toString()
       });
 
       return this.toDomain(createdMoto as MotoModel);
@@ -57,7 +57,7 @@ export class SqlMotoRepository implements MotoRepository {
         dateMiseEnService: moto.dateMiseEnService,
         statut: moto.statut,
         serialNumber: moto.serialNumber,
-        clientId: moto.clientId.toString()
+        userId: moto.userId.toString()
       },
       {
         where: { motoId: moto.motoId.toString() },
@@ -89,7 +89,7 @@ export class SqlMotoRepository implements MotoRepository {
       model.dateMiseEnService,
       model.statut,
       model.serialNumber,
-      new UUID(model.clientId)
+      new UUID(model.userId)
     );
   }
 }

@@ -14,8 +14,8 @@ async function insertOrUpdateMotoInMongo(motoSQL: MotoSQL): Promise<void> {
         dateMiseEnService: motoSQL.dateMiseEnService,
         statut: motoSQL.statut,
         serialNumber: motoSQL.serialNumber,
-        client: {
-            _id: motoSQL.clientId
+        user: {
+            _id: motoSQL.userId
         }
     };
 

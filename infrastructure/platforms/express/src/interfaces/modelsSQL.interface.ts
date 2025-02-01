@@ -69,7 +69,7 @@ export interface MotoSQL {
     dateMiseEnService: Date;
     statut: string;
     serialNumber: string;
-    clientId: string;
+    userId: string;
 }
 
 export interface PanneSQL {

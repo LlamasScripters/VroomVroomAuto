@@ -32,7 +32,7 @@ const MotoSQL = connection.define('Moto', {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  clientId: {
+  userId: {
     type: DataTypes.UUID,
     allowNull: true,
   },

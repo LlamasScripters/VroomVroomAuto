@@ -18,7 +18,7 @@ export class MotoCrudUseCases {
       new Date(motoData.dateMiseEnService),
       motoData.statut,
       motoData.serialNumber,
-      new UUID(motoData.clientId)
+      new UUID(motoData.userId)
     );
 
     try {
@@ -47,7 +47,7 @@ export class MotoCrudUseCases {
       updatedData.dateMiseEnService ? new Date(updatedData.dateMiseEnService) : moto.dateMiseEnService,
       updatedData.statut ?? moto.statut,
       updatedData.serialNumber ?? moto.serialNumber,
-      updatedData.clientId ? new UUID(updatedData.clientId) : moto.clientId
+      updatedData.userId ? new UUID(updatedData.userId) : moto.userId
     );
     
     return await this.motoRepository.update(updatedMoto);

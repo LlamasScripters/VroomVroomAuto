@@ -9,7 +9,7 @@ export class Moto {
       public readonly dateMiseEnService: Date,
       public readonly statut: string,
       public readonly serialNumber: string,
-      public readonly clientId: UUID
+      public readonly userId: UUID
     ) {}
 
     public static create(
@@ -20,9 +20,9 @@ export class Moto {
       dateMiseEnService: Date,
       statut: string,
       serialNumber: string,
-      clientId: UUID
+      userId: UUID
     ): Moto {
-      return new Moto(motoId, marque, model, kilometrage, dateMiseEnService, statut, serialNumber, clientId);
+      return new Moto(motoId, marque, model, kilometrage, dateMiseEnService, statut, serialNumber, userId);
     }
 
   }
