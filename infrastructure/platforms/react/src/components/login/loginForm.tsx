@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { NavLink, useNavigate } from "react-router-dom"
 import { FormEvent, useState } from "react"
+import { useAuthStore } from '../../stores/authStore';
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"form">) {
   const navigate = useNavigate()
@@ -18,24 +19,23 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     const password = formData.get("password") as string
 
     try {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
-      })
-
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error || "Une erreur est survenue")
+      });
+  
+      const data = await response.json();
+      
+      if (response.ok) {
+        useAuthStore.getState().setAuth(data.token, {
+          id: data.userId,
+          email: email,
+          role: data.role 
+        });
+        navigate('/');
       }
-      const result = await response.json()
-      console.log("Login success", result)
-
-      // localStorage.setItem("token", result.token)
-      navigate("/") 
-    } catch (error: any) {
+    } catch (error : any) {
       setErrorMsg(error.message)
     }
   }

@@ -16,31 +16,34 @@ import EntretienHistoriquePage from "./pages/EntretienHistoriquePage";
 import MaintenanceRuleManagementPage from "./pages/MaintenanceRuleManagementPage";
 import ClientEntretiensPage from './pages/ClientEntretiensPage';
 import ClientEntretiensHistoriquePage from './pages/ClientEntretiensHistoriquePage';
-
-
 import { AppSidebar } from "../src/components/sideBar/appSidebar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,} from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider, SidebarTrigger,} from "@/components/ui/sidebar";
 
-const ProtectedLayout = ({ children }) => {
+import { useEffect } from 'react';
+import { useAuthStore } from './stores/authStore';
+import { useNavigate } from 'react-router-dom';
+
+const ProtectedLayout = ({ children, requiredRole } : { children: JSX.Element, requiredRole?: string }) => {
   
-  // const isAuthenticated = localStorage.getItem('token'); 
+  const { token, user, validateToken } = useAuthStore();
+  const navigate = useNavigate();
 
-  // if (!isAuthenticated) {
-  //   return <Navigate to="/login" />;
-  // }
+  useEffect(() => {
+    const checkAuth = async () => {
+      const isValid = await validateToken();
+      if (!isValid) navigate('/login');
+      
+      if (requiredRole && user?.role !== requiredRole) {
+        navigate('/');
+      }
+    };
+    
+    checkAuth();
+  }, [navigate, validateToken, requiredRole, user?.role]);
+
+  if (!token) return <Navigate to="/login" />;
 
   return (
     <SidebarProvider>
@@ -83,7 +86,7 @@ function App() {
 
         {/* Routes protégées avec sidebar */}
         <Route path="/" element={<ProtectedLayout><DashboardPage /></ProtectedLayout>} />
-        <Route path="/moto-management" element={<ProtectedLayout><MotoManagementPage /></ProtectedLayout>} />
+        <Route path="/moto-management" element={<ProtectedLayout requiredRole="user"><MotoManagementPage /></ProtectedLayout>} />
         <Route path="/entretiens/planification" element={<ProtectedLayout><EntretienPlanificationPage /></ProtectedLayout>} />
         <Route path="/entretiens/historique" element={<ProtectedLayout><EntretienHistoriquePage /></ProtectedLayout>} />
         <Route path="/entretiens" element={<ProtectedLayout><EntretienManagementPage /></ProtectedLayout>} />
