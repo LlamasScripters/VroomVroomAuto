@@ -14,6 +14,9 @@ import RegisterPage from "./pages/RegisterPage";
 import EntretienPlanificationPage from "./pages/EntretienPlanificationPage";
 import EntretienHistoriquePage from "./pages/EntretienHistoriquePage";
 import MaintenanceRuleManagementPage from "./pages/MaintenanceRuleManagementPage";
+import ClientEntretiensPage from './pages/ClientEntretiensPage';
+import ClientEntretiensHistoriquePage from './pages/ClientEntretiensHistoriquePage';
+
 
 import { AppSidebar } from "../src/components/sideBar/appSidebar";
 import {
@@ -84,6 +87,8 @@ function App() {
         <Route path="/entretiens/planification" element={<ProtectedLayout><EntretienPlanificationPage /></ProtectedLayout>} />
         <Route path="/entretiens/historique" element={<ProtectedLayout><EntretienHistoriquePage /></ProtectedLayout>} />
         <Route path="/entretiens" element={<ProtectedLayout><EntretienManagementPage /></ProtectedLayout>} />
+        <Route path="/entretiens/mes-entretiens" element={<ProtectedLayout><ClientEntretiensPage /></ProtectedLayout>} />
+        <Route path="/entretiens/mes-entretiens/historique" element={<ProtectedLayout><ClientEntretiensHistoriquePage /></ProtectedLayout>} />
         <Route path="/maintenance-rules" element={<ProtectedLayout><MaintenanceRuleManagementPage /></ProtectedLayout>} />
         <Route path="/pannes" element={<ProtectedLayout><PanneManagementPage /></ProtectedLayout>} />
         <Route path="/garanties" element={<ProtectedLayout><GarantieManagementPage /></ProtectedLayout>} />

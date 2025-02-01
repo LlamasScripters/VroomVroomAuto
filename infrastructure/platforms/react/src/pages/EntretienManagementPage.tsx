@@ -153,7 +153,7 @@ function EntretienManagementPage() {
           </button>
           <button
             onClick={() => navigate('/entretiens/historique')}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
           >
             Historique des entretiens
           </button>

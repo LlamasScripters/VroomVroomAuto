@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import MotoTable from '../components/motoManagement/MotoTable';
 import MotoForm from '../components/motoManagement/MotoForm';
-import MotoHistory from '../components/motoManagement/MotoHistory';
-import MotoMaintenance from '../components/motoManagement/MotoMaintenance';
+// import MotoHistory from '../components/motoManagement/MotoHistory';
+// import MotoMaintenance from '../components/motoManagement/MotoMaintenance';
 import { MotoService } from '../services/motoService';
 import { Moto } from '../types';
 import { Button } from "@/components/ui/button"
@@ -14,8 +14,8 @@ export default function MotoManagementPage() {
   const [motos, setMotos] = useState<Moto[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [selectedMoto, setSelectedMoto] = useState<Moto | null>(null);
-  const [showMaintenance, setShowMaintenance] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
+  // const [showMaintenance, setShowMaintenance] = useState(false);
+  // const [showHistory, setShowHistory] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -79,12 +79,12 @@ export default function MotoManagementPage() {
 
   const handleShowMaintenance = (moto: Moto) => {
     setSelectedMoto(moto);
-    setShowMaintenance(true);
+    // setShowMaintenance(true);
   };
 
   const handleShowHistory = (moto: Moto) => {
     setSelectedMoto(moto);
-    setShowHistory(true);
+    // setShowHistory(true);
   };
 
   return (
@@ -133,7 +133,7 @@ export default function MotoManagementPage() {
         </div>
       )}
 
-      {showMaintenance && selectedMoto && (
+      {/* {showMaintenance && selectedMoto && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full">
             <MotoMaintenance
@@ -169,7 +169,7 @@ export default function MotoManagementPage() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
