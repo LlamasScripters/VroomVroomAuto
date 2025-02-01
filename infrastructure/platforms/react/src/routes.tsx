@@ -12,6 +12,8 @@ import MaintenanceRuleManagementPage from './pages/MaintenanceRuleManagementPage
 import StatisticsPage from './pages/StatisticsPage';
 import EntretienPlanificationPage from './pages/EntretienPlanificationPage';
 import EntretienHistoriquePage from './pages/EntretienHistoriquePage';
+import ClientEntretiensPage from './pages/ClientEntretiensPage';
+import ClientEntretiensHistoriquePage from './pages/ClientEntretiensHistoriquePage';
 
 const routes: RouteObject[] = [
   {
@@ -65,7 +67,16 @@ const routes: RouteObject[] = [
   {
     path: '/entretiens/historique',
     element: <EntretienHistoriquePage />,
-  }
+  },
+  {
+    path: '/entretiens/mes-entretiens',
+    element: <ClientEntretiensPage />,
+  },
+  {
+    path: '/entretiens/mes-entretiens/historique',
+    element: <ClientEntretiensHistoriquePage />,
+  },
+
 ];
 
 export default routes;
