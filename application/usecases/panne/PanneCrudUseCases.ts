@@ -1,5 +1,6 @@
 import { Panne } from '../../../domain/entities/PanneEntity';
 import { PanneRepository } from '@application/repositories/PanneRepository';
+import { PanneMongoRepository } from '@application/repositories/PanneMongoRepository';
 import { UUID } from '../../../domain/value-objects/UUID';
 import { CreatePanneDTO, UpdatePanneDTO, GetPanneDTO } from '@application/dtos/PanneDTO';
 import { PanneResponse } from '@application/response/PanneResponse';
@@ -7,7 +8,8 @@ import { PanneResponse } from '@application/response/PanneResponse';
 
 export class PanneUseCases {
   constructor(
-    private panneRepository: PanneRepository
+    private panneRepository: PanneRepository,
+    private panneMongoRepository: PanneMongoRepository
   ) {}
 
   async createPanne(panneData: CreatePanneDTO): Promise<PanneResponse> {
@@ -23,6 +25,10 @@ export class PanneUseCases {
     
     try {
       const savedPanne = await this.panneRepository.save(panne);
+      if (savedPanne) {
+        await this.panneMongoRepository.save(savedPanne);
+      }
+      
       return { panneId: savedPanne.panneId.toString() };
     } catch (error) {
       throw error;
@@ -31,7 +37,8 @@ export class PanneUseCases {
 
   async getPanneById(panneData: GetPanneDTO): Promise<Panne | null> {
     const panneIdentifier = new UUID(panneData.panneId);
-    return await this.panneRepository.findById(panneIdentifier);
+    return await this.panneMongoRepository.findById(panneIdentifier);
+    // return await this.panneRepository.findById(panneIdentifier);
   }
 
   async updatePanne(updatedData: UpdatePanneDTO): Promise<Panne | null> {
@@ -49,15 +56,23 @@ export class PanneUseCases {
       panne.userId
     );
 
-    return await this.panneRepository.update(updatedPanne);
+    await this.panneRepository.update(updatedPanne);
+    const updatedPanneMongo = await this.panneMongoRepository.update(updatedPanne);
+    return updatedPanneMongo ? updatedPanneMongo : null;
+      
   }
 
   async deletePanne(panneId: string): Promise<boolean> {
     const panneIdentifier = new UUID(panneId);
-    return await this.panneRepository.delete(panneIdentifier);
+    const deletedFromRepository = await this.panneRepository.delete(panneIdentifier);
+    if (deletedFromRepository) {
+      await this.panneMongoRepository.delete(panneIdentifier);
+    }
+    return deletedFromRepository;
   }
 
   async listAllPannes(): Promise<Panne[]> {
-    return this.panneRepository.findAll();
+    return this.panneMongoRepository.findAll();
+    // return this.panneRepository.findAll();
   }
 }

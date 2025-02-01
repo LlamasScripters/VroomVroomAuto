@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { PanneUseCases } from "@application/usecases/panne/PanneCrudUseCases";
 import { PanneSQLRepository } from "../repositories/panne.repository.sql";
+import { PanneMgRepository } from "../repositories/mongo/panne.repository.mongo";
 import * as PanneMapper from "@application/mappers/PanneMapper";
 import { CreatePanneDTO, GetPanneDTO, UpdatePanneDTO } from "@application/dtos/PanneDTO";
 
@@ -9,7 +10,8 @@ export class PanneController {
 
     constructor() {
         const panneRepository = new PanneSQLRepository();
-        this.panneUseCases = new PanneUseCases(panneRepository);
+        const panneMongoRepository = new PanneMgRepository();
+        this.panneUseCases = new PanneUseCases(panneRepository, panneMongoRepository);
     }
 
     async createPanne(req: Request, res: Response): Promise<void> {
