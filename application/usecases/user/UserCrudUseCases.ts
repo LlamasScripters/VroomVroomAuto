@@ -33,7 +33,7 @@ export class UserCrudUseCases {
       username,
       email,
       new Password(hashedPassword),
-      new Role('USER'),
+      new Role('user'),
       true,
       new Date(),
       new Date()

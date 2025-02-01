@@ -1,7 +1,7 @@
 export class Role {
-    private readonly value: 'ADMIN' | 'USER';
+    private readonly value: 'admin' | 'user' | 'gestionnaire';
 
-    constructor(value: 'ADMIN' | 'USER') {
+    constructor(value: 'admin' | 'user' | 'gestionnaire') {
         this.value = value;
     }
 
