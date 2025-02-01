@@ -133,6 +133,12 @@ function EntretienManagementPage() {
       <div className="sm:flex sm:items-center sm:justify-between mb-6">
         <h1 className="text-2xl font-bold">Gestion des Entretiens</h1>
         <div className="space-x-4">
+        <button
+            onClick={() => navigate('/maintenance-rules')}
+            className="bg-red-400 text-white px-4 py-2 rounded-md hover:bg-green-700"
+          >
+            Règles d'entretien
+          </button>
           <button
             onClick={() => navigate('/entretiens/planification')}
             className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
@@ -144,6 +150,12 @@ function EntretienManagementPage() {
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
           >
             Ajouter un entretien
+          </button>
+          <button
+            onClick={() => navigate('/entretiens/historique')}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+          >
+            Historique des entretiens
           </button>
         </div>
       </div>

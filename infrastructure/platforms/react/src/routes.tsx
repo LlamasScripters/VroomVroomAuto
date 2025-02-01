@@ -11,6 +11,7 @@ import EmployeManagementPage from './pages/EmployeManagementPage';
 import MaintenanceRuleManagementPage from './pages/MaintenanceRuleManagementPage';
 import StatisticsPage from './pages/StatisticsPage';
 import EntretienPlanificationPage from './pages/EntretienPlanificationPage';
+import EntretienHistoriquePage from './pages/EntretienHistoriquePage';
 
 const routes: RouteObject[] = [
   {
@@ -60,6 +61,10 @@ const routes: RouteObject[] = [
   {
     path: '/entretiens/planification',
     element: <EntretienPlanificationPage />,
+  },
+  {
+    path: '/entretiens/historique',
+    element: <EntretienHistoriquePage />,
   }
 ];
 

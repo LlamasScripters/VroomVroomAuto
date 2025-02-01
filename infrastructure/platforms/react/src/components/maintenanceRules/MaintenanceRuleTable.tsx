@@ -27,7 +27,7 @@ const MaintenanceRuleTable: React.FC<MaintenanceRuleTableProps> = ({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Modèle</TableHead>
+          <TableHead>Modèle moto</TableHead>
           <TableHead>Intervalle KM</TableHead>
           <TableHead>Intervalle Temps</TableHead>
           <TableHead>Type d'entretien</TableHead>

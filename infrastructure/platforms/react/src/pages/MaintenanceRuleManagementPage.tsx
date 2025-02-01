@@ -81,7 +81,7 @@ const MaintenanceRuleManagementPage: React.FC = () => {
     <div className="p-8">
       <div className="sm:flex sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold text-gray-900">
-          Règles de maintenance
+          Règles d'entretien
         </h1>
         <button
           onClick={handleAddRule}
