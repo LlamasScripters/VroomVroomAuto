@@ -1,6 +1,8 @@
 // infrastructure/platforms/react/src/services/motoService.ts
 
 import { Moto } from '../types';
+import { useAuthStore } from '@/stores/authStore';
+
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
@@ -31,10 +33,12 @@ export const MotoService = {
 
   async createMoto(motoData: Omit<Moto, 'id'>): Promise<Moto> {
     try {
+      const token = useAuthStore.getState().token;
       const response = await fetch(`${API_URL}/motos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(motoData),
       });

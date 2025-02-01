@@ -1,4 +1,11 @@
-import React, { useState } from 'react';
+import { useAuthStore } from '@/stores/authStore';
+import React, { useState, useEffect } from 'react';
+
+interface User {
+  userId: string;
+  email: string;
+  username: string;
+}
 
 interface MotoFormProps {
   onSubmit: (moto: {
@@ -8,7 +15,8 @@ interface MotoFormProps {
     serialNumber: string;
     kilometrage: number;
     dateMiseEnService: string;
-    statut: string;     
+    statut: string;
+    userId?: string;     
   }) => void;
   onCancel: () => void;
   initialData?: {
@@ -19,11 +27,16 @@ interface MotoFormProps {
     kilometrage: number;
     dateMiseEnService: string;
     statut: string;
+    userId?: string;
   };
 }
 
 
 function MotoForm({ onSubmit, onCancel, initialData }: MotoFormProps) {
+
+  const { user } = useAuthStore();
+  const [users, setUsers] = useState<User[]>([]);
+
   const [formData, setFormData] = useState({
     motoId: initialData?.motoId || '',
     marque: initialData?.marque || '',
@@ -32,7 +45,27 @@ function MotoForm({ onSubmit, onCancel, initialData }: MotoFormProps) {
     kilometrage: initialData?.kilometrage || 0,
     dateMiseEnService: initialData?.dateMiseEnService || '',
     statut: initialData?.statut || 'En service',
+    userId: initialData?.userId || user?.id || '',
   });
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      if (user?.role === 'admin') {
+        try {
+          const response = await fetch('http://localhost:3000/api/user', {
+            headers: {
+              'Authorization': `Bearer ${useAuthStore.getState().token}`
+            }
+          });
+          const data = await response.json();
+          setUsers(data);
+        } catch (error) {
+          console.error('Erreur lors du chargement des utilisateurs:', error);
+        }
+      }
+    };
+    loadUsers();
+  }, [user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -116,6 +149,38 @@ function MotoForm({ onSubmit, onCancel, initialData }: MotoFormProps) {
           className="mt-1 block w-full p-2 border border-gray-300 rounded-lg"
         />
       </div>
+
+      {user?.role === 'admin' && (
+      <div className="mb-4">
+      <label htmlFor="userId" className="block text-sm font-medium text-gray-700">
+        Propriétaire de la moto
+      </label>
+      <select
+        id="userId"
+        name="userId"
+        value={formData.userId}
+        onChange={handleChange}
+        required
+        className="mt-1 block w-full p-2 border border-gray-300 rounded-lg"
+      >
+        <option value="">Sélectionnez un propriétaire</option>
+        {users.map((user) => (
+          <option key={user.userId} value={user.userId}>
+            {user.username} ({user.email})
+          </option>
+        ))}
+      </select>
+    </div>
+      )}
+
+      {/* Si l'utilisateur n'est pas admin, on ajoute un champ caché avec son ID */}
+      {user?.role !== 'admin' && (
+        <input
+          type="hidden"
+          name="userId"
+          value={user?.id || ''}
+        />
+      )}
 
       <div className="mb-4">
         <label htmlFor="statut" className="block text-sm font-medium text-gray-700">Statut</label>
