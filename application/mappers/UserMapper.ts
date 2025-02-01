@@ -25,7 +25,7 @@ export function toDomain(dto: UserDTO): User {
     new Username(dto.username),
     new Email(dto.email),
     new Password(dto.password),
-    new Role(dto.role as 'USER' | 'ADMIN'),
+    new Role(dto.role as 'admin' | 'user' | 'gestionnaire'),
     dto.isValidated,
     dto.dateCreation,
     dto.derniereConnexion
