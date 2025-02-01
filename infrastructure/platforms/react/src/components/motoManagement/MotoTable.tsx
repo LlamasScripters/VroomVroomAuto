@@ -1,7 +1,7 @@
 import { Moto } from '../../types'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { Edit, Wrench, Clock, Trash2 } from 'lucide-react'
+import { Edit, Trash2 } from 'lucide-react'
 
 interface MotoTableProps {
   motos: Moto[]
@@ -11,7 +11,7 @@ interface MotoTableProps {
   onDeleteMoto: (id: string) => void
 }
 
-export function MotoTable({ motos, onEditMoto, onShowMaintenance, onShowHistory, onDeleteMoto }: MotoTableProps) {
+export function MotoTable({ motos, onEditMoto, onDeleteMoto }: MotoTableProps) {
   return (
     <Table>
       <TableHeader>
@@ -42,7 +42,7 @@ export function MotoTable({ motos, onEditMoto, onShowMaintenance, onShowHistory,
                 <Edit className="h-4 w-4" />
                 <span className="sr-only">Modifier</span>
               </Button>
-              <Button
+              {/* <Button
                 variant="outline"
                 size="icon"
                 className="mr-2"
@@ -50,8 +50,8 @@ export function MotoTable({ motos, onEditMoto, onShowMaintenance, onShowHistory,
               >
                 <Wrench className="h-4 w-4" />
                 <span className="sr-only">Entretiens</span>
-              </Button>
-              <Button
+              </Button> */}
+              {/* <Button
                 variant="outline"
                 size="icon"
                 className="mr-2"
@@ -59,7 +59,7 @@ export function MotoTable({ motos, onEditMoto, onShowMaintenance, onShowHistory,
               >
                 <Clock className="h-4 w-4" />
                 <span className="sr-only">Historique</span>
-              </Button>
+              </Button> */}
               <Button
                 variant="outline" 
                 size="icon"
