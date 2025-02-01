@@ -89,12 +89,12 @@ function App() {
         {/* Routes protégées avec sidebar */}
         <Route path="/" element={<ProtectedLayout><DashboardPage /></ProtectedLayout>} />
         <Route path="/moto-management" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><MotoManagementPage /></ProtectedLayout>} />
-        <Route path="/entretiens/planification" element={<ProtectedLayout><EntretienPlanificationPage /></ProtectedLayout>} />
-        <Route path="/entretiens/historique" element={<ProtectedLayout><EntretienHistoriquePage /></ProtectedLayout>} />
-        <Route path="/entretiens" element={<ProtectedLayout><EntretienManagementPage /></ProtectedLayout>} />
-        <Route path="/entretiens/mes-entretiens" element={<ProtectedLayout><ClientEntretiensPage /></ProtectedLayout>} />
-        <Route path="/entretiens/mes-entretiens/historique" element={<ProtectedLayout><ClientEntretiensHistoriquePage /></ProtectedLayout>} />
-        <Route path="/maintenance-rules" element={<ProtectedLayout><MaintenanceRuleManagementPage /></ProtectedLayout>} />
+        <Route path="/entretiens/planification" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><EntretienPlanificationPage /></ProtectedLayout>} />
+        <Route path="/entretiens/historique" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><EntretienHistoriquePage /></ProtectedLayout>} />
+        <Route path="/entretiens" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><EntretienManagementPage /></ProtectedLayout>} />
+        <Route path="/entretiens/mes-entretiens" element={<ProtectedLayout requiredRole={["user", "gestionnaire", "admin"]}><ClientEntretiensPage /></ProtectedLayout>} />
+        <Route path="/entretiens/mes-entretiens/historique" element={<ProtectedLayout requiredRole={["user","gestionnaire","admin"]}><ClientEntretiensHistoriquePage /></ProtectedLayout>} />
+        <Route path="/maintenance-rules" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><MaintenanceRuleManagementPage /></ProtectedLayout>} />
         <Route path="/pannes" element={<ProtectedLayout><PanneManagementPage /></ProtectedLayout>} />
         <Route path="/garanties" element={<ProtectedLayout><GarantieManagementPage /></ProtectedLayout>} />
         <Route path="/reparations" element={<ProtectedLayout><ReparationManagementPage /></ProtectedLayout>} />
