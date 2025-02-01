@@ -25,7 +25,7 @@ import { useEffect } from 'react';
 import { useAuthStore } from './stores/authStore';
 import { useNavigate } from 'react-router-dom';
 
-const ProtectedLayout = ({ children, requiredRole } : { children: JSX.Element, requiredRole?: string }) => {
+const ProtectedLayout = ({ children, requiredRole } : { children: JSX.Element, requiredRole?: string | string[] }) => {
   
   const { token, user, validateToken } = useAuthStore();
   const navigate = useNavigate();
@@ -86,7 +86,7 @@ function App() {
 
         {/* Routes protégées avec sidebar */}
         <Route path="/" element={<ProtectedLayout><DashboardPage /></ProtectedLayout>} />
-        <Route path="/moto-management" element={<ProtectedLayout requiredRole="user"><MotoManagementPage /></ProtectedLayout>} />
+        <Route path="/moto-management" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><MotoManagementPage /></ProtectedLayout>} />
         <Route path="/entretiens/planification" element={<ProtectedLayout><EntretienPlanificationPage /></ProtectedLayout>} />
         <Route path="/entretiens/historique" element={<ProtectedLayout><EntretienHistoriquePage /></ProtectedLayout>} />
         <Route path="/entretiens" element={<ProtectedLayout><EntretienManagementPage /></ProtectedLayout>} />
