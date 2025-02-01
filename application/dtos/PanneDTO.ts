@@ -1,5 +1,4 @@
 export interface CreatePanneDTO {
-    panneId: string;
     motoId: string;
     description: string;
     date: Date;

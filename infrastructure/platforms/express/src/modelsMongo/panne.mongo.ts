@@ -33,6 +33,8 @@ const panneSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
+      default: "à traiter",
+      enum: ["à traiter", "en cours de traitement", "traitée"],
     },
     user: {
       type: {

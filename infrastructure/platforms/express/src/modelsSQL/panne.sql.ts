@@ -26,6 +26,10 @@ const PanneSQL = connection.define('Panne', {
   status: {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: 'à traiter',
+    validate: {
+      isIn: [['à traiter', 'en cours de traitement', 'traitée']],
+    },
   },
   userId: {
     type: DataTypes.UUID,

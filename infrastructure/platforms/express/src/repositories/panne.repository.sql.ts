@@ -29,7 +29,7 @@ interface MotoAttributes {
 }
 
 interface PanneAttributes {
-    panneId: string;
+    panneId?: string;
     motoId: string;
     description: string;
     date: Date;
@@ -55,7 +55,6 @@ export class PanneSQLRepository implements PanneRepository {
     async save(panne: Panne): Promise<Panne> {
         try {
             const saved = await PanneSQL.create({
-                panneId: panne.panneId.toString(),
                 motoId: panne.motoId.toString(),
                 description: panne.description,
                 date: panne.date,
