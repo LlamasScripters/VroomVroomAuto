@@ -73,12 +73,15 @@ export interface Panne {
 }
 
 export interface Piece {
-  id: string;
+  pieceId?: string;
   nom: string;
   reference: string;
   quantiteEnStock: number;
   seuilCritique: number;
   categorie: string;
+  fournisseur?: string;
+  prixUnitaire?: number;
+  stockCritique: boolean;
 }
 
 export interface Reparation {
