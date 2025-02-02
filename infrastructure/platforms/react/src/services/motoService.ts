@@ -9,7 +9,11 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 export const MotoService = {
   async getAllMotos(): Promise<Moto[]> {
     try {
-      const response = await fetch(`${API_URL}/motos`);
+      const response = await fetch(`${API_URL}/motos`, {
+        headers: {
+          'Authorization': `Bearer ${useAuthStore.getState().token}`
+        }
+      });
       if (!response.ok) {
         throw new Error('Erreur lors de la récupération des motos');
       }

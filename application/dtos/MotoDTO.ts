@@ -28,6 +28,12 @@ export interface GetMotoDTO {
   motoId: string;
 }
 
+export interface UserDTO {
+  userId: string;
+  username: string;
+  email: string;
+}
+
 export interface MotoDTO {
   motoId: string;
   marque: string;
@@ -37,4 +43,5 @@ export interface MotoDTO {
   dateMiseEnService: string;
   statut: string;
   userId: string;
+  user?: UserDTO;
 }

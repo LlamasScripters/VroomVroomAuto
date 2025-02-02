@@ -2,7 +2,7 @@
 
 import { Moto } from '@domain/entities/MotoEntity';
 import { UUID } from '@domain/value-objects/UUID';
-import { MotoDTO } from '@application/dtos/MotoDTO';
+import { MotoDTO, UserDTO } from '@application/dtos/MotoDTO';
 
 export function toDTO(moto: Moto): MotoDTO {
   return {
@@ -13,7 +13,13 @@ export function toDTO(moto: Moto): MotoDTO {
     kilometrage: moto.kilometrage,
     dateMiseEnService: moto.dateMiseEnService.toISOString(),
     statut: moto.statut,
-    userId: moto.userId.toString()
+    userId: moto.userId.toString(),
+    user: moto.user ? {
+      userId: moto.user.userId,
+      username: moto.user.username,
+      email: moto.user.email
+    } : undefined
+
   };
 }
 
@@ -26,6 +32,7 @@ export function toDomain(dto: MotoDTO): Moto {
     new Date(dto.dateMiseEnService),
     dto.statut,
     dto.serialNumber, 
-    new UUID(dto.userId)
+    new UUID(dto.userId),
+    dto.user
   );
 }

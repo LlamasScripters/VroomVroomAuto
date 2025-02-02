@@ -20,6 +20,7 @@ export function MotoTable({ motos, onEditMoto, onDeleteMoto }: MotoTableProps) {
           <TableHead>Modèle</TableHead>
           <TableHead>N° Série</TableHead>
           <TableHead>Kilométrage</TableHead>
+          <TableHead>Propriétaire</TableHead>
           <TableHead>Statut</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
@@ -31,6 +32,7 @@ export function MotoTable({ motos, onEditMoto, onDeleteMoto }: MotoTableProps) {
             <TableCell>{moto.model}</TableCell>
             <TableCell>{moto.serialNumber}</TableCell>
             <TableCell>{moto.kilometrage} km</TableCell>
+            <TableCell>{moto.user ? `${moto.user.username} (${moto.user.email})` : 'Non assigné'}</TableCell>
             <TableCell>{moto.statut}</TableCell>
             <TableCell className="text-right">
               <Button

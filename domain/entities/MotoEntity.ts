@@ -1,5 +1,11 @@
 import { UUID } from '../value-objects/UUID';
 
+interface UserInfo {
+  userId: string;
+  username: string;
+  email: string;
+}
+
 export class Moto {
     constructor(
       public readonly motoId: UUID,
@@ -9,7 +15,8 @@ export class Moto {
       public readonly dateMiseEnService: Date,
       public readonly statut: string,
       public readonly serialNumber: string,
-      public readonly userId: UUID
+      public readonly userId: UUID,
+      public readonly user?: UserInfo | null
     ) {}
 
     public static create(
@@ -20,9 +27,10 @@ export class Moto {
       dateMiseEnService: Date,
       statut: string,
       serialNumber: string,
-      userId: UUID
+      userId: UUID,
+      user?: UserInfo | null
     ): Moto {
-      return new Moto(motoId, marque, model, kilometrage, dateMiseEnService, statut, serialNumber, userId);
+      return new Moto(motoId, marque, model, kilometrage, dateMiseEnService, statut, serialNumber, userId, user);
     }
 
   }

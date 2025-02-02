@@ -1,3 +1,8 @@
+export interface User {
+  userId: string;
+  username: string;
+  email: string;
+}
 export interface Client {
   id?: string;
   nom: string;
@@ -55,6 +60,7 @@ export interface Moto {
   dateMiseEnService: string;
   statut: string;
   userId?: string;
+  user?: User;
 }
 
 export interface Panne {

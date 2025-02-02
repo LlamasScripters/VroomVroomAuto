@@ -4,6 +4,7 @@ import { MotoRepository } from '@application/repositories/MotoRepository';
 import { UUID } from '@domain/value-objects/UUID';
 import MotoSQL from '../modelsSQL/moto.sql';
 import { Model } from 'sequelize';
+import UserSQL from '../modelsSQL/user.sql';
 
 interface MotoModel extends Model {
   motoId: string;
@@ -14,6 +15,11 @@ interface MotoModel extends Model {
   statut: string;
   serialNumber: string;
   userId: string;
+  user: {
+    userId: string;
+    username: string;
+    email: string;
+  }
 }
 
 export class SqlMotoRepository implements MotoRepository {
@@ -44,8 +50,21 @@ export class SqlMotoRepository implements MotoRepository {
   }
 
   async findAll(): Promise<Moto[]> {
-    const motos = await MotoSQL.findAll() as MotoModel[];
-    return motos.map(moto => this.toDomain(moto));
+    const motos = await MotoSQL.findAll({
+      include: [{
+        model: UserSQL,
+        as: 'user',
+        attributes: ['userId', 'username', 'email']
+      }]
+    }) as MotoModel[];
+
+    return motos.map(moto => {
+      const motoData = moto.get({ plain: true });
+      return this.toDomain({
+        ...motoData,
+        user: motoData.user || null
+      });
+    });
   }
 
   async update(moto: Moto): Promise<Moto> {
@@ -80,7 +99,7 @@ export class SqlMotoRepository implements MotoRepository {
     return deleted > 0;
   }
 
-  private toDomain(model: MotoModel): Moto {
+  private toDomain(model: any): Moto {
     return Moto.create(
       new UUID(model.motoId),
       model.marque,
@@ -89,7 +108,12 @@ export class SqlMotoRepository implements MotoRepository {
       model.dateMiseEnService,
       model.statut,
       model.serialNumber,
-      new UUID(model.userId)
+      new UUID(model.userId),
+      model.user ? {
+        userId: model.user.userId,
+        username: model.user.username,
+        email: model.user.email
+      } : null
     );
   }
 }
