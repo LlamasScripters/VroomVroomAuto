@@ -97,7 +97,7 @@ function App() {
         <Route path="/maintenance-rules" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><MaintenanceRuleManagementPage /></ProtectedLayout>} />
         <Route path="/pannes" element={<ProtectedLayout><PanneManagementPage /></ProtectedLayout>} />
         <Route path="/garanties" element={<ProtectedLayout><GarantieManagementPage /></ProtectedLayout>} />
-        <Route path="/reparations" element={<ProtectedLayout><ReparationManagementPage /></ProtectedLayout>} />
+        <Route path="/reparations" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><ReparationManagementPage /></ProtectedLayout>} />
         <Route path="/pieces" element={<ProtectedLayout><PieceManagementPage /></ProtectedLayout>} />
         <Route path="/clients" element={<ProtectedLayout><ClientManagementPage /></ProtectedLayout>} />
         <Route path="/employes" element={<ProtectedLayout><EmployeManagementPage /></ProtectedLayout>} />
