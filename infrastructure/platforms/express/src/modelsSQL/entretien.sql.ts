@@ -10,6 +10,10 @@ const EntretienSQL = connection.define('Entretien', {
   motoId: {
     type: DataTypes.UUID,
     allowNull: false,
+    references:{
+      model: 'Motos',
+      key: 'motoId'
+    }
   },
   typeEntretien: {
     type: DataTypes.STRING,
@@ -42,7 +46,7 @@ const EntretienSQL = connection.define('Entretien', {
   },
   userId: {
     type: DataTypes.UUID,
-    allowNull: false,
+    allowNull: true,
   },
 }, {
   tableName: 'Entretiens',

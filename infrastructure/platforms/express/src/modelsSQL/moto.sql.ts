@@ -11,9 +11,10 @@ const MotoSQL = connection.define('Moto', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  modele: {
+  model: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
   kilometrage: {
     type: DataTypes.FLOAT,
@@ -27,9 +28,13 @@ const MotoSQL = connection.define('Moto', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  clientId: {
+  serialNumber: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  userId: {
     type: DataTypes.UUID,
-    allowNull: false,
+    allowNull: true,
   },
 }, {
   tableName: 'Motos',

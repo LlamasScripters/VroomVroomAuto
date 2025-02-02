@@ -15,18 +15,38 @@ const UserSQL = connection.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
+    validate: {
+      isEmail: true,
+    },
   },
-  motDePasse: {
+  password: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   role: {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: 'user',
+    validate: {
+      isIn: [['admin', 'user', 'gestionnaire']],
+    },
+    set(value: string) {
+      if (typeof value !== 'string') {
+        this.setDataValue('role', 'user');
+      } else {
+        this.setDataValue('role', value.toLowerCase());
+      }
+    }
+  },
+  isValidated: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
   },
   dateCreation: {
     type: DataTypes.DATE,
     allowNull: false,
+    defaultValue: DataTypes.NOW,
   },
   derniereConnexion: {
     type: DataTypes.DATE,
@@ -34,4 +54,5 @@ const UserSQL = connection.define('User', {
 }, {
   tableName: 'Users',
 });
+
 export default UserSQL;

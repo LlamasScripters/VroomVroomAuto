@@ -1,19 +1,19 @@
-version: '3.8'
-
 services:
   express:
     image: node:latest
     container_name: express-backend
-    working_dir: /app
+    working_dir: /app/infrastructure/platforms/express
     volumes:
-      - ./infrastructure/platforms/express:/app
+      - .:/app
     ports:
       - "3000:3000"
     command: sh -c "npm install && npm run dev"
     environment:
       - POSTGRES_LINK=postgres://user:password@postgres:5432/mydatabase
-      - MONGO_URI=mongodb://mongo:27017/mydatabase
+      - MONGODB_CONNECTION_STRING=mongodb://mongodb:27017/mydatabase?authSource=admin
       - NODE_ENV=development
+    env_file:
+      - .env
     depends_on:
       - postgres
       - mongo
@@ -29,7 +29,7 @@ services:
     command: "sh -c 'npm install && npm run start:dev'"
     environment:
       - POSTGRES_LINK=postgres://user:password@postgres:5432/mydatabase
-      - MONGO_URI=mongodb://mongo:27017/mydatabase
+      - MONGODB_CONNECTION_STRING=mongodb://mongodb:27017/mydatabase?authSource=admin
     depends_on:
       - postgres
       - mongo
@@ -69,9 +69,14 @@ services:
     image: mongo:latest
     container_name: mongodb
     ports:
-      - "27017:27017"
+      - "127.0.0.1:27018:27017"
     volumes:
       - mongo_data:/data/db
+      - ./SampleCollections:/SampleCollections
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    working_dir: /SampleCollections
 
 volumes:
   postgres_data:
