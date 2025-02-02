@@ -27,6 +27,14 @@ const PieceSQL = connection.define('Piece', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  fournisseur: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  prixUnitaire: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true,
+  },
 }, {
   tableName: 'Pieces',
 });
