@@ -191,7 +191,7 @@ function EntretienForm({ onSubmit, onCancel, initialData }: EntretienFormProps) 
 
         <div className="mb-4 md:col-span-2">
           <label htmlFor="recommandationsGestionnaireClient" className="block text-sm font-medium text-gray-700">
-            Recommandations gestionnaire/client
+            Recommandations du gestionnaire
           </label>
           <textarea
             id="recommandationsGestionnaireClient"

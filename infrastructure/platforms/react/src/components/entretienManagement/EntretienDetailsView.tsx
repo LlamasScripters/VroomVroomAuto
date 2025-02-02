@@ -80,7 +80,7 @@ const EntretienDetailsView: React.FC<EntretienDetailsViewProps> = ({
                 <p className="bg-gray-50 p-3 rounded-md">{entretien.recommandationsTechnicien || "Aucune recommandation"}</p>
               </div>
               <div>
-                <p className="text-gray-600">Recommandations gestionnaire/client</p>
+                <p className="text-gray-600">Recommandations du gestionnaire</p>
                 <p className="bg-gray-50 p-3 rounded-md">{entretien.recommandationsGestionnaireClient || "Aucune recommandation"}</p>
               </div>
             </div>
