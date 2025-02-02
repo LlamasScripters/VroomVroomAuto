@@ -11,6 +11,7 @@ interface MotoAttributes {
   marque: string;
   model: string;
   serialNumber: string;
+  userId: string;
 }
 
 interface EntretienAttributes {
@@ -83,7 +84,7 @@ export class EntretienSQLRepository implements EntretienRepository {
         model: MotoSQL,
         as: 'moto',
         required: false,
-        attributes: ['marque', 'model', 'serialNumber']
+        attributes: ['marque', 'model', 'serialNumber', 'userId']
       }]
     });
     

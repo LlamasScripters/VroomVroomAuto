@@ -22,6 +22,7 @@ export interface Entretien {
     marque: string;
     model: string;
     serialNumber: string;
+    userId: string;
   };
 }
 

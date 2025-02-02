@@ -11,8 +11,8 @@ import ReparationSQL from './reparation.sql';
 import MaintenanceRuleSQL from './maintenanceRule.sql';
 
 // User associations 
-// UserSQL.hasMany(MotoSQL, { foreignKey: 'userId' });  // à décommenter quand la gestion des utilisateurs sera implémentée
-// MotoSQL.belongsTo(UserSQL, { foreignKey: 'userId' }); // puis à lier lors de la création d'une moto en associant un user
+UserSQL.hasMany(MotoSQL, { foreignKey: 'userId' });
+MotoSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
 
 UserSQL.hasMany(CommandeSQL, { foreignKey: 'userId' });
 CommandeSQL.belongsTo(UserSQL, { foreignKey: 'userId' });

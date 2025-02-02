@@ -26,16 +26,12 @@ function ClientEntretiensHistoriquePage() {
   const fetchHistoriqueEntretiens = async () => {
     try {
       setIsLoading(true);
-      const allEntretiens = await EntretienService.getAllEntretiens();
-      
-      // Filtrer pour n'avoir que les entretiens terminés du client
-      // TODO: Remplacer '1' par l'ID du client connecté
-    //   const userId = '1';
+      const allEntretiens = await EntretienService.getMyEntretiens();
+          
       const historiqueEntretiens = allEntretiens.filter(entretien => 
-        (entretien.statut === 'Terminé' || entretien.statut === 'Annulé')
-        // && entretien.clientId === clientId // À décommenter quand l'authentification sera en place
+        entretien.statut === 'Terminé' || entretien.statut === 'Annulé'
       ).sort((a, b) => new Date(b.dateRealisee).getTime() - new Date(a.dateRealisee).getTime());
-
+  
       setEntretiens(historiqueEntretiens);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Une erreur est survenue';
