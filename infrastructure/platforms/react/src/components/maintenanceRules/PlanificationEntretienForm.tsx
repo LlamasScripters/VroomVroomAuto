@@ -169,7 +169,7 @@ const PlanificationEntretienForm: React.FC<PlanificationEntretienFormProps> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Notes
+            Notes du technicien
           </label>
           <textarea
             value={formData.notes}

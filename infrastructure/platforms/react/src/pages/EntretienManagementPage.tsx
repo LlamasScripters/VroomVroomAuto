@@ -59,7 +59,7 @@ function EntretienManagementPage() {
   };
 
   const handleDeleteEntretien = async (id: string) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cette moto ?')) {
+    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cet entretien ?')) {
       return;
     }
     try {
