@@ -33,7 +33,7 @@ const PanneSQL = connection.define('Panne', {
   },
   userId: {
     type: DataTypes.UUID,
-    allowNull: false,
+    allowNull: true,
   },
 }, {
   tableName: 'Pannes',
