@@ -6,5 +6,6 @@ export interface EntretienRepository {
   findById(entretienId: UUID): Promise<Entretien | null>;
   delete(entretienId: UUID): Promise<boolean>;
   findAll(): Promise<Entretien[]>;
+  findAllEntretienDus(): Promise<Entretien[]>;
   update(entretien: Entretien): Promise<Entretien>;
 }
