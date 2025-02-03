@@ -46,7 +46,7 @@ connectToDatabase()
   .then(() => {
     console.log("Connected to SQL database successfully.");
 
-    return connection.sync();
+    return connection.sync({ alter: true });
   })
   .then(() => {
     console.log("SQL database & tables created!");
