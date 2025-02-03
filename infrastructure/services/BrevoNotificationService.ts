@@ -96,14 +96,17 @@ export class BrevoNotificationService implements NotificationService {
       <h1>Rappel d'entretien</h1>
       <p>Un entretien est prévu pour votre moto <strong>${moto.marque} ${moto.model}</strong> (N° de série: ${moto.serialNumber}) le <strong>${entretien.datePrevue.toISOString()}</strong></p>
       <p>Type d'entretien : <strong>${entretien.typeEntretien}</strong></p>
-      <p>Recommandations du technicien : ${entretien.recommandationsTechnicien || "Aucune"}</p>
-      <p>Recommandations du gestionnaire : ${entretien.recommandationsGestionnaireClient || "Aucune"}</p>
-      <p>Coût estimé : ${entretien.getCoutTotal} €</p>
+        <p>
+          <a href="http://localhost:5173/mise-a-jour-km?entretienId=${entretien.entretienId.toString()}">
+            Cliquez ici pour modifier votre kilométrage
+          </a>
+        </p>
       <p>Merci de prendre rendez-vous rapidement.</p>
     `;
   
     try {
       await this.apiInstance.sendTransacEmail(mail);
+      console.log(mail);
       console.log("Email envoyé à", clientEmail, "et", gestionnaireEmail, "pour entretien", entretien.entretienId.toString());
     } catch (error) {
       if (error instanceof HttpError) {

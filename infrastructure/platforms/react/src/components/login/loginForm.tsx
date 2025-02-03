@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label"
 import { NavLink, useNavigate } from "react-router-dom"
 import { FormEvent, useState } from "react"
 import { useAuthStore } from '../../stores/authStore';
+import axios from 'axios';
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"form">) {
   const navigate = useNavigate()
@@ -18,16 +19,17 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     const email = formData.get("email") as string
     const password = formData.get("password") as string
 
+    console.log(email, password)
+
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await axios.post('http://localhost:3000/api/auth/login', {
+        email,
+        password
+      })
   
-      const data = await response.json();
+      const data = await response.data;
       
-      if (response.ok) {
+      if (response.data) {
         useAuthStore.getState().setAuth(data.token, {
           id: data.userId,
           email: email,

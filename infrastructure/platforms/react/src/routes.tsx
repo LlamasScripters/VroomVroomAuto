@@ -14,6 +14,7 @@ import EntretienPlanificationPage from './pages/EntretienPlanificationPage';
 import EntretienHistoriquePage from './pages/EntretienHistoriquePage';
 import ClientEntretiensPage from './pages/ClientEntretiensPage';
 import ClientEntretiensHistoriquePage from './pages/ClientEntretiensHistoriquePage';
+import MiseAJourKilometrage from './pages/MisAJourKilometrage';
 
 const routes: RouteObject[] = [
   {
@@ -71,6 +72,10 @@ const routes: RouteObject[] = [
   {
     path: '/entretiens/mes-entretiens',
     element: <ClientEntretiensPage />,
+  },
+  {
+    path: '/mise-a-jour-km',
+    element: <MiseAJourKilometrage />,
   },
   {
     path: '/entretiens/mes-entretiens/historique',
