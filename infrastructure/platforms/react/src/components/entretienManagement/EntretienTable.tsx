@@ -29,7 +29,7 @@ export function EntretienTable({
           <TableHead>Type d'entretien</TableHead>
           <TableHead>Date prévue</TableHead>
           <TableHead>Date réalisée</TableHead>
-          <TableHead>Kilométrage</TableHead>
+          <TableHead>Kilométrage prévu</TableHead>
           <TableHead>Coût</TableHead>
           <TableHead>Statut</TableHead>
           <TableHead className="text-right">Actions</TableHead>
