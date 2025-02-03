@@ -14,7 +14,6 @@ export function PanneTable({ pannes, onEditPanne, onDeletePanne }: PanneTablePro
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Moto</TableHead>
           <TableHead>Description</TableHead>
           <TableHead>Date</TableHead>
           <TableHead>Action Corrective</TableHead>
@@ -25,7 +24,6 @@ export function PanneTable({ pannes, onEditPanne, onDeletePanne }: PanneTablePro
       <TableBody>
         {pannes.map((panne) => (
           <TableRow key={panne.panneId}>
-            <TableCell>{panne.motoId}</TableCell>
             <TableCell>{panne.description}</TableCell>
             <TableCell>{new Date(panne.date).toLocaleDateString('fr-FR', { year: '2-digit', month: '2-digit', day: '2-digit' })}</TableCell>
             <TableCell>{panne.actionCorrective}</TableCell>

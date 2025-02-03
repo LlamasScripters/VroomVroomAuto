@@ -33,8 +33,11 @@ export const authenticate = async (req: AuthRequest, res: Response, next: NextFu
         if (!user.isValidated) {
             return res.status(401).json({ code: "account_not_validated" });
         }
-
-        req.user = user;
+        
+        req.user = {
+            id: user.userId,
+            role: user.role,
+        };
         next();
     } catch (err: any) {
         if (err.name === "TokenExpiredError") {
