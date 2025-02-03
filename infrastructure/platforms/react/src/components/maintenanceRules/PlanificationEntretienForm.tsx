@@ -174,10 +174,11 @@ const PlanificationEntretienForm: React.FC<PlanificationEntretienFormProps> = ({
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
   
-      if (piecesPlanifiees.length === 0) {
-        toast.error('Veuillez sélectionner au moins une pièce');
-        return;
-      }
+      // commenté car les pièces peuvent être facultatives
+      // if (piecesPlanifiees.length === 0) { 
+      //   toast.error('Veuillez sélectionner au moins une pièce');
+      //   return;
+      // }
   
       const planification = {
         ...formData,
