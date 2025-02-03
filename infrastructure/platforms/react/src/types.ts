@@ -64,12 +64,13 @@ export interface Moto {
 }
 
 export interface Panne {
-  id?: string;
+  panneId?: string;
   motoId: string;
   description: string;
   date: string;
   actionCorrective: string;
-  status: string;
+  status: 'à traiter' | 'en cours de traitement' | 'traitée';
+  userId: string;
 }
 
 export interface Piece {
