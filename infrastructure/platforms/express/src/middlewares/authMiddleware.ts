@@ -7,24 +7,25 @@ interface AuthRequest extends Request {
   user?: any;
 }
 
-export const authenticate = async (req: AuthRequest, res: Response, next: NextFunction): Promise<Response | void> => {
-    const header = req.header("Authorization") ?? req.header("authorization");
-    if (!header) {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
+interface JwtPayload {
+    userId: string;
+}
 
-    const token = header.replace("Bearer ", "");
+const secret = process.env.LOGIN_JWT_SECRET as string;
+
+export const authenticate = async (req: AuthRequest, res: Response, next: NextFunction): Promise<Response | void> => {
+    const token = req.headers.authorization?.split(" ")[1];
+
     if (!token) {
         return res.status(401).json({ error: "Unauthorized" });
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.LOGIN_JWT_KEY as string) as { id: number };
-
+        const decoded = jwt.verify(token, secret) as unknown as JwtPayload;
         if (!decoded) {
             return res.status(401).json({ error: "Unauthorized" });
         }
-        const user = await UserSQL.findByPk(decoded.id) as UserSQLType | null;
+        const user = await UserSQL.findByPk(decoded.userId) as UserSQLType | null;
         if (!user) {
             return res.status(401).json({ error: "Unauthorized" });
         }
@@ -72,6 +73,16 @@ export const authorizeGestionnaire = (req: AuthRequest, res: Response, next: Nex
     if (!user) return res.status(401).json({ error: "Access denied." });
 
     if (user.role !== "gestionnaire") {
+        return res.status(403).json({ error: "Access denied." });
+    }
+    next();
+};
+
+export const authorizeAdminOrGestionnaire = (req: AuthRequest, res: Response, next: NextFunction): Response | void => {
+    const user = req.user;
+    if (!user) return res.status(401).json({ error: "Access denied." });
+
+    if (user.role !== "admin" && user.role !== "gestionnaire") {
         return res.status(403).json({ error: "Access denied." });
     }
     next();

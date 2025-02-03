@@ -35,7 +35,6 @@ export class AuthController {
     try {
       const loginDTO: LoginDTO = req.body;
       const token = await this.authUseCases.login(loginDTO);
-      console.log(token);
       if (!token) {
         res.status(401).json({ error: "Invalid credentials" });
         return;

@@ -10,7 +10,7 @@ export class JwtAuthentificationService implements AuthentificationService {
   private expiresIn: number;
 
   constructor() {
-    this.secret = process.env.JWT_SECRET || 'secret';
+    this.secret = process.env.LOGIN_JWT_SECRET || 'secret';
     this.expiresIn = 3600;
   }
 

@@ -32,7 +32,7 @@ app.use(cors());
 //Routes
 app.use('/api/motos', motoRoutes);
 app.use('/api/entretien', entretienRoutes);
-app.use('/api/panne', panneRoutes);
+app.use('/api/pannes', panneRoutes);
 app.use('/api/maintenance', maintenanceRuleRoutes);
 app.use('/api/user', userRoute);
 app.use('/api/auth', authRouter);
