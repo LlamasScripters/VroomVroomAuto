@@ -65,15 +65,17 @@ export class PlanifierEntretienUseCase {
         dto.notes || '',         // recommandationsTechnicien
         '',                      // recommandationsGestionnaireClient
         'PLANIFIE',             // statut
-        new UUID(dto.userId),    // userId
+        new UUID(dto.userId),
+        new UUID(),    // userId
         dto.coutMainOeuvre || 0, // coutMainOeuvre
-        coutPieces,             // coutPieces
+        coutPieces,           // coutPieces
         {                        // motoDetails
             marque: moto.marque,
             model: moto.model,
             serialNumber: moto.serialNumber
         },
         undefined               // pieces (sera ajouté plus tard)
+         // gestionnaireId à gérer avec l'auth
     );
 
       const entretienSaved = await this.entretienRepository.save(nouvelEntretien);

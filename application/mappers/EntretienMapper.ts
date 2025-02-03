@@ -19,7 +19,8 @@ export function toDTO(entretien: Entretien): EntretienDTO {
     coutPieces: entretien.coutPieces,
     coutTotal: entretien.getCoutTotal(),
     statut: entretien.statut,
-    userId: entretien.userId.toString()
+    userId: entretien.userId.toString(),
+    gestionnaireId: entretien.gestionnaireId.toString()
   };
 }
 
@@ -35,6 +36,7 @@ export function toDomain(dto: EntretienDTO): Entretien {
     dto.recommandationsGestionnaireClient,
     dto.statut,
     new UUID(dto.userId),
+    new UUID(dto.gestionnaireId),
     dto.coutMainOeuvre,
     dto.coutPieces,
     dto.motoDetails

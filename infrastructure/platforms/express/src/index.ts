@@ -7,6 +7,8 @@ import { initializeModels } from "./modelsMongo/indexMongo";
 import { denormalizeData } from "./bin/denormalizeIntoMongo";
 import './modelsSQL/associations';
 
+import { scheduleEntretienReminderJob } from "./cron/cronMaintenance";
+
 import motoRoutes from './routes/moto.route';
 import entretienRoutes from './routes/entretien.route';
 import panneRoutes from './routes/panne.route';
@@ -46,7 +48,7 @@ connectToDatabase()
   .then(() => {
     console.log("Connected to SQL database successfully.");
 
-    return connection.sync();
+    return connection.sync({ alter: true });
   })
   .then(() => {
     console.log("SQL database & tables created!");
@@ -70,3 +72,6 @@ connectToDatabase()
   .catch((err: unknown) => {
     console.error("An error occurred during setup:", err);
   });
+
+  // scheduleEntretienReminderJob();
+  

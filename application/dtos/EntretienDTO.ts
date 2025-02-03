@@ -10,6 +10,7 @@ export interface CreateEntretienDTO {
   recommandationsGestionnaireClient: string;
   statut: string;
   userId: string;
+  gestionnaireId: string;
   coutMainOeuvre: number; 
   coutPieces: number;       
   pieces?: EntretienPiece[];
@@ -54,6 +55,7 @@ export interface EntretienDTO {
   recommandationsGestionnaireClient: string;
   statut: string;
   userId: string;
+  gestionnaireId: string;
   coutMainOeuvre: number;
   coutPieces: number;
   coutTotal: number;
@@ -64,4 +66,5 @@ export interface PieceEntretienDTO {
   pieceId: string;
   quantite: number;
   prixUnitaire: number;
+  gestionnaireId: string;
 }

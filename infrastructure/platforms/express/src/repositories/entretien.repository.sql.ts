@@ -5,7 +5,8 @@ import { Entretien } from '@domain/entities/EntretienEntity';
 import { UUID } from '@domain/value-objects/UUID';
 import EntretienSQL from '../modelsSQL/entretien.sql';
 import MotoSQL from '../modelsSQL/moto.sql';
-import { Model } from 'sequelize';
+import { Model, Op } from 'sequelize';
+
 
 interface MotoAttributes {
   marque: string;
@@ -27,6 +28,7 @@ interface EntretienAttributes {
   coutPieces: number;          // Ajouté coutPieces
   statut: string;
   userId: string;
+  gestionnaireId: string;
   moto?: MotoAttributes;
 }
 
@@ -106,7 +108,9 @@ export class EntretienSQLRepository implements EntretienRepository {
         coutMainOeuvre: entretien.coutMainOeuvre,  // Mise à jour
         coutPieces: entretien.coutPieces,          // Ajouté
         statut: entretien.statut,
-        userId: entretien.userId.toString()      },
+        gestionnaireId: entretien.gestionnaireId.toString(),
+        userId: entretien.userId.toString()      
+      },
       { 
         where: { entretienId: entretien.entretienId.toString() }
       }
@@ -138,6 +142,19 @@ export class EntretienSQLRepository implements EntretienRepository {
     return deleted > 0;
   }
 
+  async findAllEntretienDus(): Promise<Entretien[]> {
+    const results = await EntretienSQL.findAll({
+      where: {
+        datePrevue: {
+          [Op.lte]: new Date(), 
+        },
+        dateRealisee: null,
+      },
+    });
+    return results.map(row => this.toDomain(row as EntretienModel));
+  }
+
+
   private toDomain(model: EntretienModel): Entretien {
     return Entretien.create(
       new UUID(model.entretienId),
@@ -150,6 +167,7 @@ export class EntretienSQLRepository implements EntretienRepository {
       model.recommandationsGestionnaireClient,
       model.statut,
       new UUID(model.userId),
+      new UUID(model.gestionnaireId),
       model.coutMainOeuvre,
       model.coutPieces,     
       model.moto ? {

@@ -53,13 +53,27 @@ const EntretienSQL = connection.define('Entretien', {
   },
   statut: {
     type: DataTypes.STRING,
-    allowNull: false,
   },
   userId: {
     type: DataTypes.UUID,
-    allowNull: true,
+    allowNull: false, 
+    references: {
+      model: 'Users',
+      key: 'userId'
+    }
   },
+  
+  gestionnaireId: {
+    type: DataTypes.UUID,
+    allowNull: false, 
+    references: {
+      model: 'Users',
+      key: 'userId'
+    }
+  },
+
 }, {
   tableName: 'Entretiens',
 });
+
 export default EntretienSQL;
