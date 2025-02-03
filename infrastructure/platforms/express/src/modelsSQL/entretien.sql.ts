@@ -25,6 +25,7 @@ const EntretienSQL = connection.define('Entretien', {
   },
   dateRealisee: {
     type: DataTypes.DATE,
+    allowNull: true,
   },
   kilometrageEntretien: {
     type: DataTypes.FLOAT,

@@ -48,8 +48,8 @@ export interface EntretienDTO {
     serialNumber: string;
   };
   typeEntretien: string;
-  datePrevue: string;
-  dateRealisee: string;
+  datePrevue: string |null;
+  dateRealisee: string |null;
   kilometrageEntretien: number;
   recommandationsTechnicien: string;
   recommandationsGestionnaireClient: string;

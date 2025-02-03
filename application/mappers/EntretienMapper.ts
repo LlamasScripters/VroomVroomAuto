@@ -10,8 +10,8 @@ export function toDTO(entretien: Entretien): EntretienDTO {
     motoId: entretien.motoId.toString(),
     motoDetails: entretien.motoDetails,
     typeEntretien: entretien.typeEntretien,
-    datePrevue: entretien.datePrevue.toISOString(),
-    dateRealisee: entretien.dateRealisee.toISOString(),
+    datePrevue: entretien.datePrevue ? entretien.datePrevue.toISOString() : null,
+    dateRealisee: entretien.dateRealisee ? entretien.dateRealisee.toISOString() : null,
     kilometrageEntretien: entretien.kilometrageEntretien,
     recommandationsTechnicien: entretien.recommandationsTechnicien,
     recommandationsGestionnaireClient: entretien.recommandationsGestionnaireClient,
@@ -20,17 +20,18 @@ export function toDTO(entretien: Entretien): EntretienDTO {
     coutTotal: entretien.getCoutTotal(),
     statut: entretien.statut,
     userId: entretien.userId.toString(),
-    gestionnaireId: entretien.gestionnaireId.toString()
+    gestionnaireId: entretien.gestionnaireId.toString(),
   };
 }
+
 
 export function toDomain(dto: EntretienDTO): Entretien {
   return Entretien.create(
     new UUID(dto.entretienId),
     new UUID(dto.motoId),
     dto.typeEntretien,
-    new Date(dto.datePrevue),
-    new Date(dto.dateRealisee),
+    new Date(dto.datePrevue || Date.now()),
+    new Date(dto.dateRealisee || Date.now()),
     dto.kilometrageEntretien,
     dto.recommandationsTechnicien,
     dto.recommandationsGestionnaireClient,
