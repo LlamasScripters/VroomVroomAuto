@@ -59,9 +59,9 @@ export class EntretienCrudUseCases {
       updatedData.recommandationsGestionnaireClient ?? entretien.recommandationsGestionnaireClient,
       updatedData.statut ?? entretien.statut,
       entretien.userId,
+      entretien.gestionnaireId,
       updatedData.coutMainOeuvre ?? entretien.coutMainOeuvre, 
       updatedData.coutPieces ?? entretien.coutPieces,       
-      entretien.gestionnaireId,
       entretien.motoDetails,
       entretien.pieces                                      
     );
