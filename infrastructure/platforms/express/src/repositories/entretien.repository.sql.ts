@@ -23,7 +23,8 @@ interface EntretienAttributes {
   kilometrageEntretien: number;
   recommandationsTechnicien: string;
   recommandationsGestionnaireClient: string;
-  cout: number;
+  coutMainOeuvre: number;       // Remplacé cout par coutMainOeuvre
+  coutPieces: number;          // Ajouté coutPieces
   statut: string;
   userId: string;
   moto?: MotoAttributes;
@@ -43,7 +44,8 @@ export class EntretienSQLRepository implements EntretienRepository {
         kilometrageEntretien: entretien.kilometrageEntretien,
         recommandationsTechnicien: entretien.recommandationsTechnicien,
         recommandationsGestionnaireClient: entretien.recommandationsGestionnaireClient,
-        cout: entretien.cout,
+        coutMainOeuvre: entretien.coutMainOeuvre,  // Mise à jour
+        coutPieces: entretien.coutPieces,          // Ajouté
         statut: entretien.statut,
         userId: entretien.userId.toString()
       });
@@ -101,10 +103,10 @@ export class EntretienSQLRepository implements EntretienRepository {
         kilometrageEntretien: entretien.kilometrageEntretien,
         recommandationsTechnicien: entretien.recommandationsTechnicien,
         recommandationsGestionnaireClient: entretien.recommandationsGestionnaireClient,
-        cout: entretien.cout,
+        coutMainOeuvre: entretien.coutMainOeuvre,  // Mise à jour
+        coutPieces: entretien.coutPieces,          // Ajouté
         statut: entretien.statut,
-        userId: entretien.userId.toString()
-      },
+        userId: entretien.userId.toString()      },
       { 
         where: { entretienId: entretien.entretienId.toString() }
       }
@@ -146,9 +148,10 @@ export class EntretienSQLRepository implements EntretienRepository {
       model.kilometrageEntretien,
       model.recommandationsTechnicien,
       model.recommandationsGestionnaireClient,
-      model.cout,
       model.statut,
       new UUID(model.userId),
+      model.coutMainOeuvre,
+      model.coutPieces,     
       model.moto ? {
         marque: model.moto.marque,
         model: model.moto.model,

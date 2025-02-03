@@ -1,8 +1,8 @@
 // infrastructure/platforms/react/src/components/entretienManagement/EntretienDetailsView.tsx
-
 import React from 'react';
 import { Entretien } from '../../types';
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { X } from 'lucide-react';
 
 interface EntretienDetailsViewProps {
@@ -40,7 +40,7 @@ const EntretienDetailsView: React.FC<EntretienDetailsViewProps> = ({
             </div>
           </section>
 
-          {/* Détails de l'entretien */}
+          {/* Détails de l'intervention */}
           <section className="space-y-2">
             <h3 className="text-lg font-semibold">Détails de l'intervention</h3>
             <div className="grid grid-cols-2 gap-4">
@@ -58,18 +58,64 @@ const EntretienDetailsView: React.FC<EntretienDetailsViewProps> = ({
               </div>
               <div>
                 <p className="text-gray-600">Date réalisée</p>
-                <p>{new Date(entretien.dateRealisee).toLocaleDateString()}</p>
+                <p>{entretien.dateRealisee ? new Date(entretien.dateRealisee).toLocaleDateString() : '-'}</p>
               </div>
               <div>
                 <p className="text-gray-600">Kilométrage</p>
                 <p>{entretien.kilometrageEntretien} km</p>
               </div>
+            </div>
+          </section>
+
+          {/* Coûts */}
+          <section className="space-y-2">
+            <h3 className="text-lg font-semibold">Détails des coûts</h3>
+            <div className="grid grid-cols-3 gap-4 bg-gray-50 p-4 rounded-md">
+              <div>
+                <p className="text-gray-600">Coût main d'œuvre</p>
+                <p className="text-lg font-medium">{entretien.coutMainOeuvre}€</p>
+              </div>
+              <div>
+                <p className="text-gray-600">Coût des pièces</p>
+                <p className="text-lg font-medium">{entretien.coutPieces}€</p>
+              </div>
               <div>
                 <p className="text-gray-600">Coût total</p>
-                <p>{entretien.cout} €</p>
+                <p className="text-lg font-medium text-blue-600">
+                {`${(parseFloat(entretien.coutMainOeuvre?.toString() || '0') + parseFloat(entretien.coutPieces?.toString() || '0')).toFixed(2).replace('.', ',')}€`}
+                </p>
               </div>
             </div>
           </section>
+
+          {/* Pièces utilisées */}
+          {entretien.pieces && entretien.pieces.length > 0 && (
+            <section className="space-y-2">
+              <h3 className="text-lg font-semibold">Pièces utilisées</h3>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Référence</TableHead>
+                    <TableHead>Nom</TableHead>
+                    <TableHead>Quantité</TableHead>
+                    <TableHead>Prix unitaire</TableHead>
+                    <TableHead className="text-right">Sous-total</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {entretien.pieces.map((piece) => (
+                    <TableRow key={piece.pieceId}>
+                      <TableCell className="font-medium">{piece.reference}</TableCell>
+                      <TableCell>{piece.nom}</TableCell>
+                      <TableCell>{piece.quantite}</TableCell>
+                      <TableCell>{piece.prixUnitaire}€</TableCell>
+                      <TableCell className="text-right">{piece.quantite * piece.prixUnitaire}€</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </section>
+          )}
 
           {/* Recommandations */}
           <section className="space-y-2">
@@ -84,12 +130,6 @@ const EntretienDetailsView: React.FC<EntretienDetailsViewProps> = ({
                 <p className="bg-gray-50 p-3 rounded-md">{entretien.recommandationsGestionnaireClient || "Aucune recommandation"}</p>
               </div>
             </div>
-          </section>
-
-          {/* Pièces changées - TODO quand la gestion des pièces sera faite */}
-          <section className="space-y-2">
-            <h3 className="text-lg font-semibold">Pièces changées</h3>
-            <p className="text-gray-600">Liste des pièces à venir</p>
           </section>
         </div>
       </div>

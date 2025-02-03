@@ -20,9 +20,12 @@ export interface Entretien {
   kilometrageEntretien: number;
   recommandationsTechnicien: string;
   recommandationsGestionnaireClient: string;
-  cout: number;
   statut: string;
   userId: string;
+  coutMainOeuvre: number;
+  coutPieces: number;
+  coutTotal: number;
+  pieces?: EntretienPiece[];
   motoDetails?: {
     marque: string;
     model: string;
@@ -99,4 +102,37 @@ export interface MaintenanceRule {
   intervalleKilometrage: number;
   intervalleTemps: number;
   typeEntretien: string;
+}
+
+export interface EntretienPiece {
+  pieceId: string;
+  nom: string;
+  reference: string;
+  quantite: number;
+  prixUnitaire: number;
+  piece?: {
+      reference: string;
+      nom: string;
+  };
+}
+
+export interface PiecePlanification {
+  pieceId: string;
+  quantite: number;
+  prixUnitaire: number;
+}
+
+export interface MaintenancePlanningResultDTO {
+  success: boolean;
+  entretienId?: string;
+  message: string;
+  datePrevue: string;
+  kilometragePrevu: number;
+  modele: string;
+  marque: string;
+  regleAppliquee: {
+    intervalleKilometrage: number;
+    intervalleTemps: number;
+    typeEntretien: string;
+  };
 }

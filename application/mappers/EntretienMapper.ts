@@ -15,7 +15,9 @@ export function toDTO(entretien: Entretien): EntretienDTO {
     kilometrageEntretien: entretien.kilometrageEntretien,
     recommandationsTechnicien: entretien.recommandationsTechnicien,
     recommandationsGestionnaireClient: entretien.recommandationsGestionnaireClient,
-    cout: entretien.cout,
+    coutMainOeuvre: entretien.coutMainOeuvre,
+    coutPieces: entretien.coutPieces,
+    coutTotal: entretien.getCoutTotal(),
     statut: entretien.statut,
     userId: entretien.userId.toString()
   };
@@ -31,9 +33,10 @@ export function toDomain(dto: EntretienDTO): Entretien {
     dto.kilometrageEntretien,
     dto.recommandationsTechnicien,
     dto.recommandationsGestionnaireClient,
-    dto.cout,
     dto.statut,
     new UUID(dto.userId),
+    dto.coutMainOeuvre,
+    dto.coutPieces,
     dto.motoDetails
   );
 }

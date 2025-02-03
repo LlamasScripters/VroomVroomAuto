@@ -36,9 +36,20 @@ const EntretienSQL = connection.define('Entretien', {
   recommandationsGestionnaireClient: {
     type: DataTypes.STRING,
   },
-  cout: {
-    type: DataTypes.FLOAT,
+  coutMainOeuvre: {
+    type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
+    defaultValue: 0,
+  },
+  coutPieces: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
+    defaultValue: 0,
+  },
+  coutTotal: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
+    defaultValue: 0,
   },
   statut: {
     type: DataTypes.STRING,
