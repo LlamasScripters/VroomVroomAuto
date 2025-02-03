@@ -192,6 +192,9 @@ const PlanificationEntretienForm: React.FC<PlanificationEntretienFormProps> = ({
       onSubmit(planification);
     };
 
+    const selectedPiece = pieces.find(piece => piece.pieceId === selectedPieceId);
+    const maxQuantite = selectedPiece?.quantiteEnStock || 0;
+
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-xl font-bold mb-4">Planifier un entretien</h2>
@@ -329,15 +332,33 @@ const PlanificationEntretienForm: React.FC<PlanificationEntretienFormProps> = ({
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Quantité
+                Quantité (Stock disponible : {maxQuantite})
               </label>
               <input
                 type="number"
                 value={quantiteSelectionnee}
-                onChange={(e) => setQuantiteSelectionnee(parseInt(e.target.value))}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value);
+                  if (selectedPiece && value > selectedPiece.quantiteEnStock) {
+                    toast.error(`La quantité ne peut pas dépasser le stock disponible (${selectedPiece.quantiteEnStock} unités)`);
+                    return;
+                  }
+                  setQuantiteSelectionnee(value);
+                }}
                 min="1"
-                className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+                max={maxQuantite}
+                className={`mt-1 block w-full p-2 border rounded-lg ${
+                  selectedPieceId && quantiteSelectionnee > maxQuantite 
+                    ? 'border-red-500 bg-red-50' 
+                    : 'border-gray-300'
+                }`}
+                disabled={!selectedPieceId}
               />
+              {selectedPieceId && quantiteSelectionnee > maxQuantite && (
+                <p className="text-red-500 text-sm mt-1">
+                  La quantité dépasse le stock disponible
+                </p>
+              )}
             </div>
 
             <div className="flex items-end">

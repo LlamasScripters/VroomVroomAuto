@@ -168,6 +168,9 @@ function EntretienForm({ onSubmit, onCancel, initialData }: EntretienFormProps) 
     );
   };
 
+  const selectedPiece = pieces.find(piece => piece.pieceId === selectedPieceId);
+  const maxQuantite = selectedPiece?.quantiteEnStock || 0;
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center overflow-y-auto p-4">
       <div className="my-8">
@@ -348,6 +351,37 @@ function EntretienForm({ onSubmit, onCancel, initialData }: EntretienFormProps) 
                       ))
                     }
                   </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Quantité (Stock disponible : {maxQuantite})
+                  </label>
+                  <input
+                    type="number"
+                    value={quantiteSelectionnee}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value);
+                      if (selectedPiece && value > selectedPiece.quantiteEnStock) {
+                        toast.error(`La quantité ne peut pas dépasser le stock disponible (${selectedPiece.quantiteEnStock} unités)`);
+                        return;
+                      }
+                      setQuantiteSelectionnee(value);
+                    }}
+                    min="1"
+                    max={maxQuantite}
+                    className={`mt-1 block w-full p-2 border rounded-lg ${
+                      selectedPieceId && quantiteSelectionnee > maxQuantite 
+                        ? 'border-red-500 bg-red-50' 
+                        : 'border-gray-300'
+                    }`}
+                    disabled={!selectedPieceId}
+                  />
+                  {selectedPieceId && quantiteSelectionnee > maxQuantite && (
+                    <p className="text-red-500 text-sm mt-1">
+                      La quantité dépasse le stock disponible
+                    </p>
+                  )}
                 </div>
 
                 <div>
