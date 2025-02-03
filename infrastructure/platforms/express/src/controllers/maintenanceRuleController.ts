@@ -8,6 +8,8 @@ import { SqlMotoRepository } from '../repositories/moto.repository.sql';
 import { EntretienSQLRepository } from '../repositories/entretien.repository.sql';
 import { CreateMaintenanceRuleDTO, UpdateMaintenanceRuleDTO } from '@application/dtos/MaintenanceRuleDTO';
 import { PlanifierEntretienDTO } from '@application/dtos/MaintenancePlanningDTO';
+import { PieceSQLRepository } from '../repositories/piece.repository.sql';
+import { EntretienPieceSQLRepository } from '../repositories/entretienPiece.repository.sql';
 
 export class MaintenanceRuleController {
   private maintenanceRuleCrudUseCase: MaintenanceRuleCrudUseCase;
@@ -17,12 +19,17 @@ export class MaintenanceRuleController {
     const maintenanceRuleRepository = new MaintenanceRuleSQLRepository();
     const motoRepository = new SqlMotoRepository();
     const entretienRepository = new EntretienSQLRepository();
+    const pieceRepository = new PieceSQLRepository();
+    const entretienPiece = new EntretienPieceSQLRepository();
+
 
     this.maintenanceRuleCrudUseCase = new MaintenanceRuleCrudUseCase(maintenanceRuleRepository);
     this.planifierEntretienUseCase = new PlanifierEntretienUseCase(
       maintenanceRuleRepository,
       motoRepository,
-      entretienRepository
+      entretienRepository,
+      pieceRepository,
+      entretienPiece
     );
   }
 
@@ -89,6 +96,13 @@ export class MaintenanceRuleController {
       const result = await this.planifierEntretienUseCase.planifier(planificationDTO);
       res.status(201).json(result);
     } catch (error: any) {
+      if (error.message.includes('Stock insuffisant')) {
+        res.status(400).json({ 
+          error: error.message,
+          type: 'STOCK_INSUFFISANT'
+        });
+        return;
+      }
       res.status(400).json({ 
         error: error.message || "Erreur lors de la planification de l'entretien" 
       });

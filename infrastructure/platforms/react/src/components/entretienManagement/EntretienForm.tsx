@@ -11,7 +11,9 @@ interface EntretienFormProps {
     kilometrageEntretien: number;
     recommandationsTechnicien: string;
     recommandationsGestionnaireClient: string;
-    cout: number;
+    coutMainOeuvre: number;
+    coutPieces: number;
+    coutTotal: number;
     statut: string;
     userId: string;
   }) => void;
@@ -24,7 +26,9 @@ interface EntretienFormProps {
     kilometrageEntretien: number;
     recommandationsTechnicien: string;
     recommandationsGestionnaireClient: string;
-    cout: number;
+    coutMainOeuvre: number;
+    coutPieces: number;
+    coutTotal: number;
     statut: string;
     userId: string;
   };
@@ -40,9 +44,11 @@ function EntretienForm({ onSubmit, onCancel, initialData }: EntretienFormProps) 
     kilometrageEntretien: initialData?.kilometrageEntretien || 0,
     recommandationsTechnicien: initialData?.recommandationsTechnicien || '',
     recommandationsGestionnaireClient: initialData?.recommandationsGestionnaireClient || '',
-    cout: initialData?.cout || 0,
+    coutMainOeuvre: initialData?.coutMainOeuvre || 0,
+    coutPieces: initialData?.coutPieces || 0,
+    coutTotal: initialData?.coutTotal || 0, 
     statut: initialData?.statut || 'En cours',
-    userId: initialData?.userId || crypto.randomUUID() // Valeur par défaut temporaire, à changer quand on aura mis en place la gestion des utilisateurs
+    userId: initialData?.userId || crypto.randomUUID()
   });
 
   useEffect(() => {
@@ -166,7 +172,7 @@ function EntretienForm({ onSubmit, onCancel, initialData }: EntretienFormProps) 
             type="number"
             id="cout"
             name="cout"
-            value={formData.cout}
+            value={formData.coutMainOeuvre}
             onChange={handleChange}
             required
             min="0"

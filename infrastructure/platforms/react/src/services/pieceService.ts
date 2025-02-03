@@ -88,5 +88,22 @@ export const PieceService = {
     } catch (error) {
       throw new Error(`Erreur lors de la suppression de la pièce: ${error}`);
     }
-  }
+  },
+
+  async verifierDisponibilite(pieceId: string, quantite: number): Promise<boolean> {
+    const token = useAuthStore.getState().token;
+
+    const response = await fetch(`${API_URL}/pieces/${pieceId}/disponibilite?quantite=${quantite}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Erreur lors de la vérification de la disponibilité');
+    }
+
+    const result = await response.json();
+    return result.disponible;
+  },
 };
