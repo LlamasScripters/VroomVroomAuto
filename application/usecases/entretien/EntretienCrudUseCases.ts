@@ -23,6 +23,7 @@ export class EntretienCrudUseCases {
       entretienData.recommandationsGestionnaireClient,
       entretienData.statut,
       new UUID(entretienData.userId),
+      new UUID(entretienData.gestionnaireId),
       entretienData.coutMainOeuvre || 0,  
       entretienData.coutPieces || 0,     
       undefined,                          
@@ -60,6 +61,7 @@ export class EntretienCrudUseCases {
       entretien.userId,
       updatedData.coutMainOeuvre ?? entretien.coutMainOeuvre, 
       updatedData.coutPieces ?? entretien.coutPieces,       
+      entretien.gestionnaireId,
       entretien.motoDetails,
       entretien.pieces                                      
     );

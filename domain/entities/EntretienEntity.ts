@@ -19,6 +19,7 @@ export class Entretien {
       public readonly recommandationsGestionnaireClient: string,
       public readonly statut: string,
       public readonly userId: UUID,
+      public readonly gestionnaireId: UUID,
       public readonly coutMainOeuvre: number,   
       public readonly coutPieces: number,      
       public readonly motoDetails?: MotoDetails,
@@ -51,11 +52,12 @@ export class Entretien {
       recommandationsGestionnaireClient: string,
       statut: string,
       userId: UUID,
+      gestionnaireId: UUID,  
       coutMainOeuvre: number,
       coutPieces: number,
       motoDetails?: MotoDetails,
       pieces?: EntretienPiece[]
     ): Entretien {
-      return new Entretien(entretienId, motoId, typeEntretien, datePrevue, dateRealisee, kilometrageEntretien, recommandationsTechnicien, recommandationsGestionnaireClient, statut, userId, coutMainOeuvre, coutPieces, motoDetails, pieces);
+      return new Entretien(entretienId, motoId, typeEntretien, datePrevue, dateRealisee, kilometrageEntretien, recommandationsTechnicien, recommandationsGestionnaireClient, statut, userId,gestionnaireId, coutMainOeuvre, coutPieces, motoDetails, pieces); 
     }
   }

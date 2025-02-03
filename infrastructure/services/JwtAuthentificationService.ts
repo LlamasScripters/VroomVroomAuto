@@ -13,7 +13,7 @@ export class JwtAuthentificationService implements AuthentificationService {
     this.secret = process.env.LOGIN_JWT_SECRET || 'secret';
     this.expiresIn = 3600;
   }
-
+  
   async createAuthenticationToken(userId: string): Promise<string> {
     return jwt.sign({ userId }, this.secret, { expiresIn: this.expiresIn });
   }
