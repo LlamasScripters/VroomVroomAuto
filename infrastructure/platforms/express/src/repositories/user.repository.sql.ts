@@ -106,6 +106,30 @@ export class UserRepositorySQL implements UserRepository {
         return this.toDomain(updatedUser);
     }
 
+    async findByRolesGestionnaire(): Promise<User[]> {
+        const users = await UserSQL.findAll({
+            where: {
+                role: {
+                    [Op.in]: ['gestionnaire']
+                }
+            }
+        }) as UserModel[];
+
+        return users.map(user => this.toDomain(user));
+    }
+
+    async findByRolesAdmin(): Promise<User[]> {
+        const users = await UserSQL.findAll({
+            where: {
+                role: {
+                    [Op.in]: ['admin']
+                }
+            }
+        }) as UserModel[];
+
+        return users.map(user => this.toDomain(user));
+    }
+
 private toDomain(model: UserModel): User {
   return User.create(
     new UUID(model.userId),
@@ -118,4 +142,6 @@ private toDomain(model: UserModel): User {
     model.derniereConnexion
   );
 }
+
+
 }
