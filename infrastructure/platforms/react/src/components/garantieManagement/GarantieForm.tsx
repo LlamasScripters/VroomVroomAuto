@@ -53,6 +53,10 @@ export function GarantieForm({ onSubmit, onCancel, initialData }: GarantieFormPr
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    if (new Date(formData.dateDebut) > new Date(formData.dateFin)) {
+      alert("La date de fin doit être antérieure à la date de début.")
+      return
+    }
     onSubmit(formData)
   }
 

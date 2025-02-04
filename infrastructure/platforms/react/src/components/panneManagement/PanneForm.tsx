@@ -85,7 +85,15 @@ export function PanneForm({ onSubmit, onCancel, initialData }: PanneFormProps) {
         <label htmlFor="date" className="block text-sm font-medium text-gray-700">
           Date
         </label>
-        <Input type="date" id="date" name="date" value={formData.date} onChange={handleChange} required />
+        <Input
+          type="date"
+          id="date"
+          name="date"
+          value={formData.date}
+          onChange={handleChange}
+          max={new Date().toISOString().split("T")[0]}
+          required
+        />
       </div>
 
       <div>
