@@ -3,7 +3,7 @@ import { PieceRepository } from '@application/repositories/PieceRepository';
 import { Piece } from '@domain/entities/PieceEntity';
 import { UUID } from '@domain/value-objects/UUID';
 import PieceSQLModel from '../modelsSQL/piece.sql';
-import { Model, literal } from 'sequelize';
+import { Model, Op } from 'sequelize';
 
 interface PieceAttributes {
   pieceId: string;
@@ -97,11 +97,14 @@ export class PieceSQLRepository implements PieceRepository {
   }
 
   async findByCriticalStock(): Promise<Piece[]> {
-    const pieces = await PieceSQLModel.findAll({
-      where: literal('quantiteEnStock <= seuilCritique')
+    const results = await PieceSQLModel.findAll({
+      where: {
+        quantiteEnStock: {
+          [Op.lt]: 5
+        }
+      }
     });
-    
-    return pieces.map(piece => this.toDomain(piece as PieceModel));
+    return results.map(piece => this.toDomain(piece as PieceModel));
   }
 
   private toDomain(model: PieceModel): Piece {
