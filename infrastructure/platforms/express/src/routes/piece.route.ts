@@ -14,6 +14,6 @@ router.delete('/:id', (req, res) => controller.deletePiece(req, res));
 
 router.patch('/:id/stock', (req, res) => controller.updateStock(req, res));
 router.get('/critiques', (req, res) => controller.getPiecesCritiques(req, res));
-
+router.get('/:id/disponibilite', (req, res) => controller.verifierDisponibilite(req, res));
 
 export default router;

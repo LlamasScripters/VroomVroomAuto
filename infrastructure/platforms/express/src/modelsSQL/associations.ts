@@ -65,7 +65,7 @@ PieceSQL.hasMany(EntretienPieceSQL, { foreignKey: 'pieceId', as: 'utilisationsDa
 EntretienPieceSQL.belongsTo(PieceSQL, { foreignKey: 'pieceId' });
 
 PieceSQL.hasMany(CommandeSQL, { foreignKey: 'pieceId' });
-CommandeSQL.belongsTo(PieceSQL, { foreignKey: 'pieceId' });
+CommandeSQL.belongsTo(PieceSQL, { foreignKey: 'pieceId', as: 'piece' });
 
 PieceSQL.hasMany(EntretienSQL, { foreignKey: 'pieceId' });
 EntretienSQL.hasMany(PieceSQL, { foreignKey: 'pieceId' });

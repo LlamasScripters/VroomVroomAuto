@@ -5,20 +5,41 @@ import { CommandeSQLRepository } from '../repositories/commande.repository.sql';
 import { PieceSQLRepository } from '../repositories/piece.repository.sql';
 import * as CommandeMapper from '@application/mappers/CommandeMapper';
 import { CreateCommandeDTO, UpdateCommandeDTO } from '@application/dtos/CommandeDTO';
+import { UUID } from '@domain/value-objects/UUID';
 
 export class CommandeController {
   private commandeUseCases: CommandeCrudUseCases;
+  private pieceRepository: PieceSQLRepository;
 
   constructor() {
     const commandeRepository = new CommandeSQLRepository();
     const pieceRepository = new PieceSQLRepository();
     this.commandeUseCases = new CommandeCrudUseCases(commandeRepository, pieceRepository);
+    this.pieceRepository = pieceRepository;
   }
 
   async createCommande(req: Request, res: Response): Promise<void> {
     try {
-      const commandeDTO: CreateCommandeDTO = req.body;
-      const commande = await this.commandeUseCases.createCommande(commandeDTO);
+      const commandeDTO = req.body;
+      
+      // récupération des détails de la pièce avant de créer la commande
+      const piece = await this.pieceRepository.findById(new UUID(commandeDTO.pieceId));
+      if (!piece) {
+        res.status(404).json({ error: 'Pièce non trouvée' });
+        return;
+      }
+
+      // calcul du coût total
+      const coutTotal = piece.prixUnitaire ? piece.prixUnitaire * commandeDTO.quantiteCommandee : 0;
+
+      // création de la commande en passant directement les valeurs attendues
+      const commande = await this.commandeUseCases.createCommande({
+        pieceId: commandeDTO.pieceId,
+        quantiteCommandee: commandeDTO.quantiteCommandee,
+        dateLivraisonPrevue: commandeDTO.dateLivraisonPrevue,
+        userId: commandeDTO.userId
+      });
+
       const responseCommande = CommandeMapper.toDTO(commande);
       res.status(201).json(responseCommande);
     } catch (error: any) {

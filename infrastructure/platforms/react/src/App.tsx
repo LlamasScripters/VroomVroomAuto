@@ -17,6 +17,7 @@ import MaintenanceRuleManagementPage from "./pages/MaintenanceRuleManagementPage
 import ClientEntretiensPage from './pages/ClientEntretiensPage';
 import ClientEntretiensHistoriquePage from './pages/ClientEntretiensHistoriquePage';
 import MiseAJourKilometrage from './pages/MisAJourKilometrage';
+import CommandeManagementPage from "./pages/CommandeManagementPage";
 
 import { AppSidebar } from "../src/components/sideBar/appSidebar";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,} from "@/components/ui/breadcrumb";
@@ -102,6 +103,7 @@ function App() {
         <Route path="/reparations" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><ReparationManagementPage /></ProtectedLayout>} />
         <Route path="/pieces" element={<ProtectedLayout><PieceManagementPage /></ProtectedLayout>} />
         <Route path="/mise-a-jour-km" element={<ProtectedLayout><MiseAJourKilometrage /></ProtectedLayout>} />
+        <Route path="/commandes" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><CommandeManagementPage /></ProtectedLayout>} />
         <Route path="/clients" element={<ProtectedLayout><ClientManagementPage /></ProtectedLayout>} />
         <Route path="/employes" element={<ProtectedLayout><EmployeManagementPage /></ProtectedLayout>} />
         <Route path="/statistiques" element={<ProtectedLayout><StatisticsPage /></ProtectedLayout>} />

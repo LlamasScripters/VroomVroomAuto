@@ -15,6 +15,7 @@ import EntretienHistoriquePage from './pages/EntretienHistoriquePage';
 import ClientEntretiensPage from './pages/ClientEntretiensPage';
 import ClientEntretiensHistoriquePage from './pages/ClientEntretiensHistoriquePage';
 import MiseAJourKilometrage from './pages/MisAJourKilometrage';
+import CommandeManagementPage from './pages/CommandeManagementPage';
 
 const routes: RouteObject[] = [
   {
@@ -80,6 +81,10 @@ const routes: RouteObject[] = [
   {
     path: '/entretiens/mes-entretiens/historique',
     element: <ClientEntretiensHistoriquePage />,
+  },
+  {
+    path: '/commandes',
+    element: <CommandeManagementPage />,
   },
 
 ];

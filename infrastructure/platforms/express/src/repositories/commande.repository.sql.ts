@@ -37,15 +37,20 @@ export class CommandeSQLRepository implements CommandeRepository {
         statut: commande.statut,
         userId: commande.userId.toString()
       });
-
-      await saved.reload({
+  
+      const commandeWithPiece = await CommandeSQL.findByPk(saved.get('commandeId') as string, {
         include: [{
           model: PieceSQL,
+          as: 'piece',
           attributes: ['nom', 'reference', 'prixUnitaire']
         }]
       });
-
-      return this.toDomain(saved as CommandeModel);
+  
+      if (!commandeWithPiece) {
+        throw new Error('Commande non trouvée après création');
+      }
+  
+      return this.toDomain(commandeWithPiece.get({ plain: true }));
     } catch (error) {
       throw new Error(`Erreur lors de la sauvegarde de la commande: ${error}`);
     }
@@ -67,11 +72,23 @@ export class CommandeSQLRepository implements CommandeRepository {
     const commandes = await CommandeSQL.findAll({
       include: [{
         model: PieceSQL,
+        as: 'piece',
         attributes: ['nom', 'reference', 'prixUnitaire']
-      }]
+      }],
+      order: [['dateCommande', 'DESC']]
     });
-    
-    return commandes.map(commande => this.toDomain(commande as CommandeModel));
+  
+    return commandes.map(commande => {
+      const commandeData = commande.get({ plain: true });
+      return this.toDomain({
+        ...commandeData,
+        pieceDetails: commandeData.piece ? {
+          nom: commandeData.piece.nom,
+          reference: commandeData.piece.reference,
+          prixUnitaire: Number(commandeData.piece.prixUnitaire)
+        } : undefined
+      });
+    });
   }
 
   async update(commande: Commande): Promise<Commande> {

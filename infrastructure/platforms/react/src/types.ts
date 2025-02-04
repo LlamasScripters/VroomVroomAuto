@@ -136,3 +136,19 @@ export interface MaintenancePlanningResultDTO {
     typeEntretien: string;
   };
 }
+
+export interface Commande {
+  commandeId: string;
+  pieceId: string;
+  pieceDetails?: {
+    nom: string;
+    reference: string;
+    prixUnitaire: number;
+  };
+  quantiteCommandee: number;
+  coutTotal: number;
+  dateCommande: string;
+  dateLivraisonPrevue: string;
+  statut: string;
+  userId: string;
+}

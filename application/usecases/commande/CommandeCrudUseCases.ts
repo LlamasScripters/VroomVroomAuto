@@ -16,23 +16,25 @@ export class CommandeCrudUseCases {
     if (!piece) {
       throw new Error('Pièce non trouvée');
     }
-
+  
+    const coutTotal = piece.prixUnitaire ? piece.prixUnitaire * commandeData.quantiteCommandee : 0;
+  
     const commande = Commande.create(
       new UUID(),
       new UUID(commandeData.pieceId),
       commandeData.quantiteCommandee,
-      (piece.prixUnitaire || 0) * commandeData.quantiteCommandee,
+      coutTotal,
       new Date(),
       new Date(commandeData.dateLivraisonPrevue),
       'EN_ATTENTE',
       new UUID(commandeData.userId),
       {
-          nom: piece.nom,
-          reference: piece.reference,
-          prixUnitaire: piece.prixUnitaire || 0
+        nom: piece.nom,
+        reference: piece.reference,
+        prixUnitaire: piece.prixUnitaire || 0
       }
-  );
-
+    );
+  
     return await this.commandeRepository.save(commande);
   }
 

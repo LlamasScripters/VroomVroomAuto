@@ -117,4 +117,28 @@ export class PieceController {
       res.status(400).json({ error: error.message });
     }
   }
+
+  async verifierDisponibilite(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const quantite = parseInt(req.query.quantite as string);
+  
+      if (isNaN(quantite)) {
+        res.status(400).json({ error: 'La quantité doit être un nombre' });
+        return;
+      }
+  
+      const piece = await this.pieceUseCases.getPieceById(id);
+  
+      if (!piece) {
+        res.status(404).json({ error: 'Pièce non trouvée' });
+        return;
+      }
+  
+      const disponible = piece.quantiteEnStock >= quantite;
+      res.json({ disponible });
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  }
 }
