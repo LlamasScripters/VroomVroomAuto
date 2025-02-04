@@ -1,8 +1,9 @@
 import * as dotenv from 'dotenv';
 import {TransactionalEmailsApi,TransactionalEmailsApiApiKeys,SendSmtpEmail,HttpError} from '@getbrevo/brevo';
 import { NotificationService } from '../../application/services/NotificationService';
-import { Entretien } from '@domain/entities/EntretienEntity';
-import { Moto } from '@domain/entities/MotoEntity';
+import { Entretien } from '../../domain/entities/EntretienEntity';
+import { Moto } from '../../domain/entities/MotoEntity';
+import { Piece } from '../../domain/entities/PieceEntity';
 
 const templateIds = {
   confirmation: 12,
@@ -116,5 +117,29 @@ export class BrevoNotificationService implements NotificationService {
       throw error;
     }
   }
+
+  async sendStocklowNotification(gestionnaireEmail: string, adminEmail: string, piece: Piece): Promise<void> {
+    const mail = new SendSmtpEmail();
+    mail.to = [{ email: gestionnaireEmail }, { email: adminEmail }];
+    mail.sender = { email: 'stockLow@triumph-motorcycles.fr', name: 'Triumph Motorcycles' };
+    mail.subject = `Stock bas pour la pièce ${piece.nom}`;
+    mail.htmlContent = `
+      <h1>Stock bas</h1>
+      <p>Le stock de la pièce <strong>${piece.nom}</strong> est bas. Merci de commander rapidement.</p>
+    `;
+
+    try {
+        await this.apiInstance.sendTransacEmail(mail);
+        console.log(mail);
+        console.log("Email envoyé à", gestionnaireEmail, "et", adminEmail, "pour pièce", piece.nom);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        console.error('HttpError statusCode', error.statusCode);
+        console.error('HttpError body', error.body);
+      }
+      throw error;
+      
+    }
+}
 }
   
