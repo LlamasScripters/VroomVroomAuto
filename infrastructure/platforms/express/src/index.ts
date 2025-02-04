@@ -8,6 +8,8 @@ import { denormalizeData } from "./bin/denormalizeIntoMongo";
 import './modelsSQL/associations';
 
 import { scheduleEntretienReminderJob } from "./cron/cronMaintenance";
+import { scheduleStockLowJob } from "./cron/cronStockLow";
+
 
 import motoRoutes from './routes/moto.route';
 import entretienRoutes from './routes/entretien.route';
@@ -78,4 +80,5 @@ connectToDatabase()
   });
 
   // scheduleEntretienReminderJob();
+  // scheduleStockLowJob();
   
