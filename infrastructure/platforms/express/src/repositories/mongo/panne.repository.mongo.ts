@@ -113,7 +113,9 @@ export class PanneMgRepository implements PanneMongoRepository {
 
     async delete(panneId: UUID): Promise<boolean> {
         try {
-            const deleted = await PanneMongo.deleteOne({ _id: panneId.toString() });
+            const deleted = await PanneMongo.deleteOne({
+                _id: panneId.toString() 
+            });
 
             return deleted.deletedCount === 1;
         } catch (error) {

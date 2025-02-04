@@ -16,6 +16,7 @@ import maintenanceRuleRoutes from './routes/maintenanceRule.route';
 import userRoute from './routes/user.route';
 import authRouter from "./routes/auth.route";
 import pieceRoutes from './routes/piece.route';
+import garantieRoutes from './routes/garantie.route';
 
 
 // Charger les variables d'environnement
@@ -39,6 +40,7 @@ app.use('/api/maintenance', maintenanceRuleRoutes);
 app.use('/api/user', userRoute);
 app.use('/api/auth', authRouter);
 app.use('/api/pieces', pieceRoutes);
+app.use('/api/garanties', garantieRoutes);
 
 // Port
 const PORT = 3000;

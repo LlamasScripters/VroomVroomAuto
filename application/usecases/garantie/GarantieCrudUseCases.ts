@@ -6,7 +6,7 @@ import { CreateGarantieDTO, UpdateGarantieDTO, GetGarantieDTO } from '../../dtos
 import { GarantieResponse } from '@application/response/GarantieResponse';
 
 
-export class GarantieCrudUseCases {
+export class GarantieUseCases {
     constructor(
         private garantieRepository: GarantieRepository,
         private garantieMongoRepository: GarantieMongoRepository
@@ -67,7 +67,7 @@ export class GarantieCrudUseCases {
         return await this.garantieRepository.delete(garantieIdentifier);
     }
 
-    async listAllPanes(): Promise<Garantie[]> {
+    async listAllGaranties(): Promise<Garantie[]> {
         return await this.garantieMongoRepository.findAll();
     }
 }
