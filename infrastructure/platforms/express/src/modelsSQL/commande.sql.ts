@@ -1,3 +1,4 @@
+// infrastructure/platforms/express/src/modelsSQL/commande.sql.ts
 import { DataTypes } from 'sequelize';
 import { connection } from './database';
 
@@ -7,34 +8,48 @@ const CommandeSQL = connection.define('Commande', {
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
   },
-  dateCommande: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
   pieceId: {
     type: DataTypes.UUID,
     allowNull: false,
+    references: {
+      model: 'Pieces',
+      key: 'pieceId'
+    }
   },
   quantiteCommandee: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    validate: {
+      min: 1
+    }
   },
   coutTotal: {
-    type: DataTypes.FLOAT,
+    type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
   },
-  dateLivraison: {
+  dateCommande: {
     type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
   },
-  statutCommande: {
+  dateLivraisonPrevue: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  statut: {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: 'EN_ATTENTE',
+    validate: {
+      isIn: [['EN_ATTENTE', 'EN_COURS', 'LIVREE', 'ANNULEE']]
+    }
   },
   userId: {
     type: DataTypes.UUID,
     allowNull: false,
-  },
+  }
 }, {
   tableName: 'Commandes',
 });
+
 export default CommandeSQL;
