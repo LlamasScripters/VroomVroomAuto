@@ -10,6 +10,7 @@ import EssaiSQL from './essaie.sql';
 import IncidentSQL from './incident.sql';
 import ReparationSQL from './reparation.sql';
 import PanneSQL from './panne.sql';
+import GarantieSQL from './garantie.sql';
 
 const db = {
   connection,
@@ -23,6 +24,7 @@ const db = {
   IncidentSQL,
   ReparationSQL,
   PanneSQL,
+  GarantieSQL,
 };
 
 export default db;
