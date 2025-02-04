@@ -64,7 +64,11 @@ export class GarantieUseCases {
 
     async deleteGarantie(garantieId: string): Promise<boolean> {
         const garantieIdentifier = new UUID(garantieId);
-        return await this.garantieRepository.delete(garantieIdentifier);
+        const deletedFromRepository = await this.garantieRepository.delete(garantieIdentifier);
+        if(deletedFromRepository) {
+            return await this.garantieMongoRepository.delete(garantieIdentifier);
+        }
+        return deletedFromRepository;
     }
 
     async listAllGaranties(): Promise<Garantie[]> {

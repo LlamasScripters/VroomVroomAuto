@@ -1,147 +1,172 @@
-import { useState } from 'react';
-import { Garantie } from '../types';
-import GarantieForm from '../components/garantieManagement/GarantieForm';
-import GarantieTable from '../components/garantieManagement/GarantieTable';
-import SearchAndFilters from '../components/shared/SearchAndFilters';
+import { useState, useEffect } from "react"
+import type { Garantie } from "../types"
+import { GarantieService } from "../services/garantieService"
+import { GarantieTable } from "../components/garantieManagement/GarantieTable"
+import { GarantieForm } from "../components/garantieManagement/GarantieForm"
+import SearchAndFilters from "../components/shared/SearchAndFilters"
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+import { toast } from "react-hot-toast"
 
-const mockGaranties: Garantie[] = [
-  {
-    id: '1',
-    motoId: 'Tiger 660',
-    description: 'Garantie standard de 2 ans',
-    dateDebut: '2022-01-01',
-    dateFin: '2024-01-01',
-    status: 'Actif',
-  },
-  {
-    id: '2',
-    motoId: 'Street 900',
-    description: 'Garantie prolongée de 3 ans',
-    dateDebut: '2021-06-01',
-    dateFin: '2024-06-01',
-    status: 'Actif',
-  },
-];
+export default function GarantieManagementPage() {
+  const [garanties, setGaranties] = useState<Garantie[]>([])
+  const [filteredGaranties, setFilteredGaranties] = useState<Garantie[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [isFormVisible, setIsFormVisible] = useState(false)
+  const [currentGarantie, setCurrentGarantie] = useState<Garantie | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const garantiesPerPage = 10
 
-function GarantieManagementPage() {
-  const [garanties, setGaranties] = useState<Garantie[]>(mockGaranties);
-  const [isFormVisible, setIsFormVisible] = useState(false);
-  const [currentGarantie, setCurrentGarantie] = useState<Garantie | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const garantiesPerPage = 5;
+  useEffect(() => {
+    fetchGaranties()
+  }, [])
 
-  const indexOfLastGarantie = currentPage * garantiesPerPage;
-  const indexOfFirstGarantie = indexOfLastGarantie - garantiesPerPage;
-  const currentGaranties = garanties.slice(indexOfFirstGarantie, indexOfLastGarantie);
-
-  const totalPages = Math.ceil(garanties.length / garantiesPerPage);
-
-  const handleChangePage = (page: number) => {
-    setCurrentPage(page);
-  };
+  const fetchGaranties = async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      const data = await GarantieService.getAllGaranties()
+      setGaranties(data)
+      setFilteredGaranties(data)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Une erreur est survenue"
+      setError(errorMessage)
+      toast.error("Erreur lors de la récupération des garanties")
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const handleAddGarantie = () => {
-    setCurrentGarantie(null);
-    setIsFormVisible(true);
-  };
+    setCurrentGarantie(null)
+    setIsFormVisible(true)
+  }
 
   const handleEditGarantie = (garantie: Garantie) => {
-    setCurrentGarantie(garantie);
-    setIsFormVisible(true);
-  };
+    setCurrentGarantie(garantie)
+    setIsFormVisible(true)
+  }
 
-  const handleDeleteGarantie = (id: string) => {
-    setGaranties(garanties.filter((garantie) => garantie.id !== id));
-    alert('Garantie supprimée avec succès !');
-  };
-
-  const handleSubmitGarantie = (garantie: Garantie) => {
-    if (garantie.id) {
-      // Modification d'une garantie existante
-      setGaranties(
-        garanties.map((g) => (g.id === garantie.id ? { ...garantie } : g))
-      );
-      alert('Garantie modifiée avec succès !');
-    } else {
-      // Ajout d'une nouvelle garantie
-      setGaranties([
-        ...garanties,
-        { ...garantie, id: `${Date.now()}` },
-      ]);
-      alert('Garantie ajoutée avec succès !');
+  const handleDeleteGarantie = async (garantieId: string) => {
+    if (!window.confirm("Êtes-vous sûr de vouloir supprimer cette garantie ?")) {
+      return
     }
-    setIsFormVisible(false);
-  };
 
-  const handleCancelForm = () => {
-    setIsFormVisible(false);
-  };
+    try {
+      await GarantieService.deleteGarantie(garantieId)
+      setGaranties(garanties.filter((garantie) => garantie.garantieId !== garantieId))
+      setFilteredGaranties(filteredGaranties.filter((garantie) => garantie.garantieId !== garantieId))
+      toast.success("Garantie supprimée avec succès")
+    } catch (error) {
+      console.error(error)
+      toast.error("Erreur lors de la suppression de la garantie")
+    }
+  }
+
+  const handleSubmitGarantie = async (garantieData: Omit<Garantie, "garantieId">) => {
+    try {
+      if (currentGarantie?.garantieId) {
+        await GarantieService.updateGarantie({ ...garantieData, garantieId: currentGarantie.garantieId })
+        toast.success("Garantie modifiée avec succès")
+      } else {
+        await GarantieService.createGarantie(garantieData)
+        toast.success("Garantie créée avec succès")
+      }
+      setIsFormVisible(false)
+      fetchGaranties()
+    } catch (error) {
+      console.error(error)
+      toast.error("Erreur lors de l'enregistrement de la garantie")
+    }
+  }
 
   const handleSearch = (query: string) => {
-    setGaranties(
-      mockGaranties.filter((garantie) =>
-        garantie.description.toLowerCase().includes(query.toLowerCase())
-      )
-    );
-  };
+    const filtered = garanties.filter(
+      (garantie) =>
+        garantie.couverture.toLowerCase().includes(query.toLowerCase()) ||
+        garantie.type.toLowerCase().includes(query.toLowerCase()),
+    )
+    setFilteredGaranties(filtered)
+    setCurrentPage(1)
+  }
 
-  const handleFilter = (filter: string) => {
-    if (filter === '') {
-      setGaranties(mockGaranties);
+  const handleFilter = (statut: string) => {
+    if (statut === "") {
+      setFilteredGaranties(garanties)
     } else {
-      setGaranties(
-        mockGaranties.filter((garantie) => garantie.status === filter)
-      );
+      const filtered = garanties.filter((garantie) => garantie.statut === statut)
+      setFilteredGaranties(filtered)
     }
-  };
+    setCurrentPage(1)
+  }
+
+  // Pagination
+  const indexOfLastGarantie = currentPage * garantiesPerPage
+  const indexOfFirstGarantie = indexOfLastGarantie - garantiesPerPage
+  const currentGaranties = filteredGaranties.slice(indexOfFirstGarantie, indexOfLastGarantie)
+  const totalPages = Math.ceil(filteredGaranties.length / garantiesPerPage)
 
   return (
-    <div className="">
-      <h1 className="text-2xl font-bold mb-4">Gestion des Garanties</h1>
+    <div className="container mx-auto p-4">
+      <div className="sm:flex sm:items-center sm:justify-between mb-6">
+        <h1 className="text-2xl font-bold">Gestion des Garanties</h1>
+        <Button onClick={handleAddGarantie} className="flex items-center gap-2">
+          <Plus className="w-4 h-4" />
+          Ajouter une garantie
+        </Button>
+      </div>
+
+      {error && <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">{error}</div>}
+
       <SearchAndFilters
         onSearch={handleSearch}
         onFilter={handleFilter}
         filterOptions={[
-          { value: 'Actif', label: 'Actif' },
-          { value: 'Expiré', label: 'Expiré' },
+          { value: "", label: "Tous" },
+          { value: "Active", label: "Active" },
+          { value: "Expirée", label: "Expirée" },
+          { value: "En attente", label: "En attente" },
         ]}
         placeholder="Rechercher une garantie..."
       />
-      <button
-        onClick={handleAddGarantie}
-        className="bg-blue-500 text-white py-2 px-4 rounded my-4"
-      >
-        Ajouter une garantie
-      </button>
-      <GarantieTable
-        garanties={currentGaranties}
-        onEditGarantie={handleEditGarantie}
-        onDeleteGarantie={handleDeleteGarantie}
-      />
 
+      {isLoading ? (
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+        </div>
+      ) : (
+        <GarantieTable
+          garanties={currentGaranties}
+          onEditGarantie={handleEditGarantie}
+          onDeleteGarantie={handleDeleteGarantie}
+        />
+      )}
+
+      {/* Pagination */}
       <div className="flex justify-center mt-4">
         {Array.from({ length: totalPages }, (_, index) => (
-          <button
+          <Button
             key={index + 1}
-            onClick={() => handleChangePage(index + 1)}
-            className={`px-4 py-2 mx-1 rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            onClick={() => setCurrentPage(index + 1)}
+            variant={currentPage === index + 1 ? "default" : "outline"}
+            className="mx-1"
           >
             {index + 1}
-          </button>
+          </Button>
         ))}
       </div>
 
       {isFormVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <GarantieForm
             onSubmit={handleSubmitGarantie}
-            onCancel={handleCancelForm}
+            onCancel={() => setIsFormVisible(false)}
             initialData={currentGarantie || undefined}
           />
         </div>
       )}
     </div>
-  );
+  )
 }
 
-export default GarantieManagementPage;

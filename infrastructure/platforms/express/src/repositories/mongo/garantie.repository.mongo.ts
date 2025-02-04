@@ -73,22 +73,18 @@ export class GarantieMgRepository implements GarantieMongoRepository {
 
     async findAll(): Promise<Garantie[]> {
         try {
-            const garanties = await GarantieMongo.aggregate([
-                {
-                    $project: {
-                        _id: 1,
-                        panne: { _id: 1 },
-                        moto: { _id: 1 },
-                        couverture: 1,
-                        type: 1,
-                        dateDebut: 1,
-                        dateFin: 1,
-                        statut: 1
-                    }
-                }
-            ]);
+            const garanties = await GarantieMongo.find().select({
+                _id: 1,
+                panne: { _id: 1 },
+                moto: { _id: 1 },
+                couverture: 1,
+                type: 1,
+                dateDebut: 1,
+                dateFin: 1,
+                statut: 1
+            });
 
-            return garanties.map(garantie => this.toDomain(garantie as GarantieMongoModel));
+            return garanties.map(garantie => this.toDomain(garantie as unknown as GarantieMongoModel));
         } catch (error) {
             throw error;
         }
@@ -96,7 +92,7 @@ export class GarantieMgRepository implements GarantieMongoRepository {
 
     async update(garantie: Garantie): Promise<Garantie> {
         try {
-            const updated = await GarantieMongo.updateOne({
+            const updated = await GarantieMongo.findOneAndUpdate({
                 _id: garantie.garantieId.toString()
             }, {
                 panne: {
@@ -110,7 +106,9 @@ export class GarantieMgRepository implements GarantieMongoRepository {
                 dateDebut: garantie.dateDebut,
                 dateFin: garantie.dateFin,
                 statut: garantie.statut
-            });
+            },
+            { new: true }
+        );
 
             if (!updated) throw new Error('Garantie not found or not updated');
 
@@ -132,16 +130,16 @@ export class GarantieMgRepository implements GarantieMongoRepository {
         }
     }
 
-    private toDomain(garantie: GarantieMongoModel): Garantie {
+    private toDomain(garantieMongo: GarantieMongoModel): Garantie {
         return Garantie.create(
-            new UUID(garantie._id),
-            new UUID(garantie.panne._id),
-            new UUID(garantie.moto._id),
-            garantie.couverture,
-            garantie.type,
-            garantie.dateDebut,
-            garantie.dateFin,
-            garantie.statut
+            new UUID(garantieMongo._id),
+            new UUID(garantieMongo.panne._id),
+            new UUID(garantieMongo.moto._id),
+            garantieMongo.couverture,
+            garantieMongo.type,
+            garantieMongo.dateDebut,
+            garantieMongo.dateFin,
+            garantieMongo.statut
         );
     }
 

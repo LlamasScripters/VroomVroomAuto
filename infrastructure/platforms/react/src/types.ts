@@ -1,14 +1,20 @@
-export interface User {
-  userId: string;
-  username: string;
-  email: string;
-}
 export interface Client {
   id?: string;
   nom: string;
   prenom: string;
   mail: string;
   telephone: string;
+}
+
+export interface Employe {
+  id?: string;
+  nom: string;
+  prenom: string;
+  mail: string;
+  telephone: string;
+  dateCreation: Date;
+  derniereConnexion: Date;
+  role: string;
 }
 
 export interface Entretien {
@@ -34,24 +40,50 @@ export interface Entretien {
   };
 }
 
-export interface Employe {
-  id?: string;
+export interface EntretienPiece {
+  pieceId: string;
   nom: string;
-  prenom: string;
-  mail: string;
-  telephone: string;
-  dateCreation: Date;
-  derniereConnexion: Date;
-  role: string;
+  reference: string;
+  quantite: number;
+  prixUnitaire: number;
+  piece?: {
+    reference: string;
+    nom: string;
+  };
 }
 
 export interface Garantie {
-  id?: string;
+  garantieId?: string;
+  panneId: string;
   motoId: string;
-  description: string;
+  couverture: string;
+  type: string;
   dateDebut: string;
   dateFin: string;
-  status: string;
+  statut: string;
+}
+
+export interface MaintenancePlanningResultDTO {
+  success: boolean;
+  entretienId?: string;
+  message: string;
+  datePrevue: string;
+  kilometragePrevu: number;
+  modele: string;
+  marque: string;
+  regleAppliquee: {
+    intervalleKilometrage: number;
+    intervalleTemps: number;
+    typeEntretien: string;
+  };
+}
+
+export interface MaintenanceRule {
+  id?: string;
+  modele: string;
+  intervalleKilometrage: number;
+  intervalleTemps: number;
+  typeEntretien: string;
 }
 
 export interface Moto {
@@ -88,6 +120,12 @@ export interface Piece {
   stockCritique: boolean;
 }
 
+export interface PiecePlanification {
+  pieceId: string;
+  quantite: number;
+  prixUnitaire: number;
+}
+
 export interface Reparation {
   id?: string;
   panneId: string;
@@ -96,43 +134,8 @@ export interface Reparation {
   actionsCorrectives: string[];
 }
 
-export interface MaintenanceRule {
-  id?: string;
-  modele: string;
-  intervalleKilometrage: number;
-  intervalleTemps: number;
-  typeEntretien: string;
-}
-
-export interface EntretienPiece {
-  pieceId: string;
-  nom: string;
-  reference: string;
-  quantite: number;
-  prixUnitaire: number;
-  piece?: {
-      reference: string;
-      nom: string;
-  };
-}
-
-export interface PiecePlanification {
-  pieceId: string;
-  quantite: number;
-  prixUnitaire: number;
-}
-
-export interface MaintenancePlanningResultDTO {
-  success: boolean;
-  entretienId?: string;
-  message: string;
-  datePrevue: string;
-  kilometragePrevu: number;
-  modele: string;
-  marque: string;
-  regleAppliquee: {
-    intervalleKilometrage: number;
-    intervalleTemps: number;
-    typeEntretien: string;
-  };
+export interface User {
+  userId: string;
+  username: string;
+  email: string;
 }
