@@ -7,6 +7,7 @@ import { User } from "@domain/entities/UserEntity";
 import { UserRepository } from "@application/repositories/UserRepository";
 import UserSQL from "../modelsSQL/user.sql";
 import { Model } from "sequelize";
+import { Op } from "sequelize";
 
 
 interface UserModel extends Model {
@@ -35,7 +36,7 @@ export class UserRepositorySQL implements UserRepository {
                 isValidated: user.isValidated,
                 dateCreation: user.dateCreation,
                 derniereConnexion: user.derniereConnexion
-            });
+            }) as UserModel | null;
 
             return this.toDomain(createdUser as UserModel);
 
@@ -71,6 +72,18 @@ export class UserRepositorySQL implements UserRepository {
         const users = await UserSQL.findAll() as UserModel[];
         return users.map(user => this.toDomain(user));
     }
+
+    
+    async findFirstGestionnaire(): Promise<User | null> {
+        const gestionnaire = await UserSQL.findOne({
+          where: {
+            role: {
+              [Op.in]: ['gestionnaire', 'admin']
+            }
+          }
+        });
+        return gestionnaire ? this.toDomain(gestionnaire as UserModel) : null;
+      }
 
     async update(user: User): Promise<User> {
         await UserSQL.update({

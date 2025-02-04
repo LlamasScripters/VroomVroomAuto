@@ -46,10 +46,11 @@ export class EntretienSQLRepository implements EntretienRepository {
         kilometrageEntretien: entretien.kilometrageEntretien,
         recommandationsTechnicien: entretien.recommandationsTechnicien,
         recommandationsGestionnaireClient: entretien.recommandationsGestionnaireClient,
-        coutMainOeuvre: entretien.coutMainOeuvre,  // Mise à jour
-        coutPieces: entretien.coutPieces,          // Ajouté
+        coutMainOeuvre: entretien.coutMainOeuvre,  
+        coutPieces: entretien.coutPieces,          
         statut: entretien.statut,
-        userId: entretien.userId.toString()
+        userId: entretien.userId.toString(),
+        gestionnaireId: entretien.gestionnaireId.toString(),
       });
 
       await saved.reload({

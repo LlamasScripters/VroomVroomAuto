@@ -10,6 +10,7 @@ import { CreateMaintenanceRuleDTO, UpdateMaintenanceRuleDTO } from '@application
 import { PlanifierEntretienDTO } from '@application/dtos/MaintenancePlanningDTO';
 import { PieceSQLRepository } from '../repositories/piece.repository.sql';
 import { EntretienPieceSQLRepository } from '../repositories/entretienPiece.repository.sql';
+import { UserRepositorySQL } from '../repositories/user.repository.sql';
 
 export class MaintenanceRuleController {
   private maintenanceRuleCrudUseCase: MaintenanceRuleCrudUseCase;
@@ -21,6 +22,7 @@ export class MaintenanceRuleController {
     const entretienRepository = new EntretienSQLRepository();
     const pieceRepository = new PieceSQLRepository();
     const entretienPiece = new EntretienPieceSQLRepository();
+    const userRepository = new UserRepositorySQL();
 
 
     this.maintenanceRuleCrudUseCase = new MaintenanceRuleCrudUseCase(maintenanceRuleRepository);
@@ -29,7 +31,8 @@ export class MaintenanceRuleController {
       motoRepository,
       entretienRepository,
       pieceRepository,
-      entretienPiece
+      entretienPiece,
+      userRepository
     );
   }
 

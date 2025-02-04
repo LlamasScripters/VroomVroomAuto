@@ -9,4 +9,5 @@ export interface UserRepository {
   delete(userId: UUID): Promise<boolean>;
   findAll(): Promise<User[]>;
   update(user: User): Promise<User>;
+  findFirstGestionnaire(): Promise<User | null>;
 }

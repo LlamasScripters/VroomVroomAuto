@@ -16,6 +16,7 @@ export interface PlanifierEntretienDTO {
   pieces: PiecePlanificationDTO[];
   coutMainOeuvre: number;
   userId: string;
+  gestionnaireId: string;
 }
 
 export interface MaintenancePlanningResultDTO {

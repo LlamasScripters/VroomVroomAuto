@@ -7,6 +7,7 @@ import { PieceRepository } from '@application/repositories/PieceRepository';
 import { EntretienPieceRepository } from '@application/repositories/EntretienPieceRepository';
 import { Entretien } from '@domain/entities/EntretienEntity';
 import { EntretienPiece } from '@domain/entities/EntretienPieceEntity';
+import { UserRepository } from '@application/repositories/UserRepository';
 import { 
   PlanifierEntretienDTO,
   MaintenancePlanningResultDTO 
@@ -18,7 +19,8 @@ export class PlanifierEntretienUseCase {
     private motoRepository: MotoRepository,
     private entretienRepository: EntretienRepository,
     private pieceRepository: PieceRepository,
-    private entretienPieceRepository: EntretienPieceRepository
+    private entretienPieceRepository: EntretienPieceRepository,
+    private userRepository: UserRepository
   ) {}
 
   async planifier(dto: PlanifierEntretienDTO): Promise<MaintenancePlanningResultDTO> {
@@ -54,6 +56,21 @@ export class PlanifierEntretienUseCase {
       const datePrevue = dto.datePrevue ? new Date(dto.datePrevue) : this.calculerProchaineDate(regle.intervalleTemps);
       const kilometragePrevu = dto.kilometragePrevu || this.calculerProchainKilometrage(moto.kilometrage, regle.intervalleKilometrage);
 
+      // vérif explicite de l'userId
+      if (!dto.userId) {
+        throw new Error('UserId manquant dans la requête');
+      }
+
+      console.log('DTO reçu:', {
+        userId: dto.userId,
+        motoId: dto.motoId,
+      });
+
+      const gestionnaire = await this.userRepository.findFirstGestionnaire();
+      if (!gestionnaire) {
+        throw new Error('Aucun gestionnaire disponible pour prendre en charge l\'entretien');
+      }
+
       // 5. Création de l'entretien
       const nouvelEntretien = Entretien.create(
         new UUID(),               // entretienId
@@ -65,8 +82,8 @@ export class PlanifierEntretienUseCase {
         dto.notes || '',         // recommandationsTechnicien
         '',                      // recommandationsGestionnaireClient
         'PLANIFIE',             // statut
-        new UUID(dto.userId),
-        new UUID(),    // userId
+        new UUID(dto.userId), //userId
+        gestionnaire.userId, // gestionnaireId
         dto.coutMainOeuvre || 0, // coutMainOeuvre
         coutPieces,           // coutPieces
         {                        // motoDetails
@@ -75,8 +92,13 @@ export class PlanifierEntretienUseCase {
             serialNumber: moto.serialNumber
         },
         undefined               // pieces (sera ajouté plus tard)
-         // gestionnaireId à gérer avec l'auth
+         
     );
+
+      console.log('Entretien avant sauvegarde:', {
+        userId: nouvelEntretien.userId.toString(),
+        gestionnaireId: nouvelEntretien.gestionnaireId.toString()
+      });
 
       const entretienSaved = await this.entretienRepository.save(nouvelEntretien);
 

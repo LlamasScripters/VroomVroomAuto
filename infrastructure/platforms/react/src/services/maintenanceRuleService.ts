@@ -1,5 +1,6 @@
 import { MaintenanceRule } from '../types';
 import { MaintenancePlanningResultDTO } from '../../../../../application/dtos/MaintenancePlanningDTO';
+import { useAuthStore } from '../stores/authStore';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
@@ -51,23 +52,32 @@ export const MaintenanceRuleService = {
 
   async planifierEntretien(planification: {
     motoId: string;
+    userId: string;
     datePrevue?: string;
     kilometragePrevu?: number;
     typeEntretien?: string;
     notes?: string;
+    coutMainOeuvre: number;
+    pieces: Array<{
+      pieceId: string;
+      quantite: number;
+      prixUnitaire: number;
+    }>;
   }): Promise<MaintenancePlanningResultDTO> {
     const response = await fetch(`${API_URL}/maintenance/planification`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${useAuthStore.getState().token}`
       },
       body: JSON.stringify(planification),
     });
-
+  
     if (!response.ok) {
-      throw new Error('Erreur lors de la planification de l\'entretien');
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Erreur lors de la planification de l\'entretien');
     }
-
+  
     return response.json();
   }
 };

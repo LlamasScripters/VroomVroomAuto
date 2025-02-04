@@ -10,6 +10,7 @@ import { toast } from "react-hot-toast";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from 'lucide-react';
+import { useAuthStore } from '@/stores/authStore';
 
 interface PiecePlanifiee {
   pieceId: string;
@@ -50,6 +51,8 @@ const PlanificationEntretienForm: React.FC<PlanificationEntretienFormProps> = ({
   const [piecesPlanifiees, setPiecesPlanifiees] = useState<PiecePlanifiee[]>([]);
   const [selectedPieceId, setSelectedPieceId] = useState<string>('');
   const [quantiteSelectionnee, setQuantiteSelectionnee] = useState<number>(1);
+
+  const user = useAuthStore(state => state.user);
 
   const [formData, setFormData] = useState({
     motoId: '',
@@ -173,6 +176,11 @@ const PlanificationEntretienForm: React.FC<PlanificationEntretienFormProps> = ({
     // Soumission du formulaire
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
+
+      if (!user?.id) {
+        toast.error("Erreur : Utilisateur non authentifié");
+        return;
+      }
   
       // commenté car les pièces peuvent être facultatives
       // if (piecesPlanifiees.length === 0) { 
@@ -182,6 +190,7 @@ const PlanificationEntretienForm: React.FC<PlanificationEntretienFormProps> = ({
   
       const planification = {
         ...formData,
+        userId: user.id,
         pieces: piecesPlanifiees.map(p => ({
           pieceId: p.pieceId,
           quantite: p.quantite,

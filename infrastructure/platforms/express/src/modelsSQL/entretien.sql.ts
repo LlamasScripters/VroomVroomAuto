@@ -57,7 +57,7 @@ const EntretienSQL = connection.define('Entretien', {
   },
   userId: {
     type: DataTypes.UUID,
-    allowNull: false, 
+    allowNull: true, 
     references: {
       model: 'Users',
       key: 'userId'
@@ -66,7 +66,7 @@ const EntretienSQL = connection.define('Entretien', {
   
   gestionnaireId: {
     type: DataTypes.UUID,
-    allowNull: false, 
+    allowNull: true, 
     references: {
       model: 'Users',
       key: 'userId'
