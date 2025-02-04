@@ -10,6 +10,7 @@ import PanneSQL from './panne.sql';
 import ReparationSQL from './reparation.sql';
 import MaintenanceRuleSQL from './maintenanceRule.sql';
 import EntretienPieceSQL from './entretienPiece.sql';
+import GarantieSQL from './garantie.sql';
 
 // User associations 
 UserSQL.hasMany(MotoSQL, { foreignKey: 'userId', as: 'motos' });
@@ -77,3 +78,10 @@ EntretienSQL.belongsTo(UserSQL, { foreignKey: 'userId', as: 'user' });
 // User-Entretien (pour le gestionnaire) associations 
 UserSQL.hasMany(EntretienSQL, { foreignKey: 'gestionnaireId', as: 'entretiensGeres' });
 EntretienSQL.belongsTo(UserSQL, { foreignKey: 'gestionnaireId', as: 'gestionnaire' });
+
+// Garantie associations
+MotoSQL.hasMany(GarantieSQL, { foreignKey: 'motoId' });
+GarantieSQL.belongsTo(MotoSQL, { foreignKey: 'motoId' });
+
+PanneSQL.hasMany(GarantieSQL, { foreignKey: 'panneId' });
+GarantieSQL.belongsTo(PanneSQL, { foreignKey: 'panneId' });

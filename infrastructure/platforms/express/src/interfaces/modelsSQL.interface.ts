@@ -52,6 +52,17 @@ export interface EssaiSQL {
     userId: string;
 }
 
+export interface GarantieSQL {
+    garantieId: string;
+    panneId: string;
+    motoId: string;
+    couverture: string;
+    type: string;
+    dateDebut: Date;
+    dateFin: Date;
+    statut: string;
+}
+
 export interface IncidentSQL {
     incidentId: string;
     essaiId: string;

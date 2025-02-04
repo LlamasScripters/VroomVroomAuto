@@ -38,7 +38,6 @@ export class PanneUseCases {
   async getPanneById(panneData: GetPanneDTO): Promise<Panne | null> {
     const panneIdentifier = new UUID(panneData.panneId);
     return await this.panneMongoRepository.findById(panneIdentifier);
-    // return await this.panneRepository.findById(panneIdentifier);
   }
 
   async updatePanne(updatedData: UpdatePanneDTO): Promise<Panne | null> {
@@ -73,6 +72,5 @@ export class PanneUseCases {
 
   async listAllPannes(): Promise<Panne[]> {
     return this.panneMongoRepository.findAll();
-    // return this.panneRepository.findAll();
   }
 }

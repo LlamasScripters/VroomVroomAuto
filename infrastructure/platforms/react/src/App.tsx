@@ -99,7 +99,7 @@ function App() {
         <Route path="/entretiens/mes-entretiens/historique" element={<ProtectedLayout requiredRole={["user","gestionnaire","admin"]}><ClientEntretiensHistoriquePage /></ProtectedLayout>} />
         <Route path="/maintenance-rules" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><MaintenanceRuleManagementPage /></ProtectedLayout>} />
         <Route path="/pannes" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><PanneManagementPage /></ProtectedLayout>} />
-        <Route path="/garanties" element={<ProtectedLayout><GarantieManagementPage /></ProtectedLayout>} />
+        <Route path="/garanties" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><GarantieManagementPage /></ProtectedLayout>} />
         <Route path="/reparations" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><ReparationManagementPage /></ProtectedLayout>} />
         <Route path="/pieces" element={<ProtectedLayout><PieceManagementPage /></ProtectedLayout>} />
         <Route path="/mise-a-jour-km" element={<ProtectedLayout><MiseAJourKilometrage /></ProtectedLayout>} />
