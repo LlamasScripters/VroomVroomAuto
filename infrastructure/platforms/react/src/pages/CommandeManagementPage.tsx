@@ -166,12 +166,13 @@ export default function CommandeManagementPage() {
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
         </div>
       ) : (
-        <CommandeTable
-          commandes={currentCommandes}
-          onEditCommande={handleEditCommande}
-          onDeleteCommande={handleDeleteCommande}
-          onViewCommande={handleViewCommande}
-        />
+    <CommandeTable
+      commandes={currentCommandes}
+      onEditCommande={handleEditCommande}
+      onDeleteCommande={handleDeleteCommande}
+      onViewCommande={handleViewCommande}
+      onRefresh={fetchCommandes}
+    />
       )}
 
       <div className="flex justify-center mt-4">

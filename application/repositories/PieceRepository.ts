@@ -8,6 +8,6 @@ export interface PieceRepository {
   findAll(): Promise<Piece[]>;
   update(piece: Piece): Promise<Piece>;
   delete(pieceId: UUID): Promise<boolean>;
-  updateStock(pieceId: UUID, quantite: number): Promise<Piece>;
+  updateStock(pieceId: UUID, quantite: number, type: 'AJOUT' | 'RETRAIT'): Promise<Piece>;
   findByCriticalStock(): Promise<Piece[]>;
 }

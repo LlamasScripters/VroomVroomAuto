@@ -12,6 +12,7 @@ router.get('/:id', (req, res) => controller.getCommandeById(req, res));
 router.post('/', (req, res) => controller.createCommande(req, res));
 router.put('/:id', (req, res) => controller.updateCommande(req, res));
 router.delete('/:id', (req, res) => controller.deleteCommande(req, res));
+router.patch('/:id/statut', (req, res) => controller.updateCommandeStatus(req, res));
 
 
 export default router;

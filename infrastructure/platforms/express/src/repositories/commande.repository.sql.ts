@@ -60,6 +60,7 @@ export class CommandeSQLRepository implements CommandeRepository {
     const commande = await CommandeSQL.findByPk(commandeId.toString(), {
       include: [{
         model: PieceSQL,
+        as: 'piece',
         attributes: ['nom', 'reference', 'prixUnitaire']
       }]
     });
@@ -114,6 +115,7 @@ export class CommandeSQLRepository implements CommandeRepository {
     const updated = await CommandeSQL.findByPk(commande.commandeId.toString(), {
       include: [{
         model: PieceSQL,
+        as: 'piece',
         attributes: ['nom', 'reference', 'prixUnitaire']
       }]
     });
@@ -143,6 +145,50 @@ export class CommandeSQLRepository implements CommandeRepository {
 
     return commandes.map(commande => this.toDomain(commande as CommandeModel));
   }
+
+  async updateStatus(commandeId: UUID, nouveauStatut: string): Promise<Commande> {
+    try {
+      const existingCommande = await CommandeSQL.findOne({
+        where: { commandeId: commandeId.toString() },
+        include: [{
+          model: PieceSQL,
+          as: 'piece',
+          required: false
+        }]
+      });
+
+      if (!existingCommande) {
+        throw new Error('Commande non trouvée');
+      }
+
+      (existingCommande as CommandeModel).statut = nouveauStatut;
+      await existingCommande.save();
+
+      const updatedCommande = await CommandeSQL.findOne({
+        where: { commandeId: commandeId.toString() },
+        include: [{
+          model: PieceSQL,
+          as: 'piece',
+          required: false,
+          attributes: ['nom', 'reference', 'prixUnitaire']
+        }]
+      });
+
+      if (!updatedCommande) {
+        throw new Error('Commande non trouvée après mise à jour');
+      }
+
+      const plainCommande = updatedCommande.get({ plain: true });
+      return this.toDomain({
+        ...plainCommande,
+        piece: plainCommande.piece || undefined
+      });
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du statut:', error);
+      throw error;
+    }
+  }
+
 
   private toDomain(model: CommandeModel): Commande {
     return Commande.create(

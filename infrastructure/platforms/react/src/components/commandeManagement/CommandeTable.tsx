@@ -3,6 +3,7 @@ import { Commande } from '../../types';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Edit, Eye, Trash2 } from 'lucide-react';
+import { CommandeStatusUpdate } from './CommandeStatusUpdate';
 
 interface CommandeTableProps {
   commandes: Commande[];
@@ -10,6 +11,7 @@ interface CommandeTableProps {
   onDeleteCommande: (id: string) => void;
   onViewCommande?: (commande: Commande) => void;
   readOnly?: boolean;
+  onRefresh: () => void;
 }
 
 export function CommandeTable({
@@ -17,7 +19,8 @@ export function CommandeTable({
   onEditCommande,
   onDeleteCommande,
   onViewCommande,
-  readOnly = false
+  readOnly = false,
+  onRefresh
 }: CommandeTableProps) {
   return (
     <Table>
@@ -45,6 +48,7 @@ export function CommandeTable({
             <TableCell>{new Date(commande.dateCommande).toLocaleDateString()}</TableCell>
             <TableCell>{new Date(commande.dateLivraisonPrevue).toLocaleDateString()}</TableCell>
             <TableCell>
+            <div className="flex flex-col space-y-2">
               <span className={`px-2 py-1 rounded-full text-sm ${
                 commande.statut === 'LIVREE' ? 'bg-green-100 text-green-800' :
                 commande.statut === 'EN_COURS' ? 'bg-blue-100 text-blue-800' :
@@ -53,7 +57,15 @@ export function CommandeTable({
               }`}>
                 {commande.statut}
               </span>
-            </TableCell>
+              {!readOnly && (
+                <CommandeStatusUpdate
+                  commandeId={commande.commandeId}
+                  statutActuel={commande.statut}
+                  onStatusUpdate={onRefresh}
+                />
+              )}
+            </div>
+          </TableCell>
             <TableCell className="text-right">
               <Button
                 variant="outline"

@@ -84,15 +84,19 @@ export class PieceSQLRepository implements PieceRepository {
     return deleted > 0;
   }
 
-  async updateStock(pieceId: UUID, quantite: number): Promise<Piece> {
+  async updateStock(pieceId: UUID, quantite: number, type: 'AJOUT' | 'RETRAIT'): Promise<Piece> {
     const piece = await PieceSQLModel.findByPk(pieceId.toString());
     if (!piece) {
       throw new Error("Pièce non trouvée");
     }
-
-    (piece as PieceModel).quantiteEnStock = quantite;
+  
+    const nouvelleQuantite = type === 'AJOUT' 
+      ? (piece as PieceModel).quantiteEnStock + quantite
+      : (piece as PieceModel).quantiteEnStock - quantite;
+  
+    (piece as PieceModel).quantiteEnStock = nouvelleQuantite;
     await piece.save();
-
+  
     return this.toDomain(piece as PieceModel);
   }
 

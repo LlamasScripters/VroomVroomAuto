@@ -9,4 +9,5 @@ export interface CommandeRepository {
   update(commande: Commande): Promise<Commande>;
   delete(commandeId: UUID): Promise<boolean>;
   findByPieceId(pieceId: UUID): Promise<Commande[]>;
+  updateStatus(commandeId: UUID, nouveauStatut: string): Promise<Commande>;
 }

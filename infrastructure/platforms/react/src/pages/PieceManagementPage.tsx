@@ -7,6 +7,7 @@ import { PieceForm } from '../components/pieceManagement/PieceForm';
 import { PieceDetailsView } from '../components/pieceManagement/PieceDetailView';
 import SearchAndFilters from '../components/shared/SearchAndFilters';
 import { toast } from "react-hot-toast";
+import { PanierCommande } from '../components/commandeManagement/PanierCommande';
 
 export default function PieceManagementPage() {
   const [pieces, setPieces] = useState<Piece[]>([]);
@@ -162,8 +163,11 @@ export default function PieceManagementPage() {
           onEditPiece={handleEditPiece}
           onDeletePiece={handleDeletePiece}
           onViewPiece={handleViewPiece}
+          showAddToCart={true}
         />
+        
       )}
+      <PanierCommande />
 
       {/* Pagination */}
       <div className="flex justify-center mt-4">

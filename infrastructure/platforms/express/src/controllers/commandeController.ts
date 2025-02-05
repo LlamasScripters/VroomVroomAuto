@@ -6,16 +6,19 @@ import { PieceSQLRepository } from '../repositories/piece.repository.sql';
 import * as CommandeMapper from '@application/mappers/CommandeMapper';
 import { CreateCommandeDTO, UpdateCommandeDTO } from '@application/dtos/CommandeDTO';
 import { UUID } from '@domain/value-objects/UUID';
-
+import { CommandeStatusUseCases } from '@application/usecases/commande/CommandeStatusUseCases';
 export class CommandeController {
   private commandeUseCases: CommandeCrudUseCases;
   private pieceRepository: PieceSQLRepository;
+  private commandeStatusUseCases: CommandeStatusUseCases;
 
   constructor() {
     const commandeRepository = new CommandeSQLRepository();
     const pieceRepository = new PieceSQLRepository();
     this.commandeUseCases = new CommandeCrudUseCases(commandeRepository, pieceRepository);
     this.pieceRepository = pieceRepository;
+
+    this.commandeStatusUseCases = new CommandeStatusUseCases(commandeRepository, pieceRepository);
   }
 
   async createCommande(req: Request, res: Response): Promise<void> {
@@ -104,6 +107,36 @@ export class CommandeController {
       }
 
       res.status(204).send();
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  async updateCommandeStatus(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { statut } = req.body;
+      
+      if (!['EN_ATTENTE', 'EN_COURS', 'LIVREE', 'ANNULEE'].includes(statut)) {
+        res.status(400).json({ error: 'Statut invalide' });
+        return;
+      }
+  
+      const commande = await this.commandeStatusUseCases.updateStatus(id, statut);
+
+      if (!commande) {
+        res.status(404).json({ error: 'Commande non trouvée' });
+        return;
+      }
+  
+      if (!commande) {
+        res.status(404).json({ error: 'Commande non trouvée' });
+        return;
+      }
+  
+      const commandeDTO = CommandeMapper.toDTO(commande);
+      res.json(commandeDTO);
+  
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }

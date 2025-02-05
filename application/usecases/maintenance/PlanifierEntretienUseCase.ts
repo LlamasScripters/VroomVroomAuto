@@ -119,7 +119,7 @@ export class PlanifierEntretienUseCase {
           const pieceEntity = await this.pieceRepository.findById(new UUID(piece.pieceId));
           if (pieceEntity) {
             const newStock = pieceEntity.quantiteEnStock - piece.quantite;
-            await this.pieceRepository.updateStock(pieceEntity.pieceId, newStock);
+            await this.pieceRepository.updateStock(pieceEntity.pieceId, newStock, 'RETRAIT');
           }
         }
       }

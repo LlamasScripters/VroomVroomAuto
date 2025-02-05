@@ -88,5 +88,28 @@ export const CommandeService = {
     } catch (error) {
       throw new Error(`Erreur lors de la suppression de la commande: ${error}`);
     }
+  },
+
+  async updateStatut(commandeId: string, nouveauStatut: string): Promise<void> {
+    const token = useAuthStore.getState().token;
+
+    try {
+      const response = await fetch(`${API_URL}/commandes/${commandeId}/statut`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ statut: nouveauStatut })
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du statut');
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+      throw new Error('Erreur lors de la mise à jour du statut');
+    }
   }
+
 };
