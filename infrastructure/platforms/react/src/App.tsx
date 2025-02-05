@@ -18,6 +18,11 @@ import ClientEntretiensPage from './pages/ClientEntretiensPage';
 import ClientEntretiensHistoriquePage from './pages/ClientEntretiensHistoriquePage';
 import MiseAJourKilometrage from './pages/MisAJourKilometrage';
 import CommandeManagementPage from "./pages/CommandeManagementPage";
+import AdminPieceFournisseurPage from "./pages/AdminPieceFournisseurPage";
+import SuiviCommandesPage from "./pages/SuiviCommandesPage";
+import HistoriqueCommandesPage from './pages/HistoriqueCommandesPage';
+import CataloguePiecesFournisseurPage from './pages/CataloguePiecesFournisseurPage';
+
 
 import { AppSidebar } from "../src/components/sideBar/appSidebar";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,} from "@/components/ui/breadcrumb";
@@ -103,10 +108,15 @@ function App() {
         <Route path="/reparations" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><ReparationManagementPage /></ProtectedLayout>} />
         <Route path="/pieces" element={<ProtectedLayout><PieceManagementPage /></ProtectedLayout>} />
         <Route path="/mise-a-jour-km" element={<ProtectedLayout><MiseAJourKilometrage /></ProtectedLayout>} />
-        <Route path="/commandes" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><CommandeManagementPage /></ProtectedLayout>} />
         <Route path="/clients" element={<ProtectedLayout><ClientManagementPage /></ProtectedLayout>} />
         <Route path="/employes" element={<ProtectedLayout><EmployeManagementPage /></ProtectedLayout>} />
         <Route path="/statistiques" element={<ProtectedLayout><StatisticsPage /></ProtectedLayout>} />
+        <Route path="/admin/commandes" element={<ProtectedLayout requiredRole={["admin"]}><CommandeManagementPage /></ProtectedLayout>} />
+        <Route path="/admin/pieces" element={<ProtectedLayout requiredRole={["admin"]}><AdminPieceFournisseurPage /></ProtectedLayout>} />
+        <Route path="/commandes/suivi-commandes" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><SuiviCommandesPage /></ProtectedLayout>} />
+        <Route path="/commandes/historique" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><HistoriqueCommandesPage /></ProtectedLayout>} />
+        <Route path="/commandes/catalogue-pieces" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><CataloguePiecesFournisseurPage /></ProtectedLayout>} />
+
       </Routes>
     </Router>
   );

@@ -25,27 +25,37 @@ export const CommandeService = {
     }
   },
 
-  async createCommande(commande: Omit<Commande, 'commandeId'>): Promise<Commande> {
-    const token = useAuthStore.getState().token;
+    async createCommande(commandeData: {
+      pieceId: string;
+      quantiteCommandee: number;
+      dateLivraisonPrevue: string;
+      gestionnaireid: string;
+  }): Promise<Commande> {
+      const token = useAuthStore.getState().token;
 
-    try {
-      const response = await fetch(`${API_URL}/commandes`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(commande)
-      });
+      try {
+          console.log('Données commande envoyées:', commandeData);
 
-      if (!response.ok) {
-        throw new Error('Erreur lors de la création de la commande');
+          const response = await fetch(`${API_URL}/commandes`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify(commandeData)
+          });
+
+          if (!response.ok) {
+              const errorData = await response.json();
+              console.error('Réponse serveur:', errorData);
+              throw new Error(errorData.error || 'Erreur lors de la création de la commande');
+          }
+
+          return response.json();
+      } catch (error) {
+          console.error('Erreur détaillée:', error);
+          throw error;
       }
-
-      return response.json();
-    } catch (error) {
-      throw new Error(`Erreur lors de la création de la commande: ${error}`);
-    }
   },
 
   async updateCommande(commande: Commande): Promise<Commande> {

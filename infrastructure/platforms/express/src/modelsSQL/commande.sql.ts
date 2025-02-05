@@ -12,8 +12,8 @@ const CommandeSQL = connection.define('Commande', {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-      model: 'Pieces',
-      key: 'pieceId'
+        model: 'PiecesFournisseur', 
+        key: 'pieceId'
     }
   },
   quantiteCommandee: {
@@ -44,7 +44,7 @@ const CommandeSQL = connection.define('Commande', {
       isIn: [['EN_ATTENTE', 'EN_COURS', 'LIVREE', 'ANNULEE']]
     }
   },
-  userId: {
+  gestionnaireid: {
     type: DataTypes.UUID,
     allowNull: false,
   }

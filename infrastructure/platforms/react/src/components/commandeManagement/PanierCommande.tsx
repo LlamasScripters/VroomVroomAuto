@@ -16,33 +16,35 @@ export function PanierCommande() {
     );
 
     const handleValidateCommande = async () => {
-        try {
-          // création des commandes pour chaque pièce du panier
-          const commandePromises = panier.map(async (item) => {
-            const commandeData = {
-              pieceId: item.pieceId,
-              quantiteCommandee: item.quantite,
-              dateLivraisonPrevue: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-              userId: user?.id || '',
-              coutTotal: (item.prixUnitaire || 0) * item.quantite,
-              dateCommande: new Date().toISOString(),
-              statut: 'EN_ATTENTE'
-            };
-    
-            await CommandeService.createCommande(commandeData);
-          });
-    
-          await Promise.all(commandePromises);
-          
+      try {
+          if (!user) {
+              toast.error("Vous devez être connecté pour passer une commande");
+              return;
+          }
+  
+          for (const item of panier) {
+              const commandeData = {
+                  pieceId: item.pieceId,
+                  quantiteCommandee: item.quantite,
+                  dateLivraisonPrevue: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+                  gestionnaireid: user.id
+              };
+  
+              try {
+                  await CommandeService.createCommande(commandeData);
+              } catch (error) {
+                  console.error(`Erreur pour la pièce ${item.pieceId}:`, error);
+                  throw error;
+              }
+          }
+  
           clearPanier();
-          
-          toast.success('Commande créée avec succès');
-          
-        } catch (error) {
-          console.error('Erreur lors de la création de la commande:', error);
-          toast.error("Une erreur est survenue lors de la validation de la commande");
-        }
-      };
+          toast.success('Commandes créées avec succès');
+      } catch (error) {
+          console.error('Erreur lors de la validation du panier:', error);
+          toast.error("Une erreur est survenue lors de la validation des commandes");
+      }
+  };
         
 
   return (

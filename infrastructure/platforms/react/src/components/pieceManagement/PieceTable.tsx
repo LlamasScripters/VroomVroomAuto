@@ -2,9 +2,7 @@
 import { Piece } from '../../types';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Edit, Eye, Trash2, Plus } from 'lucide-react';
-import { useState } from 'react';
-import { useCommandeStore } from '../../stores/commandeStore';
+import { Edit, Eye, Trash2 } from 'lucide-react';
 
 interface PieceTableProps {
   pieces: Piece[];
@@ -21,21 +19,7 @@ export function PieceTable({
   onDeletePiece,
   onViewPiece,
   readOnly = false,
-  showAddToCart = false
 }: PieceTableProps) {
-
-  const [selectedQuantities, setSelectedQuantities] = useState<Record<string, number>>({});
-  const addToPanier = useCommandeStore(state => state.addToPanier);
-
-  const handleQuantityChange = (pieceId: string, value: number) => {
-    setSelectedQuantities(prev => ({ ...prev, [pieceId]: value }));
-  };
-
-  const handleAddToCart = (piece: Piece) => {
-    const quantity = selectedQuantities[piece.pieceId!] || 1;
-    addToPanier(piece, quantity);
-    setSelectedQuantities(prev => ({ ...prev, [piece.pieceId!]: 1 }));
-  };
 
 
   return (
@@ -50,7 +34,6 @@ export function PieceTable({
           <TableHead>Prix unitaire</TableHead>
           <TableHead>Fournisseur</TableHead>
           <TableHead>État du stock</TableHead>
-          {showAddToCart && <TableHead>Ajouter au panier</TableHead>}
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -69,28 +52,6 @@ export function PieceTable({
                 {piece.stockCritique ? 'Critique' : 'Normal'}
               </span>
             </TableCell>
-            {showAddToCart && (
-              <TableCell>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="number"
-                    min="1"
-                    value={selectedQuantities[piece.pieceId!] || 1}
-                    onChange={(e) => handleQuantityChange(piece.pieceId!, parseInt(e.target.value))}
-                    className="w-16 px-2 py-1 border rounded"
-                  />
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleAddToCart(piece)}
-                    disabled={piece.quantiteEnStock === 0}
-                  >
-                    <Plus className="h-4 w-4 mr-1" />
-                    Ajouter
-                  </Button>
-                </div>
-              </TableCell>
-            )}
             <TableCell className="text-right">
               {onViewPiece && (
                 <Button

@@ -20,6 +20,7 @@ import authRouter from "./routes/auth.route";
 import pieceRoutes from './routes/piece.route';
 import garantieRoutes from './routes/garantie.route';
 import commandeRoutes from './routes/commande.route';
+import pieceFournisseurRoutes from './routes/pieceFournisseur.route';
 
 
 // Charger les variables d'environnement
@@ -45,6 +46,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/pieces', pieceRoutes);
 app.use('/api/garanties', garantieRoutes);
 app.use('/api/commandes', commandeRoutes);
+app.use('/api/pieces-fournisseur', pieceFournisseurRoutes);
 
 // Port
 const PORT = 3000;

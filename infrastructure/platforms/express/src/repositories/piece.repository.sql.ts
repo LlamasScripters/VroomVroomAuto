@@ -111,6 +111,15 @@ export class PieceSQLRepository implements PieceRepository {
     return results.map(piece => this.toDomain(piece as PieceModel));
   }
 
+  async findByReference(reference: string): Promise<Piece | null> {
+    const piece = await PieceSQLModel.findOne({
+      where: { reference }
+    });
+    if (!piece) return null;
+    return this.toDomain(piece as PieceModel);
+  }
+  
+
   private toDomain(model: PieceModel): Piece {
     return Piece.create(
       new UUID(model.pieceId),

@@ -144,14 +144,30 @@ export interface Commande {
   commandeId: string;
   pieceId: string;
   pieceDetails?: {
-    nom: string;
-    reference: string;
-    prixUnitaire: number;
+      nom: string;
+      reference: string;
+      prixUnitaire: number;
+      categorie: string;
+      fournisseur: string;
   };
   quantiteCommandee: number;
   coutTotal: number;
   dateCommande: string;
   dateLivraisonPrevue: string;
   statut: string;
-  userId: string;
+  gestionnaireid: string;
+}
+
+export interface PieceFournisseur {
+  pieceId: string;
+  reference: string;
+  nom: string;
+  description: string;
+  categorie: string;
+  prixUnitaire: number;
+  quantiteEnStock: number;
+  seuilCritique: number;
+  fournisseur: string;
+  stockCritique: boolean;
+  disponible: boolean;
 }

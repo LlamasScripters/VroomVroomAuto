@@ -43,7 +43,7 @@ export function CommandeTable({
             <TableCell>{commande.pieceDetails?.reference || '-'}</TableCell>
             <TableCell>{commande.pieceDetails?.nom || '-'}</TableCell>
             <TableCell>{commande.quantiteCommandee}</TableCell>
-            <TableCell>{commande.pieceDetails?.prixUnitaire ? `${commande.pieceDetails.prixUnitaire}€` : '-'} €</TableCell>
+            <TableCell>{commande.pieceDetails?.prixUnitaire ? `${commande.pieceDetails.prixUnitaire}€` : '-'}</TableCell>
             <TableCell>{commande.coutTotal}€</TableCell>
             <TableCell>{new Date(commande.dateCommande).toLocaleDateString()}</TableCell>
             <TableCell>{new Date(commande.dateLivraisonPrevue).toLocaleDateString()}</TableCell>

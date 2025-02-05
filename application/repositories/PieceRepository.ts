@@ -10,4 +10,5 @@ export interface PieceRepository {
   delete(pieceId: UUID): Promise<boolean>;
   updateStock(pieceId: UUID, quantite: number, type: 'AJOUT' | 'RETRAIT'): Promise<Piece>;
   findByCriticalStock(): Promise<Piece[]>;
+  findByReference(reference: string): Promise<Piece | null>;
 }

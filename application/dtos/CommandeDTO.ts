@@ -3,7 +3,7 @@ export interface CreateCommandeDTO {
     pieceId: string;
     quantiteCommandee: number;
     dateLivraisonPrevue: string;
-    userId: string;
+    gestionnaireid: string;
   }
   
   export interface UpdateCommandeDTO {
@@ -18,14 +18,16 @@ export interface CreateCommandeDTO {
     commandeId: string;
     pieceId: string;
     pieceDetails?: {
-      nom: string;
-      reference: string;
-      prixUnitaire: number;
+        nom: string;
+        reference: string;
+        prixUnitaire: number;
+        categorie: string;
+        fournisseur: string;
     };
     quantiteCommandee: number;
     coutTotal: number;
     dateCommande: string;
     dateLivraisonPrevue: string;
     statut: string;
-    userId: string;
-  }
+    gestionnaireid: string;
+}

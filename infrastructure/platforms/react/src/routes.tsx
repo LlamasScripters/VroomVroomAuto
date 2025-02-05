@@ -16,6 +16,10 @@ import ClientEntretiensPage from './pages/ClientEntretiensPage';
 import ClientEntretiensHistoriquePage from './pages/ClientEntretiensHistoriquePage';
 import MiseAJourKilometrage from './pages/MisAJourKilometrage';
 import CommandeManagementPage from './pages/CommandeManagementPage';
+import AdminPieceFournisseurPage from './pages/AdminPieceFournisseurPage';
+import SuiviCommandesPage from './pages/SuiviCommandesPage';
+import HistoriqueCommandesPage from './pages/HistoriqueCommandesPage';
+import CataloguePiecesFournisseurPage from './pages/CataloguePiecesFournisseurPage';
 
 const routes: RouteObject[] = [
   {
@@ -83,8 +87,24 @@ const routes: RouteObject[] = [
     element: <ClientEntretiensHistoriquePage />,
   },
   {
-    path: '/commandes',
+    path: '/admin/commandes',
     element: <CommandeManagementPage />,
+  },
+  {
+    path: '/admin/pieces',
+    element: <AdminPieceFournisseurPage />,
+  },
+  {
+    path: '/commandes/suivi-commandes',
+    element: <SuiviCommandesPage />,
+  },
+  {
+    path: '/commandes/historique',
+    element: <HistoriqueCommandesPage />,
+  },
+  {
+    path: '/commandes/catalogue-pieces',
+    element: <CataloguePiecesFournisseurPage />,
   },
 
 ];
