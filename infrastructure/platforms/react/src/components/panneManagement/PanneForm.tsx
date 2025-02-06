@@ -22,7 +22,7 @@ export function PanneForm({ onSubmit, onCancel, initialData }: PanneFormProps) {
   const [formData, setFormData] = useState<Omit<Panne, "id">>({
     motoId: initialData?.motoId || "",
     description: initialData?.description || "",
-    date: initialData?.date || "",
+    date: initialData?.date ? new Date(initialData.date).toISOString().split("T")[0] : "",
     actionCorrective: initialData?.actionCorrective || "",
     status: initialData?.status || "à traiter",
     userId: initialData?.userId || user?.id || "",

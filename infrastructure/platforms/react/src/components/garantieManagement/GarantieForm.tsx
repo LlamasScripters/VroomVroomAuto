@@ -18,8 +18,8 @@ export function GarantieForm({ onSubmit, onCancel, initialData }: GarantieFormPr
     motoId: initialData?.motoId || "",
     couverture: initialData?.couverture || "",
     type: initialData?.type || "",
-    dateDebut: initialData?.dateDebut || "",
-    dateFin: initialData?.dateFin || "",
+    dateDebut: initialData?.dateDebut ? new Date(initialData.dateDebut).toISOString().split("T")[0] : "",
+    dateFin: initialData?.dateFin ? new Date(initialData.dateFin).toISOString().split("T")[0] : "",
     statut: initialData?.statut || "",
   })
   const [motos, setMotos] = useState<Moto[]>([])
