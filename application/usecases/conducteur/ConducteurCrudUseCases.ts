@@ -22,7 +22,7 @@ export class ConducteurCrudUseCases {
             conducteurData.email,
             conducteurData.disponibilite as DisponibiliteConducteur,
             StatutConducteur.ACTIF,
-            new UUID(conducteurData.gestionnaireid)
+            new UUID(conducteurData.userId)
         );
 
         return await this.conducteurRepository.save(conducteur);
@@ -50,7 +50,7 @@ export class ConducteurCrudUseCases {
             updatedData.email ?? conducteur.email,
             updatedData.disponibilite ?? conducteur.disponibilite,
             updatedData.statut ?? conducteur.statut,
-            conducteur.gestionnaireid,
+            conducteur.userId,
             conducteur.dateCreation,
             new Date()
         );
@@ -66,8 +66,8 @@ export class ConducteurCrudUseCases {
         return await this.conducteurRepository.findAll();
     }
 
-    async getConducteursByGestionnaire(gestionnaireid: string): Promise<Conducteur[]> {
-        return await this.conducteurRepository.findByGestionnaire(new UUID(gestionnaireid));
+    async getConducteursByUser(userId: string): Promise<Conducteur[]> {
+        return await this.conducteurRepository.findByGestionnaire(new UUID(userId));
     }
 
     async getConducteursByDisponibilite(disponibilite: DisponibiliteConducteur): Promise<Conducteur[]> {
