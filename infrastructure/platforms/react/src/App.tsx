@@ -22,6 +22,7 @@ import AdminPieceFournisseurPage from "./pages/AdminPieceFournisseurPage";
 import SuiviCommandesPage from "./pages/SuiviCommandesPage";
 import HistoriqueCommandesPage from './pages/HistoriqueCommandesPage';
 import CataloguePiecesFournisseurPage from './pages/CataloguePiecesFournisseurPage';
+import ConducteurManagementPage from './pages/ConducteurManagementPage';
 
 
 import { AppSidebar } from "../src/components/sideBar/appSidebar";
@@ -116,6 +117,8 @@ function App() {
         <Route path="/commandes/suivi-commandes" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><SuiviCommandesPage /></ProtectedLayout>} />
         <Route path="/commandes/historique" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><HistoriqueCommandesPage /></ProtectedLayout>} />
         <Route path="/commandes/catalogue-pieces" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><CataloguePiecesFournisseurPage /></ProtectedLayout>} />
+        <Route path="/conducteurs" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><ConducteurManagementPage /></ProtectedLayout>} />
+
 
       </Routes>
     </Router>

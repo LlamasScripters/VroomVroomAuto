@@ -90,3 +90,7 @@ GarantieSQL.belongsTo(PanneSQL, { foreignKey: 'panneId' });
 // PieceFournisseur associations
 PieceFournisseurSQL.hasMany(CommandeSQL, { foreignKey: 'pieceId', as: 'commandes' });
 CommandeSQL.belongsTo(PieceFournisseurSQL, { foreignKey: 'pieceId', as: 'pieceFournisseur'});
+
+// Association User-Conducteur
+UserSQL.hasOne(ConducteurSQL, { foreignKey: 'userId', as: 'conducteur' });
+ConducteurSQL.belongsTo(UserSQL, { foreignKey: 'userId', as: 'user' });

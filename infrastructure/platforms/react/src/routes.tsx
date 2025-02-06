@@ -20,6 +20,7 @@ import AdminPieceFournisseurPage from './pages/AdminPieceFournisseurPage';
 import SuiviCommandesPage from './pages/SuiviCommandesPage';
 import HistoriqueCommandesPage from './pages/HistoriqueCommandesPage';
 import CataloguePiecesFournisseurPage from './pages/CataloguePiecesFournisseurPage';
+import ConducteurManagementPage from './pages/ConducteurManagementPage';
 
 const routes: RouteObject[] = [
   {
@@ -105,6 +106,10 @@ const routes: RouteObject[] = [
   {
     path: '/commandes/catalogue-pieces',
     element: <CataloguePiecesFournisseurPage />,
+  },
+  {
+    path: '/conducteurs',
+    element: <ConducteurManagementPage />,
   },
 
 ];

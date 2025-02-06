@@ -3,30 +3,46 @@ import { Conducteur, DisponibiliteConducteur, StatutConducteur } from '@domain/e
 import { ConducteurRepository } from '@application/repositories/ConducteurRepository';
 import { UUID } from '@domain/value-objects/UUID';
 import { CreateConducteurDTO, UpdateConducteurDTO } from '@application/dtos/ConducteurDTO';
+import { UserRepository } from '@application/repositories/UserRepository';
 
 export class ConducteurCrudUseCases {
-    constructor(private conducteurRepository: ConducteurRepository) {}
+    constructor(
+      private conducteurRepository: ConducteurRepository,
+      private userRepository: UserRepository
+    ) {}
 
     async createConducteur(conducteurData: CreateConducteurDTO): Promise<Conducteur> {
-        const conducteur = Conducteur.create(
-            new UUID(),
-            conducteurData.nom,
-            conducteurData.prenom,
-            new Date(conducteurData.dateNaissance),
-            conducteurData.numeroPermis,
-            conducteurData.categoriePermis,
-            new Date(conducteurData.dateObtentionPermis),
-            new Date(conducteurData.dateValiditePermis),
-            conducteurData.anneeExperience,
-            conducteurData.telephone,
-            conducteurData.email,
-            conducteurData.disponibilite as DisponibiliteConducteur,
-            StatutConducteur.ACTIF,
-            new UUID(conducteurData.userId)
-        );
-
-        return await this.conducteurRepository.save(conducteur);
-    }
+      // vérification si l'utilisateur existe
+      const user = await this.userRepository.findById(new UUID(conducteurData.userId));
+      if (!user) {
+          throw new Error('Utilisateur non trouvé');
+      }
+  
+      // vérification si l'utilisateur a déjà un profil conducteur
+      const existingConducteur = await this.conducteurRepository.findByUser(new UUID(conducteurData.userId));
+      if (existingConducteur) {
+          throw new Error('Un profil conducteur existe déjà pour cet utilisateur');
+      }
+  
+      const conducteur = Conducteur.create(
+          new UUID(),
+          conducteurData.nom,
+          conducteurData.prenom,
+          new Date(conducteurData.dateNaissance),
+          conducteurData.numeroPermis,
+          conducteurData.categoriePermis,
+          new Date(conducteurData.dateObtentionPermis),
+          new Date(conducteurData.dateValiditePermis),
+          conducteurData.anneeExperience,
+          conducteurData.telephone,
+          conducteurData.email || user.email.toString(), // mail de l'user
+          conducteurData.disponibilite as DisponibiliteConducteur,
+          StatutConducteur.ACTIF,
+          new UUID(conducteurData.userId)
+      );
+  
+      return await this.conducteurRepository.save(conducteur);
+  }
 
     async getConducteurById(conducteurId: string): Promise<Conducteur | null> {
         return await this.conducteurRepository.findById(new UUID(conducteurId));

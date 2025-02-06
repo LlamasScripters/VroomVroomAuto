@@ -171,3 +171,47 @@ export interface PieceFournisseur {
   stockCritique: boolean;
   disponible: boolean;
 }
+
+export interface Conducteur {
+  conducteurId?: string;
+  nom: string;
+  prenom: string;
+  dateNaissance: string;
+  numeroPermis: string;
+  categoriePermis: string;
+  dateObtentionPermis: string;
+  dateValiditePermis: string;
+  anneeExperience: number;
+  telephone: string;
+  email: string;
+  disponibilite: 'SEMAINE' | 'WEEKEND' | 'TEMPS_PLEIN';
+  statut: 'ACTIF' | 'INACTIF' | 'SUSPENDU';
+  userId: string;
+  dateCreation?: string;
+  derniereModification?: string;
+  permisValide?: boolean;
+}
+
+export interface HistoriqueEssai {
+  essaiId: string;
+  motoId: string;
+  conducteurId: string;
+  dateDebut: string;
+  dateFin: string;
+  duree: number;
+  motoDetails?: {
+    marque: string;
+    model: string;
+    serialNumber: string;
+  };
+  incidents?: Incident[];
+}
+
+export interface Incident {
+  incidentId: string;
+  essaiId: string;
+  type: 'ACCIDENT' | 'INFRACTION';
+  description: string;
+  dateIncident: string;
+  gravite: 'MINEUR' | 'MAJEUR' | 'CRITIQUE';
+}

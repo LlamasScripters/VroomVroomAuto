@@ -12,4 +12,5 @@ export interface ConducteurRepository {
   findByGestionnaire(gestionnaireid: UUID): Promise<Conducteur[]>;
   findByDisponibilite(disponibilite: DisponibiliteConducteur): Promise<Conducteur[]>;
   findByStatut(statut: StatutConducteur): Promise<Conducteur[]>;
+  findByUser(userId: UUID): Promise<Conducteur | null>;
 }
