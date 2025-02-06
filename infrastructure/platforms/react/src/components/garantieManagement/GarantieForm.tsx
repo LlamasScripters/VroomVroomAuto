@@ -118,7 +118,16 @@ export function GarantieForm({ onSubmit, onCancel, initialData }: GarantieFormPr
         <label htmlFor="type" className="block text-sm font-medium text-gray-700">
           Type
         </label>
-        <Input type="text" id="type" name="type" value={formData.type} onChange={handleChange} required />
+        <Select onValueChange={(value) => handleSelectChange("type", value)} defaultValue={formData.type}>
+          <SelectTrigger>
+            <SelectValue placeholder="Sélectionnez un type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Moto">Moto</SelectItem>
+            <SelectItem value="Piece">Piece</SelectItem>
+            <SelectItem value="Entretien">Entretien</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <div>

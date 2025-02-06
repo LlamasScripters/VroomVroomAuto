@@ -1,7 +1,9 @@
+"use client"
+
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useAuthStore } from "@/stores/authStore"
-import type { Panne, Moto } from "../../types"
+import type { Panne, Moto, User } from "../../types"
 import { PanneService } from "../../services/panneService"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,28 +17,40 @@ interface PanneFormProps {
 }
 
 export function PanneForm({ onSubmit, onCancel, initialData }: PanneFormProps) {
+  const { user } = useAuthStore()
+  const [users, setUsers] = useState<User[]>([])
   const [formData, setFormData] = useState<Omit<Panne, "id">>({
     motoId: initialData?.motoId || "",
     description: initialData?.description || "",
     date: initialData?.date || "",
     actionCorrective: initialData?.actionCorrective || "",
     status: initialData?.status || "à traiter",
-    userId: useAuthStore.getState().user?.id || "" // Valeur en dur temporaire, à changer quand on aura mis en place la gestion des utilisateurs
+    userId: initialData?.userId || user?.id || "",
   })
   const [motos, setMotos] = useState<Moto[]>([])
 
   useEffect(() => {
-    const fetchMotos = async () => {
+    const fetchData = async () => {
       try {
         const userMotos = await PanneService.getUserMotos()
         setMotos(userMotos)
+
+        if (user?.role === "admin") {
+          const response = await fetch("http://localhost:3000/api/user", {
+            headers: {
+              Authorization: `Bearer ${useAuthStore.getState().token}`,
+            },
+          })
+          const userData = await response.json()
+          setUsers(userData)
+        }
       } catch (error) {
-        console.error("Erreur lors de la récupération des motos:", error)
+        console.error("Erreur lors de la récupération des données:", error)
       }
     }
 
-    fetchMotos()
-  }, [])
+    fetchData()
+  }, [user])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -123,6 +137,28 @@ export function PanneForm({ onSubmit, onCancel, initialData }: PanneFormProps) {
           </SelectContent>
         </Select>
       </div>
+
+      {user?.role === "admin" && (
+        <div>
+          <label htmlFor="userId" className="block text-sm font-medium text-gray-700">
+            Utilisateur associé à la panne
+          </label>
+          <Select onValueChange={(value) => handleSelectChange("userId", value)} defaultValue={formData.userId}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sélectionnez un utilisateur" />
+            </SelectTrigger>
+            <SelectContent>
+              {users.map((user) => (
+                <SelectItem key={user.userId} value={user.userId}>
+                  {user.username} ({user.email})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+      {user?.role !== "admin" && <input type="hidden" name="userId" value={user?.id || ""} />}
 
       <div className="flex justify-end space-x-4">
         <Button type="button" variant="outline" onClick={onCancel}>
