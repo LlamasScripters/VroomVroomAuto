@@ -51,4 +51,8 @@ export class IncidentUseCases {
     const incidentIdentifier = new UUID(incidentData.incidentId);
     return this.incidentRepository.delete(incidentIdentifier);
   }
+
+  async getAllIncidents(): Promise<Incident[]> {
+    return this.incidentRepository.findAll();
+  }
 }
