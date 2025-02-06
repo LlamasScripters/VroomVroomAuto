@@ -16,6 +16,18 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@domain/*": ["../../../domain/*"],
+      "@application/*": ["../../../application/*"],
+      "@infrastructure/*": ["../../../infrastructure/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "test", "dist"],
+  "watchOptions": {
+    "watchFile": "prioritypollinginterval",
+    "watchDirectory": "dynamicPriorityPolling",
+    "fallbackPolling": "dynamicPriority"
   }
 }
