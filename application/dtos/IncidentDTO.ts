@@ -1,4 +1,4 @@
-import { Incident } from "@domain/entities/IncidentEntity";
+import { Incident } from "../../domain/entities/IncidentEntity";
 
 export interface createIncidentDTO {
     essaiId: string;
