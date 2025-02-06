@@ -1,45 +1,76 @@
-import { Conducteur } from '../../../domain/entities/ConducteurEntity';
-import { ConducteurRepository } from '../../repositories/ConducteurRepository';
-import { UUID } from '../../../domain/value-objects/UUID';
+// application/usecases/conducteur/ConducteurCrudUseCases.ts
+import { Conducteur, DisponibiliteConducteur, StatutConducteur } from '@domain/entities/ConducteurEntity';
+import { ConducteurRepository } from '@application/repositories/ConducteurRepository';
+import { UUID } from '@domain/value-objects/UUID';
+import { CreateConducteurDTO, UpdateConducteurDTO } from '@application/dtos/ConducteurDTO';
 
-interface ConducteurData {
-  conducteurId: UUID;
-  nom: string;
-  permis: string;
-  categoriePermis: string;
-  experience: number;
-  userId: UUID;
-}
+export class ConducteurCrudUseCases {
+    constructor(private conducteurRepository: ConducteurRepository) {}
 
-export class ConducteurUseCases {
-  constructor(private conducteurRepository: ConducteurRepository) {}
+    async createConducteur(conducteurData: CreateConducteurDTO): Promise<Conducteur> {
+        const conducteur = Conducteur.create(
+            new UUID(),
+            conducteurData.nom,
+            conducteurData.prenom,
+            new Date(conducteurData.dateNaissance),
+            conducteurData.numeroPermis,
+            conducteurData.categoriePermis,
+            new Date(conducteurData.dateObtentionPermis),
+            new Date(conducteurData.dateValiditePermis),
+            conducteurData.anneeExperience,
+            conducteurData.telephone,
+            conducteurData.email,
+            conducteurData.disponibilite as DisponibiliteConducteur,
+            StatutConducteur.ACTIF,
+            new UUID(conducteurData.gestionnaireid)
+        );
 
-  async createConducteur(nom: string, permis: string, categoriePermis: string, experience: number, userId: UUID): Promise<Conducteur> {
-    const conducteur = Conducteur.create(new UUID(), nom, permis, categoriePermis, experience, userId);
-    return this.conducteurRepository.save(conducteur);
-  }
+        return await this.conducteurRepository.save(conducteur);
+    }
 
-  async getConducteurById(conducteurId: UUID): Promise<Conducteur | null> {
-    return this.conducteurRepository.findById(conducteurId);
-  }
+    async getConducteurById(conducteurId: string): Promise<Conducteur | null> {
+        return await this.conducteurRepository.findById(new UUID(conducteurId));
+    }
 
-  async updateConducteur(conducteurId: UUID, updatedData: Partial<ConducteurData>): Promise<Conducteur | null> {
-    const conducteur = await this.conducteurRepository.findById(conducteurId);
-    if (!conducteur) return null;
+    async updateConducteur(updatedData: UpdateConducteurDTO): Promise<Conducteur | null> {
+        const conducteur = await this.conducteurRepository.findById(new UUID(updatedData.conducteurId));
+        if (!conducteur) return null;
 
-    const updatedConducteur = Conducteur.create(
-      conducteur.conducteurId,
-      updatedData.nom || conducteur.nom,
-      updatedData.permis || conducteur.permis,
-      updatedData.categoriePermis || conducteur.categoriePermis,
-      updatedData.experience || conducteur.experience,
-      conducteur.userId
-    );
-    
-    return this.conducteurRepository.save(updatedConducteur);
-  }
+        const updatedConducteur = Conducteur.create(
+            conducteur.conducteurId,
+            updatedData.nom ?? conducteur.nom,
+            updatedData.prenom ?? conducteur.prenom,
+            updatedData.dateNaissance ? new Date(updatedData.dateNaissance) : conducteur.dateNaissance,
+            updatedData.numeroPermis ?? conducteur.numeroPermis,
+            updatedData.categoriePermis ?? conducteur.categoriePermis,
+            updatedData.dateObtentionPermis ? new Date(updatedData.dateObtentionPermis) : conducteur.dateObtentionPermis,
+            updatedData.dateValiditePermis ? new Date(updatedData.dateValiditePermis) : conducteur.dateValiditePermis,
+            updatedData.anneeExperience ?? conducteur.anneeExperience,
+            updatedData.telephone ?? conducteur.telephone,
+            updatedData.email ?? conducteur.email,
+            updatedData.disponibilite ?? conducteur.disponibilite,
+            updatedData.statut ?? conducteur.statut,
+            conducteur.gestionnaireid,
+            conducteur.dateCreation,
+            new Date()
+        );
 
-  async deleteConducteur(conducteurId: UUID): Promise<boolean> {
-    return this.conducteurRepository.delete(conducteurId);
-  }
+        return await this.conducteurRepository.update(updatedConducteur);
+    }
+
+    async deleteConducteur(conducteurId: string): Promise<boolean> {
+        return await this.conducteurRepository.delete(new UUID(conducteurId));
+    }
+
+    async getAllConducteurs(): Promise<Conducteur[]> {
+        return await this.conducteurRepository.findAll();
+    }
+
+    async getConducteursByGestionnaire(gestionnaireid: string): Promise<Conducteur[]> {
+        return await this.conducteurRepository.findByGestionnaire(new UUID(gestionnaireid));
+    }
+
+    async getConducteursByDisponibilite(disponibilite: DisponibiliteConducteur): Promise<Conducteur[]> {
+        return await this.conducteurRepository.findByDisponibilite(disponibilite);
+    }
 }
