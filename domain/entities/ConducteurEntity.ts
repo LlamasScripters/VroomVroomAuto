@@ -28,7 +28,7 @@ export class Conducteur {
         public readonly email: string,
         public readonly disponibilite: DisponibiliteConducteur,
         public readonly statut: StatutConducteur,
-        public readonly gestionnaireid: UUID,
+        public readonly userId: UUID,
         public readonly dateCreation: Date,
         public readonly derniereModification: Date
     ) {
@@ -65,7 +65,7 @@ export class Conducteur {
         email: string,
         categoriePermanence: DisponibiliteConducteur,
         statut: StatutConducteur,
-        gestionnaireid: UUID,
+        userId: UUID,
         dateCreation: Date = new Date(),
         derniereModification: Date = new Date()
     ): Conducteur {
@@ -83,7 +83,7 @@ export class Conducteur {
             email,
             categoriePermanence,
             statut,
-            gestionnaireid,
+            userId,
             dateCreation,
             derniereModification
         );

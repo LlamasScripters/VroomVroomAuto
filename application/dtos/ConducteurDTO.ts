@@ -13,7 +13,7 @@ export interface CreateConducteurDTO {
     telephone: string;
     email: string;
     disponibilite: DisponibiliteConducteur;
-    gestionnaireid: string;
+    userId: string;
 }
 
 export interface UpdateConducteurDTO {
@@ -46,7 +46,7 @@ export interface ConducteurDTO {
     email: string;
     disponibilite: DisponibiliteConducteur;
     statut: StatutConducteur;
-    gestionnaireid: string;
+    userId: string;
     dateCreation: string;
     derniereModification: string;
     permisValide: boolean;

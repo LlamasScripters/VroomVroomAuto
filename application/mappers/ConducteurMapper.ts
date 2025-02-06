@@ -18,7 +18,7 @@ export function toDTO(conducteur: Conducteur): ConducteurDTO {
         email: conducteur.email,
         disponibilite: conducteur.disponibilite,
         statut: conducteur.statut,
-        gestionnaireid: conducteur.gestionnaireid.toString(),
+        userId: conducteur.userId.toString(),
         dateCreation: conducteur.dateCreation.toISOString(),
         derniereModification: conducteur.derniereModification.toISOString(),
         permisValide: conducteur.isPermisValide()
@@ -40,7 +40,7 @@ export function toDomain(dto: ConducteurDTO): Conducteur {
         dto.email,
         dto.disponibilite as DisponibiliteConducteur,
         dto.statut as StatutConducteur,
-        new UUID(dto.gestionnaireid),
+        new UUID(dto.userId),
         new Date(dto.dateCreation),
         new Date(dto.derniereModification)
     );
