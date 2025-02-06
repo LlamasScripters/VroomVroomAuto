@@ -1,45 +1,54 @@
 import { Incident } from '../../../domain/entities/IncidentEntity';
 import { IncidentRepository } from '../../repositories/IncidentRepository';
 import { UUID } from '../../../domain/value-objects/UUID';
-
-interface IncidentData {  
-  incidentId: UUID;
-  essaiId: UUID;
-  typeIncident: string;
-  description: string;
-  dateIncident: Date;
-  gravite: string;
-}
-
+import { IncidentDTO, createIncidentDTO, updateIncidentDTO, deleteIncidentDTO, getIncidentDTO,  } from '@application/dtos/IncidentDTO';
+import { IncidentResponse } from '@application/response/IncidentResponse';
 export class IncidentUseCases {
-  constructor(private incidentRepository: IncidentRepository) {}
+  constructor(
+    private incidentRepository: IncidentRepository
+  ) {}
 
-  async createIncident(essaiId: UUID, typeIncident: string, description: string, dateIncident: Date, gravite: string): Promise<Incident> {
-    const incident = Incident.create(new UUID(), essaiId, typeIncident, description, dateIncident, gravite);
-    return this.incidentRepository.save(incident);
+  async createIncident(incidentData: createIncidentDTO ): Promise<IncidentResponse> {
+    const incident = Incident.create(
+      new UUID(),
+      new UUID(incidentData.essaiId), 
+      incidentData.typeIncident, 
+      incidentData.description, 
+      new Date(incidentData.dateIncident), 
+      incidentData.gravite
+    );
+    try {
+      const savedIncident = await this.incidentRepository.save(incident);
+      return { incidentId: savedIncident.incidentId.toString() };
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async getIncidentById(incidentId: UUID): Promise<Incident | null> {
-    return this.incidentRepository.findById(incidentId);
+  async getIncidentById(incidentData: getIncidentDTO): Promise<Incident | null> {
+    const incidentIdentifier = new UUID(incidentData.incidentId);
+    return this.incidentRepository.findById(incidentIdentifier);
   }
 
-  async updateIncident(incidentId: UUID, updatedData: Partial<IncidentData>): Promise<Incident | null> {
-    const incident = await this.incidentRepository.findById(incidentId);
+  async updateIncident(incidentData: updateIncidentDTO): Promise<Incident | null> {
+    const incidentIdentifier = new UUID(incidentData.incidentId);
+    const incident = await this.incidentRepository.findById(incidentIdentifier);
     if (!incident) return null;
 
     const updatedIncident = Incident.create(
       incident.incidentId,
-      updatedData.essaiId || incident.essaiId,
-      updatedData.typeIncident || incident.typeIncident,
-      updatedData.description || incident.description,
-      updatedData.dateIncident || incident.dateIncident,
-      updatedData.gravite || incident.gravite
+      incidentData.essaiId ? new UUID(incidentData.essaiId) : incident.essaiId,
+      incidentData.typeIncident || incident.typeIncident,
+      incidentData.description || incident.description,
+      incidentData.dateIncident ? new Date(incidentData.dateIncident) : incident.dateIncident,
+      incidentData.gravite || incident.gravite
     );
     
     return this.incidentRepository.save(updatedIncident);
   }
 
-  async deleteIncident(incidentId: UUID): Promise<boolean> {
-    return this.incidentRepository.delete(incidentId);
+  async deleteIncident(incidentData: deleteIncidentDTO): Promise<boolean> {
+    const incidentIdentifier = new UUID(incidentData.incidentId);
+    return this.incidentRepository.delete(incidentIdentifier);
   }
 }
