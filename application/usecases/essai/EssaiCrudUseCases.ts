@@ -1,47 +1,76 @@
 import { Essai } from '../../../domain/entities/EssaiEntity';
 import { EssaiRepository } from '../../repositories/EssaiRepository';
+import { EssaiMongoRepository } from '../../repositories/EssaiMongoRepository';
 import { UUID } from '../../../domain/value-objects/UUID';
+import { EssaiResponse } from '../../response/EssaiResponse';
+import { CreateEssaiDTO, UpdateEssaiDTO, GetEssaiDTO } from '@application/dtos/EssaiDTO';
 
-interface EssaiData {
-  essaiId: UUID;
-  motoId: UUID;
-  ConducteurId: UUID;
-  dateDebut: Date;
-  dateFin: Date;
-  duree: number;
-  userId: UUID;
-}
 
 export class EssaiUseCases {
-  constructor(private essaiRepository: EssaiRepository) {}
+  constructor(
+    private essaiRepository: EssaiRepository,
+    private essaiMongoRepository: EssaiMongoRepository
+  ) {}
 
-  async createEssai(motoId: UUID, ConducteurId: UUID, dateDebut: Date, dateFin: Date, duree: number, userId: UUID): Promise<Essai> {
-    const essai = Essai.create(new UUID(), motoId, ConducteurId, dateDebut, dateFin, duree, userId);
-    return this.essaiRepository.save(essai);
-  }
-
-  async getEssaiById(essaiId: UUID): Promise<Essai | null> {
-    return this.essaiRepository.findById(essaiId);
-  }
-
-  async updateEssai(essaiId: UUID, updatedData: Partial<EssaiData>): Promise<Essai | null> {
-    const essai = await this.essaiRepository.findById(essaiId);
-    if (!essai) return null;
+  async createEssai(essaiData: CreateEssaiDTO): Promise<EssaiResponse> {
+    const essai = Essai.create(
+      new UUID(),
+      new UUID (essaiData.motoId),
+      new UUID (essaiData.conducteurId),
+      new Date (essaiData.dateDebut),
+      new Date (essaiData.dateFin),
+      essaiData.duree,
+      new UUID (essaiData.userId)
+    );
     
+    try {
+      const savedEssai = await this.essaiRepository.save(essai);
+      if (savedEssai) {
+        await this.essaiMongoRepository.save(savedEssai);
+      }
+      
+      return { essaiId: savedEssai.essaiId.toString() };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getEssaiById(essaiData: GetEssaiDTO): Promise<Essai | null> {
+    const essaiIdentifier = new UUID(essaiData.essaiId);
+    return await this.essaiMongoRepository.findById(essaiIdentifier);
+  }
+
+  async updateEssai(updatedData: UpdateEssaiDTO): Promise<Essai | null> {
+    const essaiIdentifier = new UUID(updatedData.essaiId);
+    const essai = await this.essaiRepository.findById(essaiIdentifier);
+    if (!essai) return null;
+
     const updatedEssai = Essai.create(
       essai.essaiId,
-      updatedData.motoId || essai.motoId,
-      updatedData.ConducteurId || essai.ConducteurId,
-      updatedData.dateDebut || essai.dateDebut,
-      updatedData.dateFin || essai.dateFin,
-      updatedData.duree || essai.duree,
+      updatedData.motoId ? new UUID(updatedData.motoId) : essai.motoId,
+      updatedData.conducteurId ? new UUID(updatedData.conducteurId) : essai.conducteurId,
+      updatedData.dateDebut ? new Date(updatedData.dateDebut) : essai.dateDebut,
+      updatedData.dateFin ? new Date(updatedData.dateFin) : essai.dateFin,
+      updatedData.duree ?? essai.duree,
       essai.userId
     );
 
-    return this.essaiRepository.save(updatedEssai);
+    await this.essaiRepository.update(updatedEssai);
+    const updatedEssaiMongo = await this.essaiMongoRepository.update(updatedEssai);
+    return updatedEssaiMongo ? updatedEssaiMongo : null;
   }
 
-  async deleteEssai(essaiId: UUID): Promise<boolean> {
-    return this.essaiRepository.delete(essaiId);
+  async deleteEssai(essaiId: string): Promise<boolean> {
+    const essaiIdentifier = new UUID(essaiId);
+    const deletedFromRepository = await this.essaiRepository.delete(essaiIdentifier);
+    if (deletedFromRepository) {
+      await this.essaiMongoRepository.delete(essaiIdentifier);
+    }
+    return deletedFromRepository;
   }
+
+  async listAllEssais(): Promise<Essai[]> {
+    return await this.essaiMongoRepository.findAll();
+  }
+
 }
