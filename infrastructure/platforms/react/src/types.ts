@@ -52,6 +52,16 @@ export interface EntretienPiece {
   };
 }
 
+export interface Essai {
+  essaiId?: string;
+  motoId: string;
+  conducteurId: string;
+  dateDebut: string;
+  dateFin: string;
+  duree: number;
+  userId: string;
+}
+
 export interface Garantie {
   garantieId?: string;
   panneId: string;
