@@ -6,6 +6,44 @@ export interface Client {
   telephone: string;
 }
 
+export interface Commande {
+  commandeId: string;
+  pieceId: string;
+  pieceDetails?: {
+    nom: string;
+    reference: string;
+    prixUnitaire: number;
+    categorie: string;
+    fournisseur: string;
+  };
+  quantiteCommandee: number;
+  coutTotal: number;
+  dateCommande: string;
+  dateLivraisonPrevue: string;
+  statut: string;
+  gestionnaireid: string;
+}
+
+export interface Conducteur {
+  conducteurId?: string;
+  nom: string;
+  prenom: string;
+  dateNaissance: string;
+  numeroPermis: string;
+  categoriePermis: string;
+  dateObtentionPermis: string;
+  dateValiditePermis: string;
+  anneeExperience: number;
+  telephone: string;
+  email: string;
+  disponibilite: 'SEMAINE' | 'WEEKEND' | 'TEMPS_PLEIN';
+  statut: 'ACTIF' | 'INACTIF' | 'SUSPENDU';
+  userId: string;
+  dateCreation?: string;
+  derniereModification?: string;
+  permisValide?: boolean;
+}
+
 export interface Employe {
   id?: string;
   nom: string;
@@ -73,6 +111,30 @@ export interface Garantie {
   statut: string;
 }
 
+export interface HistoriqueEssai {
+  essaiId: string;
+  motoId: string;
+  conducteurId: string;
+  dateDebut: string;
+  dateFin: string;
+  duree: number;
+  motoDetails?: {
+    marque: string;
+    model: string;
+    serialNumber: string;
+  };
+  incidents?: Incident[];
+}
+
+export interface Incident {
+  incidentId: string;
+  essaiId: string;
+  type: 'ACCIDENT' | 'INFRACTION';
+  description: string;
+  dateIncident: string;
+  gravite: 'MINEUR' | 'MAJEUR' | 'CRITIQUE';
+}
+
 export interface MaintenancePlanningResultDTO {
   success: boolean;
   entretienId?: string;
@@ -130,6 +192,20 @@ export interface Piece {
   stockCritique: boolean;
 }
 
+export interface PieceFournisseur {
+  pieceId: string;
+  reference: string;
+  nom: string;
+  description: string;
+  categorie: string;
+  prixUnitaire: number;
+  quantiteEnStock: number;
+  seuilCritique: number;
+  fournisseur: string;
+  stockCritique: boolean;
+  disponible: boolean;
+}
+
 export interface PiecePlanification {
   pieceId: string;
   quantite: number;
@@ -148,80 +224,4 @@ export interface User {
   userId: string;
   username: string;
   email: string;
-}
-
-export interface Commande {
-  commandeId: string;
-  pieceId: string;
-  pieceDetails?: {
-      nom: string;
-      reference: string;
-      prixUnitaire: number;
-      categorie: string;
-      fournisseur: string;
-  };
-  quantiteCommandee: number;
-  coutTotal: number;
-  dateCommande: string;
-  dateLivraisonPrevue: string;
-  statut: string;
-  gestionnaireid: string;
-}
-
-export interface PieceFournisseur {
-  pieceId: string;
-  reference: string;
-  nom: string;
-  description: string;
-  categorie: string;
-  prixUnitaire: number;
-  quantiteEnStock: number;
-  seuilCritique: number;
-  fournisseur: string;
-  stockCritique: boolean;
-  disponible: boolean;
-}
-
-export interface Conducteur {
-  conducteurId?: string;
-  nom: string;
-  prenom: string;
-  dateNaissance: string;
-  numeroPermis: string;
-  categoriePermis: string;
-  dateObtentionPermis: string;
-  dateValiditePermis: string;
-  anneeExperience: number;
-  telephone: string;
-  email: string;
-  disponibilite: 'SEMAINE' | 'WEEKEND' | 'TEMPS_PLEIN';
-  statut: 'ACTIF' | 'INACTIF' | 'SUSPENDU';
-  userId: string;
-  dateCreation?: string;
-  derniereModification?: string;
-  permisValide?: boolean;
-}
-
-export interface HistoriqueEssai {
-  essaiId: string;
-  motoId: string;
-  conducteurId: string;
-  dateDebut: string;
-  dateFin: string;
-  duree: number;
-  motoDetails?: {
-    marque: string;
-    model: string;
-    serialNumber: string;
-  };
-  incidents?: Incident[];
-}
-
-export interface Incident {
-  incidentId: string;
-  essaiId: string;
-  type: 'ACCIDENT' | 'INFRACTION';
-  description: string;
-  dateIncident: string;
-  gravite: 'MINEUR' | 'MAJEUR' | 'CRITIQUE';
 }
