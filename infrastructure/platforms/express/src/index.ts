@@ -22,6 +22,7 @@ import garantieRoutes from './routes/garantie.route';
 import commandeRoutes from './routes/commande.route';
 import pieceFournisseurRoutes from './routes/pieceFournisseur.route';
 import conducteurRoutes from './routes/conducteur.route';
+import essaiRoutes from './routes/essaie.route';
 
 
 // Charger les variables d'environnement
@@ -49,6 +50,7 @@ app.use('/api/garanties', garantieRoutes);
 app.use('/api/commandes', commandeRoutes);
 app.use('/api/pieces-fournisseur', pieceFournisseurRoutes);
 app.use('/api/conducteurs', conducteurRoutes);
+app.use('/api/essais', essaiRoutes);
 
 // Port
 const PORT = 3000;

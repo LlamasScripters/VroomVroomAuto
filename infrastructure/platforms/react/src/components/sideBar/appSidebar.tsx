@@ -42,8 +42,16 @@ import { NavLink } from "react-router-dom"
             url: "/moto-management",
           },
           {
+            title: "Conducteur",
+            url: "/conducteurs",
+          },
+          {
             title: "Entretien",
             url: "/entretiens",
+          },
+          {
+            title: "Essais",
+            url: "/essais",
           },
           {
             title: "Pannes",
