@@ -40,6 +40,11 @@ export class EssaiUseCases {
     return await this.essaiMongoRepository.findById(essaiIdentifier);
   }
 
+  async getEssaisByConducteurId(conducteurId: string): Promise<Essai[]> {
+    const conducteurIdentifier = new UUID(conducteurId);
+    return await this.essaiMongoRepository.findByConducteurId(conducteurIdentifier);
+  }
+
   async updateEssai(updatedData: UpdateEssaiDTO): Promise<Essai | null> {
     const essaiIdentifier = new UUID(updatedData.essaiId);
     const essai = await this.essaiRepository.findById(essaiIdentifier);

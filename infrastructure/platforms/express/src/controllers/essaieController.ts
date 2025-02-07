@@ -41,6 +41,17 @@ export class EssaiController {
         }
     }
 
+    async getEssaisByConducteurId(req: Request, res: Response): Promise<void> {
+        try {
+            const conducteurId = req.params.id;
+            const essais = await this.essaiUseCases.getEssaisByConducteurId(conducteurId);
+            const essaisDTO = essais.map((essai) => EssaiMapper.toDTO(essai));
+            res.json(essaisDTO);
+        } catch (error: any) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
     async updateEssai(req: Request, res: Response): Promise<void> {
         try {
             const updateEssaiDTO: UpdateEssaiDTO = {

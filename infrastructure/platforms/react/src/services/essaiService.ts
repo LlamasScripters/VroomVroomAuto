@@ -83,4 +83,19 @@ export const EssaiService = {
       throw new Error(`Erreur lors de la récupération des conducteurs: ${error}`)
     }
   },
+
+  async getEssaisByConducteurId(conducteurId: string): Promise<Essai[]> {
+    try {
+      const response = await axiosInstance.get(`/essais/conducteur/${conducteurId}`)
+
+      if (!response.data) {
+        throw new Error("Erreur lors de la récupération des essais du conducteur")
+      }
+
+      return response.data
+    } catch (error) {
+      throw new Error(`Erreur lors de la récupération des essais du conducteur: ${error}`)
+    }
+  },
+
 }

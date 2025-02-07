@@ -92,6 +92,28 @@ export class EssaiMgRepository implements EssaiMongoRepository {
         }
     }
 
+    async findByConducteurId(conducteurId: UUID): Promise<Essai[]> {
+        try {
+            const essais = await EssaiMongo.find({
+                'conducteur._id': conducteurId.toString()
+            }).select({
+                _id: 1,
+                moto: { _id: 1 },
+                conducteur: { _id: 1 },
+                dateDebut: 1,
+                dateFin: 1,
+                duree: 1,
+                user: { _id: 1 }
+            });
+
+            if (!essais) return [];
+
+            return essais.map(essai => this.toDomain(essai as unknown as EssaiMongoModel));
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async update(essai: Essai): Promise<Essai> {
         try {
             const updated = await EssaiMongo.findOneAndUpdate(
