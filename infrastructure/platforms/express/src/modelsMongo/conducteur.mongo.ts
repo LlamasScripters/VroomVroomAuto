@@ -12,7 +12,15 @@ const conducteurSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        permis: {
+        prenom: {
+            type: String,
+            required: true,
+        },
+        dateNaissance: {
+            type: Date,
+            required: true,
+        },
+        numeroPermis: {
             type: String,
             required: true,
         },
@@ -20,20 +28,51 @@ const conducteurSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        experience: {
+        dateObtentionPermis: {
+            type: Date,
+            required: true,
+        },
+        dateValiditePermis: {
+            type: Date,
+            required: true,
+        },
+        anneeExperience: {
             type: Number,
+            required: true,
+        },
+        telephone: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+        },
+        disponibilite: {
+            type: String,
+            required: true,
+        },
+        statut: {
+            type: String,
             required: true,
         },
         user: {
             type: {
                 _id: {
                     type: String,
-                    default: uuidv4,
                     required: true,
-                }
+                },
             },
             required: true,
-        }
+        },
+        dateCreation: {
+            type: Date,
+            required: true,
+        },
+        derniereModification: {
+            type: Date,
+            required: true,
+        },
     },
     {
         collection: "Conducteurs",
@@ -42,10 +81,10 @@ const conducteurSchema = new mongoose.Schema(
 
 conducteurSchema.index(
     {
-        nom: 'text',
-        permis: 'text',
-        categoriePermis: 'text',
-        experience: 'text',
+        nom: "text",
+        prenom: "text",
+        email: "text",
+        telephone: "text",
     },
     { name: 'searchIndex' }
 );

@@ -1,26 +1,27 @@
-// infrastructure/platforms/react/src/components/conducteurManagement/ConducteurDetail.tsx
-import { useState } from 'react';
-import { Conducteur, Moto } from '../../types';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ConducteurHistorique } from './ConducteurHistorique';
-import { History } from 'lucide-react';
+"use client"
+
+import { useState } from "react"
+import type { Conducteur, Moto } from "../../types"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { ConducteurHistorique } from "./ConducteurHistorique"
+import { History } from "lucide-react"
 
 interface ConducteurDetailProps {
-  conducteur: Conducteur;
-  motos: Moto[];
-  isOpen: boolean;
-  onClose: () => void;
+  conducteur: Conducteur
+  motos: Moto[]
+  isOpen: boolean
+  onClose: () => void
 }
 
 export function ConducteurDetail({ conducteur, motos, isOpen, onClose }: ConducteurDetailProps) {
-  const [showHistorique, setShowHistorique] = useState(false);
+  const [showHistorique, setShowHistorique] = useState(false)
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('fr-FR');
-  };
+    return new Date(dateString).toLocaleDateString("fr-FR")
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -38,7 +39,9 @@ export function ConducteurDetail({ conducteur, motos, isOpen, onClose }: Conduct
               <dl className="space-y-2">
                 <div className="flex justify-between">
                   <dt className="font-medium">Nom complet</dt>
-                  <dd>{conducteur.nom} {conducteur.prenom}</dd>
+                  <dd>
+                    {conducteur.nom} {conducteur.prenom}
+                  </dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="font-medium">Date de naissance</dt>
@@ -76,7 +79,7 @@ export function ConducteurDetail({ conducteur, motos, isOpen, onClose }: Conduct
                 </div>
                 <div className="flex justify-between">
                   <dt className="font-medium">Date de validité</dt>
-                  <dd className={conducteur.permisValide ? 'text-green-600' : 'text-red-600'}>
+                  <dd className={conducteur.permisValide ? "text-green-600" : "text-red-600"}>
                     {formatDate(conducteur.dateValiditePermis)}
                   </dd>
                 </div>
@@ -120,10 +123,7 @@ export function ConducteurDetail({ conducteur, motos, isOpen, onClose }: Conduct
         </Card>
 
         <div className="flex justify-center mt-6">
-          <Button
-            onClick={() => setShowHistorique(true)}
-            className="flex items-center gap-2"
-          >
+          <Button onClick={() => setShowHistorique(true)} className="flex items-center gap-2">
             <History className="w-4 h-4" />
             Voir l'historique de conduite
           </Button>
@@ -131,12 +131,13 @@ export function ConducteurDetail({ conducteur, motos, isOpen, onClose }: Conduct
 
         {showHistorique && (
           <ConducteurHistorique
-            essais={[]}
+            conducteurId={conducteur.conducteurId!}
             isOpen={showHistorique}
             onClose={() => setShowHistorique(false)}
           />
         )}
       </DialogContent>
     </Dialog>
-  );
+  )
 }
+
