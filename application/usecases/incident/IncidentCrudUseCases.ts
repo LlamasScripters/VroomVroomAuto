@@ -1,3 +1,4 @@
+// incident crud use cases
 import { Incident } from '../../../domain/entities/IncidentEntity';
 import { IncidentRepository } from '../../repositories/IncidentRepository';
 import { UUID } from '../../../domain/value-objects/UUID';
@@ -34,18 +35,24 @@ export class IncidentUseCases {
     const incidentIdentifier = new UUID(incidentData.incidentId);
     const incident = await this.incidentRepository.findById(incidentIdentifier);
     if (!incident) return null;
-
-    const updatedIncident = Incident.create(
-      incident.incidentId,
-      incidentData.essaiId ? new UUID(incidentData.essaiId) : incident.essaiId,
-      incidentData.typeIncident || incident.typeIncident,
-      incidentData.description || incident.description,
-      incidentData.dateIncident ? new Date(incidentData.dateIncident) : incident.dateIncident,
-      incidentData.gravite || incident.gravite
-    );
+  
+    const updatedIncidentData: Partial<Incident> = {
+      essaiId: incidentData.essaiId ? new UUID(incidentData.essaiId) : incident.essaiId,
+      typeIncident: incidentData.typeIncident || incident.typeIncident,
+      description: incidentData.description || incident.description,
+      dateIncident: incidentData.dateIncident ? new Date(incidentData.dateIncident) : incident.dateIncident,
+      gravite: incidentData.gravite || incident.gravite
+    };
     
-    return this.incidentRepository.save(updatedIncident);
+    const updatedIncident = await this.incidentRepository.update({
+      ...incident,
+      ...updatedIncidentData
+    });
+    
+    return updatedIncident;
   }
+  
+  
 
   async deleteIncident(incidentData: deleteIncidentDTO): Promise<boolean> {
     const incidentIdentifier = new UUID(incidentData.incidentId);

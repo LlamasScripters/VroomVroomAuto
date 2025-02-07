@@ -10,6 +10,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import {
   createIncidentDTO,
@@ -25,6 +26,16 @@ export class IncidentController {
     @Inject('IncidentUseCases')
     private readonly incidentUseCases: IncidentUseCases,
   ) {}
+
+  @Get()
+  async getAllIncidents() {
+    try {
+      const incidents = await this.incidentUseCases.getAllIncidents();
+      return incidents;
+    } catch (error: any) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 
   @Post()
   async createIncident(@Body() data: createIncidentDTO) {
@@ -52,22 +63,22 @@ export class IncidentController {
     }
   }
 
-  @Patch(':id')
-  async updateIncident(
-    @Param('id') incidentId: string,
-    @Body() partialUpdate: Omit<updateIncidentDTO, 'incidentId'>
-  ) {
+  @Put(':id')
+  async updateIncident(@Param('id') incidentId: string, @Body() partialUpdate: updateIncidentDTO) {
+    console.log('partialUpdate', partialUpdate);
+    console.log('incidentId', incidentId);
     try {
       const updated = await this.incidentUseCases.updateIncident({
         incidentId,
         ...partialUpdate
-      });
+      }); 
+      console.log('updated', updated);
       if (!updated) {
         throw new HttpException('Incident introuvable', HttpStatus.NOT_FOUND);
       }
       return { message: 'Incident mis à jour', updated };
     } catch (error: any) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      throw new HttpException("test "+ error, HttpStatus.BAD_REQUEST);
     }
   }
 

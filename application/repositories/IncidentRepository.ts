@@ -1,3 +1,4 @@
+// incidentRepository 
 import { Incident } from '../../domain/entities/IncidentEntity';
 import { UUID } from '../../domain/value-objects/UUID';
 

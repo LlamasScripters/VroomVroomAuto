@@ -1,3 +1,4 @@
+// incident.repository.sql.ts
 import { IncidentRepository } from '../../../../../application/repositories/IncidentRepository';
 import { Incident } from '../../../../../domain/entities/IncidentEntity';
 import { UUID } from '../../../../../domain/value-objects/UUID';
@@ -15,6 +16,7 @@ interface IncidentModel extends Model {
 }
 
 export class IncidentSQLRepository implements IncidentRepository {
+
     async save(incident: Incident): Promise<Incident> {
         try {
             const createdIncident = await IncidentSQL.create({
@@ -55,22 +57,24 @@ export class IncidentSQLRepository implements IncidentRepository {
     }
 
     async update(incident: Incident): Promise<Incident> {
-        await IncidentSQL.update({
-            essaiId: incident.essaiId.toString(),
-            typeIncident: incident.typeIncident,
-            description: incident.description,
-            dateIncident: incident.dateIncident,
-            gravite: incident.gravite
-        }, {
-            where: { incidentId: incident.incidentId.toString() },
-            returning: true
+        const updateData = {
+          essaiId: incident.essaiId.toString(),
+          typeIncident: incident.typeIncident,
+          description: incident.description,
+          dateIncident: incident.dateIncident,
+          gravite: incident.gravite
+        };
+      
+        await IncidentSQL.update(updateData, {
+          where: { incidentId: incident.incidentId.toString() },
+          returning: true
         });
-
-        const updatedIncident = await IncidentSQL.findByPk(incident.incidentId.toString()) as IncidentModel | null;
+      
+        const updatedIncident = await IncidentSQL.findByPk(incident.incidentId.toString()) as IncidentModel;
         if (!updatedIncident) throw new Error('Incident introuvable');
-
+      
         return this.toDomain(updatedIncident);
-    }
+      }
 
     private toDomain(model: IncidentModel): Incident {
         return Incident.create(
