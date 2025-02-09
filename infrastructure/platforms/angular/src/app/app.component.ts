@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router'; 
 import { HeaderComponent } from './components/header/header.component';
+import { CommonModule } from '@angular/common';
 import { DatatableComponent } from './components/datatable/datatable.component';
 
 @Component({
@@ -10,7 +11,8 @@ import { DatatableComponent } from './components/datatable/datatable.component';
   imports: [
     RouterModule, 
     HeaderComponent,
-    DatatableComponent
+    CommonModule,
+    DatatableComponent,
   ],
 })
 export class AppComponent {
