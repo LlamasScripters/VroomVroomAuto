@@ -5,7 +5,7 @@ import { PieceFournisseurService } from '../services/pieceFournisseurService';
 import SearchAndFilters from '../components/shared/SearchAndFilters';
 import { CataloguePiecesFournisseurTable } from '../components/cataloguePieces/CataloguePiecesFournisseurTable';
 import { PanierCommande } from '../components/commandeManagement/PanierCommande';
-import { toast } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 
 export default function CataloguePiecesFournisseurPage() {
     const [pieces, setPieces] = useState<PieceFournisseur[]>([]);
@@ -56,6 +56,7 @@ export default function CataloguePiecesFournisseurPage() {
 
     return (
         <div className="container mx-auto p-4">
+            <Toaster position="top-right" />
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">Catalogue des Pièces Triumph Motorcycles</h1>
             </div>

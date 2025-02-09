@@ -22,6 +22,8 @@ export function PanierCommande() {
               return;
           }
   
+          const nombrePieces = panier.reduce((acc, item) => acc + item.quantite, 0);
+  
           for (const item of panier) {
               const commandeData = {
                   pieceId: item.pieceId,
@@ -39,7 +41,9 @@ export function PanierCommande() {
           }
   
           clearPanier();
-          toast.success('Commandes créées avec succès');
+          toast.success(
+              `Commande validée avec succès ! ${nombrePieces} pièce${nombrePieces > 1 ? 's' : ''} pour un total de ${totalPanier.toFixed(2)}€`
+          );
       } catch (error) {
           console.error('Erreur lors de la validation du panier:', error);
           toast.error("Une erreur est survenue lors de la validation des commandes");
