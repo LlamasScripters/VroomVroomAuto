@@ -24,6 +24,7 @@ interface PiecePlanifiee {
 interface PlanificationEntretienFormProps {
   onSubmit: (planification: {
     motoId: string;
+    userId: string;
     datePrevue?: string;
     kilometragePrevu?: number;
     typeEntretien?: string;
@@ -174,20 +175,24 @@ const PlanificationEntretienForm: React.FC<PlanificationEntretienFormProps> = ({
     };
   
     // Soumission du formulaire
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-
+    
       if (!user?.id) {
         toast.error("Erreur : Utilisateur non authentifié");
         return;
       }
-  
-      // commenté car les pièces peuvent être facultatives
-      // if (piecesPlanifiees.length === 0) { 
-      //   toast.error('Veuillez sélectionner au moins une pièce');
-      //   return;
-      // }
-  
+    
+      if (!formData.motoId) {
+        toast.error("Veuillez sélectionner une moto");
+        return;
+      }
+    
+      if (formData.coutMainOeuvre < 0) {
+        toast.error("Le coût de main d'œuvre ne peut pas être négatif");
+        return;
+      }
+    
       const planification = {
         ...formData,
         userId: user.id,
@@ -197,8 +202,13 @@ const PlanificationEntretienForm: React.FC<PlanificationEntretienFormProps> = ({
           prixUnitaire: p.prixUnitaire
         }))
       };
-  
-      onSubmit(planification);
+    
+      try {
+        await onSubmit(planification);
+      } catch (error) {
+        // L'erreur sera gérée par le composant parent
+        console.error('Erreur lors de la soumission:', error);
+      }
     };
 
     const selectedPiece = pieces.find(piece => piece.pieceId === selectedPieceId);
