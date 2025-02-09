@@ -9,7 +9,7 @@ interface AuthState {
         email: string;
         role: string;
     } | null;
-    setAuth: (token: string, user: any) => void;
+    setAuth: (token: string, user: { id: string; email: string; role: string }) => void;
     clearAuth: () => void;
     validateToken: () => Promise<boolean>;
 }
@@ -20,7 +20,14 @@ export const useAuthStore = create<AuthState>()(
             token: null,
             user: null,
 
-            setAuth: (token, user) => set({ token, user }),
+            setAuth: (token, user) => set({ 
+                token, 
+                user: {
+                    id: user.id,
+                    email: user.email,
+                    role: user.role
+                } 
+            }),
 
             clearAuth: () => set({ token: null, user: null }),
 
@@ -47,6 +54,7 @@ export const useAuthStore = create<AuthState>()(
 
                     return true;
                 } catch (error) {
+                    console.error(error);
                     get().clearAuth();
                     return false;
                 }

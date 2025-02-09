@@ -44,11 +44,11 @@ interface UserData {
   avatar: string;
 }
 
-const userData: UserData = {
-  name: "VroomVroomAuto",
-  email: "contact@vroomvroom.fr",
-  avatar: "/avatars/default.jpg",
-};
+// const userData: UserData = {
+//   name: "VroomVroomAuto",
+//   email: "contact@vroomvroom.fr",
+//   avatar: "/avatars/default.jpg",
+// };
 
 const getNavigationItems = (role: string) => {
   // Items communs à tous les utilisateurs
@@ -217,6 +217,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuthStore();
   const navigationItems = getNavigationItems(user?.role || 'user');
 
+
+  const userData: UserData = {
+    name: user?.email?.split('@')[0] || 'Utilisateur',
+    email: user?.email || 'Non disponible',
+    avatar: "/avatars/default.jpg",
+  };
+  
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
