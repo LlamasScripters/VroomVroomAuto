@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { AuthController } from "@infrastructure/platforms/express/src/controllers/authController"; 
+import { authenticate } from '../middlewares/authMiddleware';
 
 const authRouter = Router();
 const controller = new AuthController();
@@ -20,7 +21,7 @@ authRouter.post("/reset-password", (req, res) => controller.resetPassword(req, r
 authRouter.get("/validate-email", (req, res) => controller.validateEmail(req, res));
 
 // CHECK USER TOKEN VALIDITY
-authRouter.get("/me", (req, res) => controller.me(req, res));
+authRouter.get("/me", authenticate, (req, res) => controller.me(req, res));
 
 
 
