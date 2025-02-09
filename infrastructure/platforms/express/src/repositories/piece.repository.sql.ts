@@ -89,15 +89,29 @@ export class PieceSQLRepository implements PieceRepository {
     if (!piece) {
       throw new Error("Pièce non trouvée");
     }
-  
+
+    const stockActuel = (piece as PieceModel).quantiteEnStock;
+    
     const nouvelleQuantite = type === 'AJOUT' 
-      ? (piece as PieceModel).quantiteEnStock + quantite
-      : (piece as PieceModel).quantiteEnStock - quantite;
-  
-    (piece as PieceModel).quantiteEnStock = nouvelleQuantite;
-    await piece.save();
-  
-    return this.toDomain(piece as PieceModel);
+    ? stockActuel + quantite
+    : stockActuel - quantite;
+
+    if (nouvelleQuantite < 0) {
+      throw new Error("La quantité en stock ne peut pas être négative");
+    }
+
+    await PieceSQLModel.update(
+      { quantiteEnStock: nouvelleQuantite },
+      { where: { pieceId: pieceId.toString() } }
+    );
+
+    const pieceUpdated = await PieceSQLModel.findByPk(pieceId.toString());
+
+    if (!pieceUpdated) {
+      throw new Error("Pièce non trouvée après mise à jour");
+    }
+
+    return this.toDomain(pieceUpdated as PieceModel);
   }
 
   async findByCriticalStock(): Promise<Piece[]> {

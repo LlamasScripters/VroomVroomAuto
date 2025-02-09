@@ -115,12 +115,12 @@ export class PlanifierEntretienUseCase {
           );
           await this.entretienPieceRepository.save(entretienPiece);
           
-          // Mise à jour du stock
-          const pieceEntity = await this.pieceRepository.findById(new UUID(piece.pieceId));
-          if (pieceEntity) {
-            const newStock = pieceEntity.quantiteEnStock - piece.quantite;
-            await this.pieceRepository.updateStock(pieceEntity.pieceId, newStock, 'RETRAIT');
-          }
+          // Mise à jour du stock de la pièce après l'entretien planifié
+          await this.pieceRepository.updateStock(
+            new UUID(piece.pieceId), 
+            piece.quantite, 
+            'RETRAIT'
+          );
         }
       }
 
