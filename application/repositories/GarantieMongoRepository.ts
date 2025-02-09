@@ -1,5 +1,5 @@
-import { Garantie } from '../../domain/entities/GarantieEntity';
-import { UUID } from '../../domain/value-objects/UUID';
+import { Garantie } from '@domain/entities/GarantieEntity';
+import { UUID } from '@domain/value-objects/UUID';
 
 export interface GarantieMongoRepository {
     save(garantie: Garantie): Promise<Garantie>;

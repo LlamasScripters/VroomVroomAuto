@@ -1,7 +1,7 @@
 // application/repositories/ConducteurRepository.ts
-import { Conducteur } from "../../domain/entities/ConducteurEntity";
-import { UUID } from "../../domain/value-objects/UUID";
-import { DisponibiliteConducteur, StatutConducteur } from "../../domain/entities/ConducteurEntity";
+import { Conducteur } from "@domain/entities/ConducteurEntity";
+import { UUID } from "@domain/value-objects/UUID";
+import { DisponibiliteConducteur, StatutConducteur } from "@domain/entities/ConducteurEntity";
 
 export interface ConducteurRepository {
   save(conducteur: Conducteur): Promise<Conducteur>;

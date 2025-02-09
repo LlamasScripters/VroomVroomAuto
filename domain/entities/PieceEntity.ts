@@ -1,5 +1,5 @@
 // domain/entities/PieceEntity.ts
-import { UUID } from '../value-objects/UUID';
+import { UUID } from '@domain/value-objects/UUID';
 
 export interface PieceDetails {
   nom: string;

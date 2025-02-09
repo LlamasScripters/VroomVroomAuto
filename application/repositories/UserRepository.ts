@@ -1,6 +1,6 @@
-import { User } from '../../domain/entities/UserEntity';
-import { UUID } from '../../domain/value-objects/UUID';
-import { Email } from '../../domain/value-objects/EMAIL';
+import { User } from '@domain/entities/UserEntity';
+import { UUID } from '@domain/value-objects/UUID';
+import { Email } from '@domain/value-objects/EMAIL';
 
 export interface UserRepository {
   save(user: User): Promise<User>;

@@ -1,5 +1,5 @@
-import { Entretien  } from "../../domain/entities/EntretienEntity";
-import { UUID } from "../../domain/value-objects/UUID";
+import { Entretien  } from "@domain/entities/EntretienEntity";
+import { UUID } from "@domain/value-objects/UUID";
 
 export interface EntretienRepository {
   save(entretien: Entretien): Promise<Entretien>;

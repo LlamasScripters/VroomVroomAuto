@@ -8,10 +8,7 @@ import { EntretienPieceRepository } from '@application/repositories/EntretienPie
 import { Entretien } from '@domain/entities/EntretienEntity';
 import { EntretienPiece } from '@domain/entities/EntretienPieceEntity';
 import { UserRepository } from '@application/repositories/UserRepository';
-import { 
-  PlanifierEntretienDTO,
-  MaintenancePlanningResultDTO 
-} from '@application/dtos/MaintenancePlanningDTO';
+import { PlanifierEntretienDTO, MaintenancePlanningResultDTO } from '@application/dtos/MaintenancePlanningDTO';
 
 export class PlanifierEntretienUseCase {
   constructor(

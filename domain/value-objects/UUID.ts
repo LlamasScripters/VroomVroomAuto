@@ -1,4 +1,4 @@
-import { UUIDError } from '../errors/value-objects/UUIDError';
+import { UUIDError } from '@domain/errors/value-objects/UUIDError';
 import { v6 as uuidv6, validate as uuidValidate } from 'uuid';
 
 export class UUID {

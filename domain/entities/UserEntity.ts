@@ -1,8 +1,8 @@
-import { UUID } from '../value-objects/UUID';
-import { Email } from '../value-objects/EMAIL';
-import { Password } from '../value-objects/PASSWORD';
-import { Role } from '../value-objects/ROLE';
-import { Username } from '../value-objects/USERNAME';
+import { UUID } from '@domain/value-objects/UUID';
+import { Email } from '@domain/value-objects/EMAIL';
+import { Password } from '@domain/value-objects/PASSWORD';
+import { Role } from '@domain/value-objects/ROLE';
+import { Username } from '@domain/value-objects/USERNAME';
 
 export class User {
     constructor(

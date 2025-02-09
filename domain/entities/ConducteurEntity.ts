@@ -1,5 +1,5 @@
 // domain/entities/ConducteurEntity.ts
-import { UUID } from '../value-objects/UUID';
+import { UUID } from '@domain/value-objects/UUID';
 
 export enum DisponibiliteConducteur {
   SEMAINE = 'SEMAINE',           

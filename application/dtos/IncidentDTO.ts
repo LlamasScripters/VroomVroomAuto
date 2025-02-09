@@ -1,5 +1,3 @@
-import { Incident } from "../../domain/entities/IncidentEntity";
-
 export interface createIncidentDTO {
     essaiId: string;
     typeIncident: string;

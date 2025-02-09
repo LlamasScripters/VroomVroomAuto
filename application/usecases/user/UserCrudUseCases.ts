@@ -1,5 +1,5 @@
 import { User } from '@domain/entities/UserEntity';
-import { UserRepository } from '../../repositories/UserRepository';
+import { UserRepository } from '@application/repositories/UserRepository';
 import { UUID } from '@domain/value-objects/UUID';
 import { Email } from '@domain/value-objects/EMAIL';
 import { Password } from '@domain/value-objects/PASSWORD';

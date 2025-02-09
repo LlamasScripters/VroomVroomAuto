@@ -1,4 +1,4 @@
-import { PasswordError } from '../errors/value-objects/PasswordError';
+import { PasswordError } from '@domain/errors/value-objects/PasswordError';
 
 export class Password {
   private readonly value: string;

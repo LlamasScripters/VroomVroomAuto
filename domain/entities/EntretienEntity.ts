@@ -1,5 +1,5 @@
-import { UUID } from '../value-objects/UUID';
-import { EntretienPiece } from './EntretienPieceEntity';
+import { UUID } from '@domain/value-objects/UUID';
+import { EntretienPiece } from '@domain/entities/EntretienPieceEntity';
 
 export interface MotoDetails {
   marque: string;

@@ -1,5 +1,5 @@
-import { Garantie } from '../../domain/entities/GarantieEntity';
-import { UUID } from '../../domain/value-objects/UUID';
+import { Garantie } from '@domain/entities/GarantieEntity';
+import { UUID } from '@domain/value-objects/UUID';
 
 export interface GarantieRepository {
     save(garantie: Garantie): Promise<Garantie>;

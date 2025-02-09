@@ -1,5 +1,5 @@
-import { Essai } from '../../domain/entities/EssaiEntity';
-import { UUID } from '../../domain/value-objects/UUID';
+import { Essai } from '@domain/entities/EssaiEntity';
+import { UUID } from '@domain/value-objects/UUID';
 
 export interface EssaiMongoRepository {
   save(essai: Essai): Promise<Essai>;

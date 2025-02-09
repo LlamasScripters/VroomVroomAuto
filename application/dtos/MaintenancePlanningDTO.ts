@@ -12,7 +12,6 @@ export interface PlanifierEntretienDTO {
   kilometragePrevu?: number;
   typeEntretien?: string;
   notes?: string;
-  // Nouvelles propriétés
   pieces: PiecePlanificationDTO[];
   coutMainOeuvre: number;
   userId: string;

@@ -1,8 +1,8 @@
-import { User } from "../../../domain/entities/UserEntity";
-import { AuthRepository } from "../../repositories/AuthRepository";
-import { UUID } from "../../../domain/value-objects/UUID";
-import { Email } from "../../../domain/value-objects/EMAIL";
-import { Password } from "../../../domain/value-objects/PASSWORD";
+import { User } from "@domain/entities/UserEntity";
+import { AuthRepository } from "@application/repositories/AuthRepository";
+import { UUID } from "@domain/value-objects/UUID";
+import { Email } from "@domain/value-objects/EMAIL";
+import { Password } from "@domain/value-objects/PASSWORD";
 import { AuthentificationService } from "@application/services/AuthentificationService";
 import { PasswordService } from "@application/services/PasswordService";
 import { NotificationService } from "@application/services/NotificationService";

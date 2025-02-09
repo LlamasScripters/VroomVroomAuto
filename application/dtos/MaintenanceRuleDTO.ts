@@ -3,7 +3,7 @@
 export interface CreateMaintenanceRuleDTO {
     modele: string;
     intervalleKilometrage: number;
-    intervalleTemps: number; // en jours
+    intervalleTemps: number;
     typeEntretien: string;
   }
   
@@ -29,6 +29,6 @@ export interface CreateMaintenanceRuleDTO {
     intervalleKilometrage: number;
     intervalleTemps: number;
     typeEntretien: string;
-    nombreEntretiensPrevus?: number; // stat utile pour le dashboard
+    nombreEntretiensPrevus?: number;
     dateDernierEntretien?: string;
   }

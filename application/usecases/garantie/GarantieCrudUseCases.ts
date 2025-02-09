@@ -1,8 +1,8 @@
-import { Garantie } from '../../../domain/entities/GarantieEntity';
-import { GarantieRepository } from '../../repositories/GarantieRepository';
-import { GarantieMongoRepository } from '../../repositories/GarantieMongoRepository';
-import { UUID } from '../../../domain/value-objects/UUID';
-import { CreateGarantieDTO, UpdateGarantieDTO, GetGarantieDTO } from '../../dtos/GarantieDTO';
+import { Garantie } from '@domain/entities/GarantieEntity';
+import { GarantieRepository } from '@application/repositories/GarantieRepository';
+import { GarantieMongoRepository } from '@application/repositories/GarantieMongoRepository';
+import { UUID } from '@domain/value-objects/UUID';
+import { CreateGarantieDTO, UpdateGarantieDTO, GetGarantieDTO } from '@application/dtos/GarantieDTO';
 import { GarantieResponse } from '@application/response/GarantieResponse';
 
 

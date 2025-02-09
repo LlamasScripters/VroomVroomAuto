@@ -1,6 +1,6 @@
-import { Essai } from "../../domain/entities/EssaiEntity";
-import { UUID } from "../../domain/value-objects/UUID";
-import { EssaiDTO } from "../dtos/EssaiDTO";
+import { Essai } from "@domain/entities/EssaiEntity";
+import { UUID } from "@domain/value-objects/UUID";
+import { EssaiDTO } from "@application/dtos/EssaiDTO";
 
 export function toDTO(essai: Essai): EssaiDTO {
     return {

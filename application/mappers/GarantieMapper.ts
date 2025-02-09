@@ -1,6 +1,6 @@
-import { Garantie } from '../../domain/entities/GarantieEntity';
-import { UUID } from '../../domain/value-objects/UUID';
-import { GarantieDTO } from '../dtos/GarantieDTO';
+import { Garantie } from '@domain/entities/GarantieEntity';
+import { UUID } from '@domain/value-objects/UUID';
+import { GarantieDTO } from '@application/dtos/GarantieDTO';
 
 export function toDTO(garantie: Garantie): GarantieDTO {
     return {

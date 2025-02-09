@@ -1,7 +1,7 @@
-import { Panne } from '../../../domain/entities/PanneEntity';
+import { Panne } from '@domain/entities/PanneEntity';
 import { PanneRepository } from '@application/repositories/PanneRepository';
 import { PanneMongoRepository } from '@application/repositories/PanneMongoRepository';
-import { UUID } from '../../../domain/value-objects/UUID';
+import { UUID } from '@domain/value-objects/UUID';
 import { CreatePanneDTO, UpdatePanneDTO, GetPanneDTO } from '@application/dtos/PanneDTO';
 import { PanneResponse } from '@application/response/PanneResponse';
 

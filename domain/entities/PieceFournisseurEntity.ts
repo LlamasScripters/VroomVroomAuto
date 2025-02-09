@@ -1,5 +1,5 @@
 // domain/entities/PieceFournisseurEntity.ts
-import { UUID } from '../value-objects/UUID';
+import { UUID } from '@domain/value-objects/UUID';
 
 export type PieceCategorie = 'Filtration' | 'Freinage' | 'Pneumatiques' | 'Moteur' | 'Transmission' | 'Electrique' | 'Carrosserie' | 'Autres';
 

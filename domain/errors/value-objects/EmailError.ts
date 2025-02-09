@@ -1,4 +1,4 @@
-import { ValueObjectError } from '../ValueObjectError';
+import { ValueObjectError } from '@domain/errors/ValueObjectError';
 
 export class EmailError extends ValueObjectError {
   constructor(email: string) {

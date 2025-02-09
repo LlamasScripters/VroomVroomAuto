@@ -1,5 +1,5 @@
 // domain/entities/CommandeEntity.ts
-import { UUID } from '../value-objects/UUID';
+import { UUID } from '@domain/value-objects/UUID';
 
 export enum CommandeStatut {
     EN_ATTENTE = 'EN_ATTENTE',

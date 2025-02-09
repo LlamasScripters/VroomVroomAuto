@@ -1,9 +1,9 @@
 // incident crud use cases
-import { Incident } from '../../../domain/entities/IncidentEntity';
-import { IncidentRepository } from '../../repositories/IncidentRepository';
-import { UUID } from '../../../domain/value-objects/UUID';
-import { IncidentDTO, createIncidentDTO, updateIncidentDTO, deleteIncidentDTO, getIncidentDTO,  } from '../../../application/dtos/IncidentDTO';
-import { IncidentResponse } from '../../../application/response/IncidentResponse';
+import { Incident } from '@domain/entities/IncidentEntity';
+import { IncidentRepository } from '@application/repositories/IncidentRepository';
+import { UUID } from '@domain/value-objects/UUID';
+import { createIncidentDTO, updateIncidentDTO, deleteIncidentDTO, getIncidentDTO,  } from '@application/dtos/IncidentDTO';
+import { IncidentResponse } from '@application/response/IncidentResponse';
 export class IncidentUseCases {
   constructor(
     private incidentRepository: IncidentRepository

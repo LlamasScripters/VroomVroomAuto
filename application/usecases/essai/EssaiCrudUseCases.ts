@@ -1,8 +1,8 @@
-import { Essai } from '../../../domain/entities/EssaiEntity';
-import { EssaiRepository } from '../../repositories/EssaiRepository';
-import { EssaiMongoRepository } from '../../repositories/EssaiMongoRepository';
-import { UUID } from '../../../domain/value-objects/UUID';
-import { EssaiResponse } from '../../response/EssaiResponse';
+import { Essai } from '@domain/entities/EssaiEntity';
+import { EssaiRepository } from '@application/repositories/EssaiRepository';
+import { EssaiMongoRepository } from '@application/repositories/EssaiMongoRepository';
+import { UUID } from '@domain/value-objects/UUID';
+import { EssaiResponse } from '@application/response/EssaiResponse';
 import { CreateEssaiDTO, UpdateEssaiDTO, GetEssaiDTO } from '@application/dtos/EssaiDTO';
 
 

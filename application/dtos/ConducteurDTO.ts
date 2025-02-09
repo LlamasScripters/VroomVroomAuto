@@ -1,5 +1,5 @@
 // application/dtos/ConducteurDTO.ts
-import { DisponibiliteConducteur, StatutConducteur } from '../../domain/entities/ConducteurEntity';
+import { DisponibiliteConducteur, StatutConducteur } from '@domain/entities/ConducteurEntity';
 
 export interface CreateConducteurDTO {
     nom: string;
