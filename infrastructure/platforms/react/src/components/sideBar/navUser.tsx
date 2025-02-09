@@ -88,18 +88,18 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
-                Upgrade to Pro
+                Upgrade to VroomVroomAuto Pro
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <BadgeCheck />
-                Account
+                Mon compte
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard />
-                Billing
+                Facturation
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell />
@@ -109,7 +109,7 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <LogOut />
-              Log out
+              Se déconnecter
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
