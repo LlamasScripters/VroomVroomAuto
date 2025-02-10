@@ -9,7 +9,7 @@ export const EntretienService = {
     
     try {
 
-      const response = await axiosInstance.get("entretien")
+      const response = await axiosInstance.get("/entretien")
 
       if (!response.data) {
         throw new Error('Erreur lors de la récupération des entretiens');
@@ -26,13 +26,13 @@ export const EntretienService = {
 
     try {
 
-      const motos = await axiosInstance.get("motos")
+      const motos = await axiosInstance.get("/motos")
 
       // Filtrer les motos de l'utilisateur
       const userMotos = motos.filter((moto: Moto) => moto.userId === user?.id);
       const userMotoIds = userMotos.map((moto: Moto) => moto.motoId);
 
-      const entretiens = await axiosInstance.get("entretien")
+      const entretiens = await axiosInstance.get("/entretien")
 
       // Filtrer les entretiens pour n'avoir que ceux des motos de l'utilisateur
       return entretiens.filter((entretien: Entretien) => 
@@ -47,7 +47,7 @@ export const EntretienService = {
 
   async createEntretien(entretien: Entretien): Promise<Entretien> {
 
-    const response = await axiosInstance.post("entretien", entretien)
+    const response = await axiosInstance.post("/entretien", entretien)
   
     if (!response.data) {
       throw new Error('Erreur lors de la création de l\'entretien');

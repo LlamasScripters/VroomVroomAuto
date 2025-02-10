@@ -7,7 +7,7 @@ export const PieceFournisseurService = {
     async getAllPieces(): Promise<PieceFournisseur[]> {
         try {
 
-            const response = await axiosInstance.get("pieces-fournisseur")
+            const response = await axiosInstance.get("/pieces-fournisseur")
 
             if (!response.data) {
                 throw new Error('Erreur lors de la récupération du catalogue');
@@ -22,7 +22,7 @@ export const PieceFournisseurService = {
     async getPieceById(pieceId: string): Promise<PieceFournisseur> {
         try {
 
-            const response = await axiosInstance.get(`pieces-fournisseur/${pieceId}`)
+            const response = await axiosInstance.get(`/pieces-fournisseur/${pieceId}`)
 
             if (!response.data) {
                 throw new Error('Pièce non trouvée');
@@ -37,7 +37,7 @@ export const PieceFournisseurService = {
     async verifierDisponibilite(pieceId: string, quantite: number): Promise<boolean> {
         try {
 
-            const response = await axiosInstance.get(`pieces-fournisseur/${pieceId}/disponibilite?quantite=${quantite}`)
+            const response = await axiosInstance.get(`/pieces-fournisseur/${pieceId}/disponibilite?quantite=${quantite}`)
 
             if (!response.data) {
                 throw new Error('Erreur lors de la vérification de la disponibilité');
@@ -52,7 +52,7 @@ export const PieceFournisseurService = {
     async createPieceFournisseur(pieceData: Omit<PieceFournisseur, "pieceId" | "stockCritique" | "disponible">): Promise<PieceFournisseur> {
         try {
 
-            const response = await axiosInstance.post("pieces-fournisseur", pieceData)
+            const response = await axiosInstance.post("/pieces-fournisseur", pieceData)
 
             if (!response.data) {
                 throw new Error('Erreur lors de la création de la pièce');
@@ -67,7 +67,7 @@ export const PieceFournisseurService = {
     async updatePieceFournisseur(pieceId: string, pieceData: Partial<PieceFournisseur>): Promise<PieceFournisseur> {
         try {
 
-            const response = await axiosInstance.put(`pieces-fournisseur/${pieceId}`, pieceData)
+            const response = await axiosInstance.put(`/pieces-fournisseur/${pieceId}`, pieceData)
 
             if (!response.data) {
                 throw new Error('Erreur lors de la mise à jour de la pièce');
@@ -82,7 +82,7 @@ export const PieceFournisseurService = {
     async deletePieceFournisseur(pieceId: string): Promise<void> {
         try {
 
-            const response = await axiosInstance.delete(`pieces-fournisseur/${pieceId}`)
+            const response = await axiosInstance.delete(`/pieces-fournisseur/${pieceId}`)
 
             if (!response.data) {
                 throw new Error('Erreur lors de la suppression de la pièce');

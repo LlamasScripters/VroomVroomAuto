@@ -6,7 +6,7 @@ export const MotoService = {
   async getAllMotos(): Promise<Moto[]> {
     try {
 
-      const response = await axiosInstance.get("motos")
+      const response = await axiosInstance.get("/motos")
 
       if (!response.data) {
         throw new Error('Erreur lors de la récupération des motos');
@@ -20,7 +20,7 @@ export const MotoService = {
   async getMotoById(id: string): Promise<Moto> {
     try {
 
-      const response = await axiosInstance.get(`motos/${id}`)
+      const response = await axiosInstance.get(`/motos/${id}`)
       if (!response.data) {
         throw new Error('Moto non trouvée');
       }
@@ -33,7 +33,7 @@ export const MotoService = {
   async createMoto(motoData: Omit<Moto, 'id'>): Promise<Moto> {
     try {
 
-      const response = await axiosInstance.post("motos", motoData)
+      const response = await axiosInstance.post("/motos", motoData)
   
       if (!response.data) {
         throw new Error('Erreur lors de la création de la moto');
@@ -50,7 +50,7 @@ export const MotoService = {
             throw new Error('ID de moto manquant');
         }
 
-        const response = await axiosInstance.put(`motos/${moto.motoId}`, moto)
+        const response = await axiosInstance.put(`/motos/${moto.motoId}`, moto)
         
         if (!response.data) {
             throw new Error('Erreur lors de la mise à jour de la moto');
@@ -68,7 +68,7 @@ export const MotoService = {
     }
     try {
 
-      const response = await axiosInstance.delete(`motos/${id}`)
+      const response = await axiosInstance.delete(`/motos/${id}`)
     
       if (!response.data) {
         throw new Error('Erreur lors de la suppression de la moto');

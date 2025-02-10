@@ -18,7 +18,7 @@ export const PanneService = {
 
   async createPanne(panne: Omit<Panne, "id">): Promise<Panne> {
     try {
-      const response = await axiosInstance.post("pannes", panne)
+      const response = await axiosInstance.post("/pannes", panne)
 
       if (!response.data) {
         throw new Error("Erreur lors de la création de la panne")

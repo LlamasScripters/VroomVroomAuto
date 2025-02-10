@@ -6,7 +6,7 @@ export const CommandeService = {
   async getAllCommandes(): Promise<Commande[]> {
     
     try {
-      const response = await axiosInstance.get("commandes")
+      const response = await axiosInstance.get("/commandes")
 
       if (!response.data) {
         throw new Error('Erreur lors de la récupération des commandes');
@@ -28,7 +28,7 @@ export const CommandeService = {
       try {
           console.log('Données commande envoyées:', commandeData);
 
-          const response = await axiosInstance.post("commandes", commandeData)
+          const response = await axiosInstance.post("/commandes", commandeData)
 
           if (!response.data) {
               const errorData = await response.data;

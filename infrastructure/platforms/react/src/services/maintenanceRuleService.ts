@@ -6,7 +6,7 @@ export const MaintenanceRuleService = {
   async getAllRules(): Promise<MaintenanceRule[]> {
 
 
-    const response = await axiosInstance.get("maintenance/rules")
+    const response = await axiosInstance.get("/maintenance/rules")
 
 
     if (!response.data) {
@@ -17,7 +17,7 @@ export const MaintenanceRuleService = {
 
   async createRule(rule: MaintenanceRule): Promise<MaintenanceRule> {
 
-    const response = await axiosInstance.post("maintenance/rules", rule)
+    const response = await axiosInstance.post("/maintenance/rules", rule)
 
     if (!response.data) {
       throw new Error('Erreur lors de la création de la règle');
@@ -27,7 +27,7 @@ export const MaintenanceRuleService = {
 
   async updateRule(rule: MaintenanceRule): Promise<MaintenanceRule> {
 
-    const response = await axiosInstance.put(`maintenance/rules/${rule.id}`, rule)
+    const response = await axiosInstance.put(`/maintenance/rules/${rule.id}`, rule)
 
     if (!response.data) {
       throw new Error('Erreur lors de la mise à jour de la règle');
@@ -37,7 +37,7 @@ export const MaintenanceRuleService = {
 
   async deleteRule(id: string): Promise<void> {
 
-    const response = await axiosInstance.delete(`maintenance/rules/${id}`)
+    const response = await axiosInstance.delete(`/maintenance/rules/${id}`)
 
     if (!response.data) {
       throw new Error('Erreur lors de la suppression de la règle');
@@ -59,7 +59,7 @@ export const MaintenanceRuleService = {
     }>;
   }): Promise<MaintenancePlanningResultDTO> {
 
-    const response = await axiosInstance.post("maintenance/planification", planification)
+    const response = await axiosInstance.post("/maintenance/planification", planification)
   
     if (!response.data) {
       const errorData = await response.data;

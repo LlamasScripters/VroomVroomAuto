@@ -8,7 +8,7 @@ import axiosInstance from 'axios';
 export const ConducteurService = {
     async getAllConducteurs(): Promise<Conducteur[]> {
         try {
-            const response = await axiosInstance.get("conducteurs")
+            const response = await axiosInstance.get("/conducteurs")
 
             if (!response.data) {
                 throw new Error('Erreur lors de la récupération des conducteurs');
@@ -22,7 +22,7 @@ export const ConducteurService = {
     async getConducteurById(id: string): Promise<Conducteur> {
         try {
 
-            const response = await axiosInstance.get(`conducteurs/${id}`)
+            const response = await axiosInstance.get(`/conducteurs/${id}`)
 
             if (!response.data) throw new Error('Conducteur non trouvé');
             return response.data;
@@ -34,7 +34,7 @@ export const ConducteurService = {
     async createConducteur(conducteurData: Omit<Conducteur, 'conducteurId'>): Promise<Conducteur> {
         try {
 
-            const response = await axiosInstance.post("conducteurs", conducteurData)
+            const response = await axiosInstance.post("/conducteurs", conducteurData)
 
             if (!response.data) throw new Error('Erreur lors de la création du conducteur');
             return response.data;
@@ -77,7 +77,7 @@ export const ConducteurService = {
     async getMotosByUserId(userId: string): Promise<Moto[]> {
         try {
 
-            const response = await axiosInstance.get(`motos?userId=${userId}`)
+            const response = await axiosInstance.get(`/motos?userId=${userId}`)
 
           if (!response.data) {
             throw new Error('Erreur lors de la récupération des motos');
