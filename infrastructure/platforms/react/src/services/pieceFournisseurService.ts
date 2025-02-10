@@ -9,11 +9,11 @@ export const PieceFournisseurService = {
 
             const response = await axiosInstance.get("pieces-fournisseur")
 
-            if (!response.ok) {
+            if (!response.data) {
                 throw new Error('Erreur lors de la récupération du catalogue');
             }
 
-            return response.json();
+            return response.data;
         } catch (error) {
             throw new Error(`Erreur lors de la récupération du catalogue: ${error}`);
         }
@@ -24,11 +24,11 @@ export const PieceFournisseurService = {
 
             const response = await axiosInstance.get(`pieces-fournisseur/${pieceId}`)
 
-            if (!response.ok) {
+            if (!response.data) {
                 throw new Error('Pièce non trouvée');
             }
 
-            return response.json();
+            return response.data;
         } catch (error) {
             throw new Error(`Erreur lors de la récupération de la pièce: ${error}`);
         }
@@ -39,11 +39,11 @@ export const PieceFournisseurService = {
 
             const response = await axiosInstance.get(`pieces-fournisseur/${pieceId}/disponibilite?quantite=${quantite}`)
 
-            if (!response.ok) {
+            if (!response.data) {
                 throw new Error('Erreur lors de la vérification de la disponibilité');
             }
 
-            const result = await response.json();
+            const result = await response.data;
             return result.disponible;
         } catch (error) {
             throw new Error(`Erreur lors de la vérification de la disponibilité: ${error}`);
@@ -54,11 +54,11 @@ export const PieceFournisseurService = {
 
             const response = await axiosInstance.post("pieces-fournisseur", pieceData)
 
-            if (!response.ok) {
+            if (!response.data) {
                 throw new Error('Erreur lors de la création de la pièce');
             }
 
-            return response.json();
+            return response.data;
         } catch (error) {
             throw new Error(`Erreur lors de la création de la pièce: ${error}`);
         }
@@ -69,11 +69,11 @@ export const PieceFournisseurService = {
 
             const response = await axiosInstance.put(`pieces-fournisseur/${pieceId}`, pieceData)
 
-            if (!response.ok) {
+            if (!response.data) {
                 throw new Error('Erreur lors de la mise à jour de la pièce');
             }
 
-            return response.json();
+            return response.data;
         } catch (error) {
             throw new Error(`Erreur lors de la mise à jour de la pièce: ${error}`);
         }
@@ -84,7 +84,7 @@ export const PieceFournisseurService = {
 
             const response = await axiosInstance.delete(`pieces-fournisseur/${pieceId}`)
 
-            if (!response.ok) {
+            if (!response.data) {
                 throw new Error('Erreur lors de la suppression de la pièce');
             }
         } catch (error) {

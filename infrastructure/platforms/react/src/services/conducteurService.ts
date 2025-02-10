@@ -10,10 +10,10 @@ export const ConducteurService = {
         try {
             const response = await axiosInstance.get("conducteurs")
 
-            if (!response.ok) {
+            if (!response.data) {
                 throw new Error('Erreur lors de la récupération des conducteurs');
             }
-            return response.json();
+            return response.data;
         } catch (error) {
             throw new Error(`Erreur lors de la récupération des conducteurs: ${error}`);
         }
@@ -24,8 +24,8 @@ export const ConducteurService = {
 
             const response = await axiosInstance.get(`conducteurs/${id}`)
 
-            if (!response.ok) throw new Error('Conducteur non trouvé');
-            return response.json();
+            if (!response.data) throw new Error('Conducteur non trouvé');
+            return response.data;
         } catch (error) {
             throw new Error(`Erreur lors de la récupération du conducteur: ${error}`);
         }
@@ -36,8 +36,8 @@ export const ConducteurService = {
 
             const response = await axiosInstance.post("conducteurs", conducteurData)
 
-            if (!response.ok) throw new Error('Erreur lors de la création du conducteur');
-            return response.json();
+            if (!response.data) throw new Error('Erreur lors de la création du conducteur');
+            return response.data;
         } catch (error) {
             throw new Error(`Erreur lors de la création du conducteur: ${error}`);
         }
@@ -51,11 +51,11 @@ export const ConducteurService = {
 
             const response = await axiosInstance.put(`/conducteurs/${conducteur.conducteurId}`, conducteur)
 
-            if (!response.ok) {
+            if (!response.data) {
                 throw new Error('Erreur lors de la mise à jour du conducteur');
             }
 
-            return response.json();
+            return response.data;
         } catch (error) {
             throw new Error(`Erreur lors de la mise à jour du conducteur: ${error}`);
         }
@@ -66,7 +66,7 @@ export const ConducteurService = {
 
             const response = await axiosInstance.delete(`/conducteurs/${id}`)
 
-            if (!response.ok) {
+            if (!response.data) {
                 throw new Error('Erreur lors de la suppression du conducteur');
             }
         } catch (error) {
@@ -79,10 +79,10 @@ export const ConducteurService = {
 
             const response = await axiosInstance.get(`motos?userId=${userId}`)
 
-          if (!response.ok) {
+          if (!response.data) {
             throw new Error('Erreur lors de la récupération des motos');
           }
-          return response.json();
+          return response.data;
         } catch (error) {
           throw new Error(`Erreur lors de la récupération des motos: ${error}`);
         }

@@ -8,11 +8,11 @@ export const CommandeService = {
     try {
       const response = await axiosInstance.get("commandes")
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Erreur lors de la récupération des commandes');
       }
 
-      return response.json();
+      return response.data;
     } catch (error) {
       throw new Error(`Erreur lors de la récupération des commandes: ${error}`);
     }
@@ -30,13 +30,13 @@ export const CommandeService = {
 
           const response = await axiosInstance.post("commandes", commandeData)
 
-          if (!response.ok) {
-              const errorData = await response.json();
+          if (!response.data) {
+              const errorData = await response.data;
               console.error('Réponse serveur:', errorData);
               throw new Error(errorData.error || 'Erreur lors de la création de la commande');
           }
 
-          return response.json();
+          return response.data;
       } catch (error) {
           console.error('Erreur détaillée:', error);
           throw error;
@@ -47,11 +47,11 @@ export const CommandeService = {
     try {
       const response = await axiosInstance.put(`/commandes/${commande.commandeId}`, commande)
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Erreur lors de la mise à jour de la commande');
       }
 
-      return response.json();
+      return response.data;
     } catch (error) {
       throw new Error(`Erreur lors de la mise à jour de la commande: ${error}`);
     }
@@ -62,7 +62,7 @@ export const CommandeService = {
 
       const response = await axiosInstance.delete(`/commandes/${id}`)
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Erreur lors de la suppression de la commande');
       }
     } catch (error) {
@@ -75,7 +75,7 @@ export const CommandeService = {
 
       const response = await axiosInstance.patch(`/commandes/${commandeId}/statut`, { statut: nouveauStatut })
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Erreur lors de la mise à jour du statut');
       }
     } catch (error) {

@@ -11,11 +11,11 @@ export const EntretienService = {
 
       const response = await axiosInstance.get("entretien")
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Erreur lors de la récupération des entretiens');
       }
 
-      return response.json();
+      return response.data;
     } catch (error) {
       throw new Error(`Erreur lors de la récupération des entretiens: ${error}`);
     }
@@ -49,27 +49,27 @@ export const EntretienService = {
 
     const response = await axiosInstance.post("entretien", entretien)
   
-    if (!response.ok) {
+    if (!response.data) {
       throw new Error('Erreur lors de la création de l\'entretien');
     }
-    return response.json();
+    return response.data;
   },
 
   async updateEntretien(entretien: Entretien): Promise<Entretien> {
 
     const response = await axiosInstance.put(`/entretien/${entretien.entretienId}`, entretien)
 
-    if (!response.ok) {
+    if (!response.data) {
       throw new Error('Erreur lors de la mise à jour de l\'entretien');
     }
-    return response.json();
+    return response.data;
   },
 
   async deleteEntretien(id: string): Promise<void> {
 
     const response = await axiosInstance.delete(`/entretien/${id}`)
     
-    if (!response.ok) {
+    if (!response.data) {
       if (response.status === 404) {
         throw new Error("L'entretien n'existe plus ou a déjà été supprimé");
       }

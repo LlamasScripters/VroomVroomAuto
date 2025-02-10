@@ -9,11 +9,11 @@ export const PieceService = {
 
       const response = await axiosInstance.get("pieces")
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Erreur lors de la récupération des pièces');
       }
 
-      return response.json();
+      return response.data;
     } catch (error) {
       throw new Error(`Erreur lors de la récupération des pièces: ${error}`);
     }
@@ -23,11 +23,11 @@ export const PieceService = {
     try {
       const response = await axiosInstance.post("pieces", piece)
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Erreur lors de la création de la pièce');
       }
 
-      return response.json();
+      return response.data;
     } catch (error) {
       throw new Error(`Erreur lors de la création de la pièce: ${error}`);
     }
@@ -38,11 +38,11 @@ export const PieceService = {
 
       const response = await axiosInstance.put(`pieces/${piece.pieceId}`, piece)
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Erreur lors de la mise à jour de la pièce');
       }
 
-      return response.json();
+      return response.data;
     } catch (error) {
       throw new Error(`Erreur lors de la mise à jour de la pièce: ${error}`);
     }
@@ -53,7 +53,7 @@ export const PieceService = {
 
       const response = await axiosInstance.delete(`pieces/${id}`)
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Erreur lors de la suppression de la pièce');
       }
     } catch (error) {
@@ -65,11 +65,11 @@ export const PieceService = {
 
     const response = await axiosInstance.get(`pieces/${pieceId}/disponibilite?quantite=${quantite}`)
 
-    if (!response.ok) {
+    if (!response.data) {
       throw new Error('Erreur lors de la vérification de la disponibilité');
     }
 
-    const result = await response.json();
+    const result = await response.data;
     return result.disponible;
   },
 };

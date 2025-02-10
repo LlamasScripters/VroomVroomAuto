@@ -9,37 +9,37 @@ export const MaintenanceRuleService = {
     const response = await axiosInstance.get("maintenance/rules")
 
 
-    if (!response.ok) {
+    if (!response.data) {
       throw new Error('Erreur lors de la récupération des règles');
     }
-    return response.json();
+    return response.data;
   },
 
   async createRule(rule: MaintenanceRule): Promise<MaintenanceRule> {
 
     const response = await axiosInstance.post("maintenance/rules", rule)
 
-    if (!response.ok) {
+    if (!response.data) {
       throw new Error('Erreur lors de la création de la règle');
     }
-    return response.json();
+    return response.data;
   },
 
   async updateRule(rule: MaintenanceRule): Promise<MaintenanceRule> {
 
     const response = await axiosInstance.put(`maintenance/rules/${rule.id}`, rule)
 
-    if (!response.ok) {
+    if (!response.data) {
       throw new Error('Erreur lors de la mise à jour de la règle');
     }
-    return response.json();
+    return response.data;
   },
 
   async deleteRule(id: string): Promise<void> {
 
     const response = await axiosInstance.delete(`maintenance/rules/${id}`)
 
-    if (!response.ok) {
+    if (!response.data) {
       throw new Error('Erreur lors de la suppression de la règle');
     }
   },
@@ -61,11 +61,11 @@ export const MaintenanceRuleService = {
 
     const response = await axiosInstance.post("maintenance/planification", planification)
   
-    if (!response.ok) {
-      const errorData = await response.json();
+    if (!response.data) {
+      const errorData = await response.data;
       throw new Error(errorData.error || 'Erreur lors de la planification de l\'entretien');
     }
   
-    return response.json();
+    return response.data;
   }
 };

@@ -8,10 +8,10 @@ export const MotoService = {
 
       const response = await axiosInstance.get("motos")
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Erreur lors de la récupération des motos');
       }
-      return response.json();
+      return response.data;
     } catch (error) {
       throw new Error(`Erreur lors de la récupération des motos: ${error}`);
     }
@@ -21,10 +21,10 @@ export const MotoService = {
     try {
 
       const response = await axiosInstance.get(`motos/${id}`)
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Moto non trouvée');
       }
-      return response.json();
+      return response.data;
     } catch (error) {
       throw new Error(`Erreur lors de la récupération de la moto: ${error}`);
     }
@@ -35,10 +35,10 @@ export const MotoService = {
 
       const response = await axiosInstance.post("motos", motoData)
   
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Erreur lors de la création de la moto');
       }
-      return response.json();
+      return response.data;
     } catch (error) {
       throw new Error(`Erreur lors de la création de la moto: ${error}`);
     }
@@ -52,11 +52,11 @@ export const MotoService = {
 
         const response = await axiosInstance.put(`motos/${moto.motoId}`, moto)
         
-        if (!response.ok) {
+        if (!response.data) {
             throw new Error('Erreur lors de la mise à jour de la moto');
         }
         
-        return response.json();
+        return response.data;
     } catch (error) {
         throw new Error(`Erreur lors de la mise à jour de la moto: ${error}`);
     }
@@ -70,7 +70,7 @@ export const MotoService = {
 
       const response = await axiosInstance.delete(`motos/${id}`)
     
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Erreur lors de la suppression de la moto');
       }
     } catch (error) {
