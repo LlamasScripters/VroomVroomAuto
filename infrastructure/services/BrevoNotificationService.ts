@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import {TransactionalEmailsApi,TransactionalEmailsApiApiKeys,SendSmtpEmail,HttpError} from '@getbrevo/brevo';
+import { TransactionalEmailsApi, TransactionalEmailsApiApiKeys, SendSmtpEmail, HttpError } from '@getbrevo/brevo';
 import { NotificationService } from '../../application/services/NotificationService';
 import { Entretien } from '../../domain/entities/EntretienEntity';
 import { Moto } from '../../domain/entities/MotoEntity';
@@ -92,7 +92,7 @@ export class BrevoNotificationService implements NotificationService {
     mail.to = [{ email: clientEmail }, { email: gestionnaireEmail }];
     mail.sender = { email: 'faireEntretien@triumph-motorcycles.fr', name: 'Triumph Motorcycles' };
     mail.subject = `Rappel d'entretien pour votre moto ${moto.marque} ${moto.model}`;
-  
+
     mail.htmlContent = `
       <h1>Rappel d'entretien</h1>
       <p>Un entretien est prévu pour votre moto <strong>${moto.marque} ${moto.model}</strong> (N° de série: ${moto.serialNumber}) le <strong>${entretien.datePrevue.toISOString()}</strong></p>
@@ -104,7 +104,7 @@ export class BrevoNotificationService implements NotificationService {
         </p>
       <p>Merci de prendre rendez-vous rapidement.</p>
     `;
-  
+
     try {
       await this.apiInstance.sendTransacEmail(mail);
       console.log(mail);
@@ -129,17 +129,17 @@ export class BrevoNotificationService implements NotificationService {
     `;
 
     try {
-        await this.apiInstance.sendTransacEmail(mail);
-        console.log(mail);
-        console.log("Email envoyé à", gestionnaireEmail, "et", adminEmail, "pour pièce", piece.nom);
+      await this.apiInstance.sendTransacEmail(mail);
+      console.log(mail);
+      console.log("Email envoyé à", gestionnaireEmail, "et", adminEmail, "pour pièce", piece.nom);
     } catch (error) {
       if (error instanceof HttpError) {
         console.error('HttpError statusCode', error.statusCode);
         console.error('HttpError body', error.body);
       }
       throw error;
-      
+
     }
+  }
 }
-}
-  
+
