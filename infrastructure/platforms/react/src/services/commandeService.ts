@@ -1,6 +1,6 @@
 // infrastructure/platforms/react/src/services/commandeService.ts
 import { Commande } from '../types';
-import axiosInstance from 'axios';
+import axiosInstance from '../../axios';
 
 export const CommandeService = {
   async getAllCommandes(): Promise<Commande[]> {

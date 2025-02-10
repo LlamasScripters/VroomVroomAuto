@@ -1,7 +1,7 @@
 // infrastructure/platforms/react/src/services/conducteurService.ts
 import { Conducteur } from '../types';
 import { Moto } from '../types';
-import axiosInstance from 'axios';
+import axiosInstance from '../../axios';
 
 
 

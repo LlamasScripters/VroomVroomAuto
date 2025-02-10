@@ -1,7 +1,6 @@
 // infrastructure/platforms/react/src/services/pieceFournisseurService.ts
 import { PieceFournisseur } from '../types';
-// import { useAuthStore } from '@/stores/authStore';
-import axiosInstance from 'axios';
+import axiosInstance from '../../axios';
 
 export const PieceFournisseurService = {
     async getAllPieces(): Promise<PieceFournisseur[]> {

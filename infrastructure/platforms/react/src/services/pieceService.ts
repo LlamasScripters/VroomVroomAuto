@@ -1,6 +1,6 @@
 // infrastructure/platforms/react/src/services/pieceService.ts
 import { Piece } from '../types';
-import axiosInstance from 'axios';
+import axiosInstance from '../../axios';
 
 
 export const PieceService = {

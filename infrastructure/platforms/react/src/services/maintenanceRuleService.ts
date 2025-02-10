@@ -1,6 +1,6 @@
 import { MaintenanceRule } from '../types';
 import { MaintenancePlanningResultDTO } from '../../../../../application/dtos/MaintenancePlanningDTO';
-import axiosInstance from 'axios';
+import axiosInstance from '../../axios';
 
 export const MaintenanceRuleService = {
   async getAllRules(): Promise<MaintenanceRule[]> {

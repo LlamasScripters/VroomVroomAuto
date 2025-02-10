@@ -1,13 +1,13 @@
 // infrastructure/platforms/react/src/services/motoService.ts
 import { Moto } from '../types';
-import axiosInstance from 'axios';
+import axiosInstance from '../../axios';
 
 export const MotoService = {
   async getAllMotos(): Promise<Moto[]> {
     try {
 
       const response = await axiosInstance.get("/motos")
-
+      console.log(response)
       if (!response.data) {
         throw new Error('Erreur lors de la récupération des motos');
       }
