@@ -75,7 +75,7 @@ entretienSchema.index(
         cout: 'text',
         statut: 'text',
     },
-    {name: 'searchIndex'}
+    { name: 'searchIndex' }
 );
 
 const Entretien = mongoose.model("Entretiens", entretienSchema);

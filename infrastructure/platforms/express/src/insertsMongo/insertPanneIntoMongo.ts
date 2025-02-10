@@ -21,7 +21,7 @@ async function insertOrUpdatePanneInMongo(panneSQL: PanneSQL): Promise<void> {
     };
 
     if (panneMongo) {
-        const isSame = Object.keys(newPanne).every(key => 
+        const isSame = Object.keys(newPanne).every(key =>
             JSON.stringify(newPanne[key]) === JSON.stringify((panneMongo as { [key: string]: any })[key])
         );
 

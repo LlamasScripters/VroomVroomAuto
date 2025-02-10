@@ -49,16 +49,16 @@ const motoSchema = new mongoose.Schema(
 );
 
 motoSchema.index(
-    {
-        marque: "text",
-        model: "text",
-        kilometrage: "text",
-        dateMiseEnService: "text",
-        statut: "text",
-        serialNumber: "text",
-    },
-    { name: "searchIndex" }
-);  
+  {
+    marque: "text",
+    model: "text",
+    kilometrage: "text",
+    dateMiseEnService: "text",
+    statut: "text",
+    serialNumber: "text",
+  },
+  { name: "searchIndex" }
+);
 
 const Moto = mongoose.model("Motos", motoSchema);
 

@@ -17,7 +17,7 @@ interface PieceFournisseurAttributes {
     fournisseur: string;
 }
 
-interface PieceFournisseurModel extends Model<PieceFournisseurAttributes>, PieceFournisseurAttributes {}
+interface PieceFournisseurModel extends Model<PieceFournisseurAttributes>, PieceFournisseurAttributes { }
 
 export class PieceFournisseurSQLRepository implements PieceFournisseurRepository {
     async save(piece: PieceFournisseur): Promise<PieceFournisseur> {
@@ -93,7 +93,7 @@ export class PieceFournisseurSQLRepository implements PieceFournisseurRepository
             throw new Error("Pièce non trouvée");
         }
 
-        const nouvelleQuantite = type === 'AJOUT' 
+        const nouvelleQuantite = type === 'AJOUT'
             ? (piece as PieceFournisseurModel).quantiteEnStock + quantite
             : (piece as PieceFournisseurModel).quantiteEnStock - quantite;
 

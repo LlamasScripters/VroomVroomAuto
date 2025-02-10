@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 
 export const db: Record<string, mongoose.Model<any>> = {};
 
-export const initializeModels = async(): Promise<void> => {
+export const initializeModels = async (): Promise<void> => {
   await connectMongo();
 
   const files = fs.readdirSync(__dirname);
@@ -22,8 +22,4 @@ export const initializeModels = async(): Promise<void> => {
     db[model.modelName] = model;
   }
 }
-
-// initializeModels().catch((err) => {
-//   console.error('Error initializing models:', err);
-// });
 

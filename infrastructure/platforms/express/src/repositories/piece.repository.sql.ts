@@ -16,7 +16,7 @@ interface PieceAttributes {
   prixUnitaire?: number;
 }
 
-interface PieceModel extends Model<PieceAttributes>, PieceAttributes {}
+interface PieceModel extends Model<PieceAttributes>, PieceAttributes { }
 
 export class PieceSQLRepository implements PieceRepository {
   async save(piece: Piece): Promise<Piece> {
@@ -91,10 +91,10 @@ export class PieceSQLRepository implements PieceRepository {
     }
 
     const stockActuel = (piece as PieceModel).quantiteEnStock;
-    
-    const nouvelleQuantite = type === 'AJOUT' 
-    ? stockActuel + quantite
-    : stockActuel - quantite;
+
+    const nouvelleQuantite = type === 'AJOUT'
+      ? stockActuel + quantite
+      : stockActuel - quantite;
 
     if (nouvelleQuantite < 0) {
       throw new Error("La quantité en stock ne peut pas être négative");
@@ -132,7 +132,7 @@ export class PieceSQLRepository implements PieceRepository {
     if (!piece) return null;
     return this.toDomain(piece as PieceModel);
   }
-  
+
 
   private toDomain(model: PieceModel): Piece {
     return Piece.create(

@@ -32,7 +32,7 @@ interface EntretienAttributes {
   moto?: MotoAttributes;
 }
 
-interface EntretienModel extends Model<EntretienAttributes>, EntretienAttributes {}
+interface EntretienModel extends Model<EntretienAttributes>, EntretienAttributes { }
 
 export class EntretienSQLRepository implements EntretienRepository {
   async save(entretien: Entretien): Promise<Entretien> {
@@ -46,8 +46,8 @@ export class EntretienSQLRepository implements EntretienRepository {
         kilometrageEntretien: entretien.kilometrageEntretien,
         recommandationsTechnicien: entretien.recommandationsTechnicien,
         recommandationsGestionnaireClient: entretien.recommandationsGestionnaireClient,
-        coutMainOeuvre: entretien.coutMainOeuvre,  
-        coutPieces: entretien.coutPieces,          
+        coutMainOeuvre: entretien.coutMainOeuvre,
+        coutPieces: entretien.coutPieces,
         statut: entretien.statut,
         userId: entretien.userId.toString(),
         gestionnaireId: entretien.gestionnaireId.toString(),
@@ -78,7 +78,7 @@ export class EntretienSQLRepository implements EntretienRepository {
         attributes: ['marque', 'model', 'serialNumber']
       }]
     });
-    
+
     if (!entretien) return null;
     return this.toDomain(entretien as EntretienModel);
   }
@@ -92,7 +92,7 @@ export class EntretienSQLRepository implements EntretienRepository {
         attributes: ['marque', 'model', 'serialNumber', 'userId']
       }]
     });
-    
+
     return entretiens.map(entretien => this.toDomain(entretien as EntretienModel));
   }
 
@@ -110,9 +110,9 @@ export class EntretienSQLRepository implements EntretienRepository {
         coutPieces: entretien.coutPieces,          // Ajouté
         statut: entretien.statut,
         gestionnaireId: entretien.gestionnaireId.toString(),
-        userId: entretien.userId.toString()      
+        userId: entretien.userId.toString()
       },
-      { 
+      {
         where: { entretienId: entretien.entretienId.toString() }
       }
     );
@@ -147,7 +147,7 @@ export class EntretienSQLRepository implements EntretienRepository {
     const results = await EntretienSQL.findAll({
       where: {
         datePrevue: {
-          [Op.lte]: new Date(), 
+          [Op.lte]: new Date(),
         },
         dateRealisee: null,
       },
@@ -170,7 +170,7 @@ export class EntretienSQLRepository implements EntretienRepository {
       new UUID(model.userId),
       new UUID(model.gestionnaireId),
       model.coutMainOeuvre,
-      model.coutPieces,     
+      model.coutPieces,
       model.moto ? {
         marque: model.moto.marque,
         model: model.moto.model,

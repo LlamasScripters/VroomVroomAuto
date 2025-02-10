@@ -64,7 +64,7 @@ const ConducteurSQL = connection.define('Conducteur', {
         allowNull: false,
         defaultValue: 'ACTIF'
     },
-    userId: { 
+    userId: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {

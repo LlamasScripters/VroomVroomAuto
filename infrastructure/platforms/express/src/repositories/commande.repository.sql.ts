@@ -26,39 +26,39 @@ interface CommandeAttributes {
   };
 }
 
-interface CommandeModel extends Model<CommandeAttributes>, CommandeAttributes {}
+interface CommandeModel extends Model<CommandeAttributes>, CommandeAttributes { }
 
 export class CommandeSQLRepository implements CommandeRepository {
   async save(commande: Commande): Promise<Commande> {
     try {
-        const saved = await CommandeSQL.create({
-            commandeId: commande.commandeId.toString(),
-            pieceId: commande.pieceId.toString(),
-            quantiteCommandee: commande.quantiteCommandee,
-            coutTotal: commande.coutTotal,
-            dateCommande: commande.dateCommande,
-            dateLivraisonPrevue: commande.dateLivraisonPrevue,
-            statut: commande.statut,
-            gestionnaireid: commande.gestionnaireid.toString()
-        });
+      const saved = await CommandeSQL.create({
+        commandeId: commande.commandeId.toString(),
+        pieceId: commande.pieceId.toString(),
+        quantiteCommandee: commande.quantiteCommandee,
+        coutTotal: commande.coutTotal,
+        dateCommande: commande.dateCommande,
+        dateLivraisonPrevue: commande.dateLivraisonPrevue,
+        statut: commande.statut,
+        gestionnaireid: commande.gestionnaireid.toString()
+      });
 
-        const commandeWithPiece = await CommandeSQL.findByPk(saved.get('commandeId') as string, {
-            include: [{
-                model: PieceFournisseurSQL,
-                as: 'pieceFournisseur',
-                attributes: ['nom', 'reference', 'prixUnitaire', 'categorie', 'fournisseur']
-            }]
-        });
+      const commandeWithPiece = await CommandeSQL.findByPk(saved.get('commandeId') as string, {
+        include: [{
+          model: PieceFournisseurSQL,
+          as: 'pieceFournisseur',
+          attributes: ['nom', 'reference', 'prixUnitaire', 'categorie', 'fournisseur']
+        }]
+      });
 
-        if (!commandeWithPiece) {
-            throw new Error('Commande non trouvée après création');
-        }
+      if (!commandeWithPiece) {
+        throw new Error('Commande non trouvée après création');
+      }
 
-        return this.toDomain(commandeWithPiece as CommandeModel);
+      return this.toDomain(commandeWithPiece as CommandeModel);
     } catch (error) {
-        throw new Error(`Erreur lors de la sauvegarde de la commande: ${error}`);
+      throw new Error(`Erreur lors de la sauvegarde de la commande: ${error}`);
     }
-}
+  }
 
 
   async findById(commandeId: UUID): Promise<Commande | null> {
@@ -69,35 +69,35 @@ export class CommandeSQLRepository implements CommandeRepository {
         attributes: ['nom', 'reference', 'prixUnitaire']
       }]
     });
-    
+
     if (!commande) return null;
     return this.toDomain(commande as CommandeModel);
   }
 
   async findAll(): Promise<Commande[]> {
     const commandes = await CommandeSQL.findAll({
-        include: [{
-            model: PieceFournisseurSQL,
-            as: 'pieceFournisseur',  // Utilise l'alias correct
-            attributes: ['nom', 'reference', 'prixUnitaire', 'categorie', 'fournisseur']
-        }],
-        order: [['dateCommande', 'DESC']]
+      include: [{
+        model: PieceFournisseurSQL,
+        as: 'pieceFournisseur',  // Utilise l'alias correct
+        attributes: ['nom', 'reference', 'prixUnitaire', 'categorie', 'fournisseur']
+      }],
+      order: [['dateCommande', 'DESC']]
     });
 
     return commandes.map(commande => {
-        const commandeData = commande.get({ plain: true });
-        return this.toDomain({
-            ...commandeData,
-            pieceDetails: commandeData.pieceFournisseur ? {
-                nom: commandeData.pieceFournisseur.nom,
-                reference: commandeData.pieceFournisseur.reference,
-                prixUnitaire: Number(commandeData.pieceFournisseur.prixUnitaire),
-                categorie: commandeData.pieceFournisseur.categorie,
-                fournisseur: commandeData.pieceFournisseur.fournisseur
-            } : undefined
-        });
+      const commandeData = commande.get({ plain: true });
+      return this.toDomain({
+        ...commandeData,
+        pieceDetails: commandeData.pieceFournisseur ? {
+          nom: commandeData.pieceFournisseur.nom,
+          reference: commandeData.pieceFournisseur.reference,
+          prixUnitaire: Number(commandeData.pieceFournisseur.prixUnitaire),
+          categorie: commandeData.pieceFournisseur.categorie,
+          fournisseur: commandeData.pieceFournisseur.fournisseur
+        } : undefined
+      });
     });
-}
+  }
 
   async update(commande: Commande): Promise<Commande> {
     const [updatedCount] = await CommandeSQL.update(
@@ -110,7 +110,7 @@ export class CommandeSQLRepository implements CommandeRepository {
         statut: commande.statut,
         gestionnaireid: commande.gestionnaireid.toString()
       },
-      { 
+      {
         where: { commandeId: commande.commandeId.toString() }
       }
     );
@@ -199,21 +199,21 @@ export class CommandeSQLRepository implements CommandeRepository {
 
   private toDomain(model: CommandeModel): Commande {
     return Commande.create(
-        new UUID(model.commandeId),
-        new UUID(model.pieceId),
-        new UUID(model.gestionnaireid),
-        model.quantiteCommandee,
-        model.coutTotal,
-        model.dateCommande,
-        model.dateLivraisonPrevue,
-        model.statut as CommandeStatut,
-        model.pieceFournisseur && {
-            nom: model.pieceFournisseur.nom,
-            reference: model.pieceFournisseur.reference,
-            prixUnitaire: Number(model.pieceFournisseur.prixUnitaire),
-            categorie: model.pieceFournisseur.categorie,
-            fournisseur: model.pieceFournisseur.fournisseur
-        }
+      new UUID(model.commandeId),
+      new UUID(model.pieceId),
+      new UUID(model.gestionnaireid),
+      model.quantiteCommandee,
+      model.coutTotal,
+      model.dateCommande,
+      model.dateLivraisonPrevue,
+      model.statut as CommandeStatut,
+      model.pieceFournisseur && {
+        nom: model.pieceFournisseur.nom,
+        reference: model.pieceFournisseur.reference,
+        prixUnitaire: Number(model.pieceFournisseur.prixUnitaire),
+        categorie: model.pieceFournisseur.categorie,
+        fournisseur: model.pieceFournisseur.fournisseur
+      }
     );
   }
 }

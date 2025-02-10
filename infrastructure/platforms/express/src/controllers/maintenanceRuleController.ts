@@ -42,8 +42,8 @@ export class MaintenanceRuleController {
       const rule = await this.maintenanceRuleCrudUseCase.createRule(ruleDTO);
       res.status(201).json(rule);
     } catch (error: any) {
-      res.status(400).json({ 
-        error: error.message || "Erreur lors de la création de la règle de maintenance" 
+      res.status(400).json({
+        error: error.message || "Erreur lors de la création de la règle de maintenance"
       });
     }
   }
@@ -53,8 +53,8 @@ export class MaintenanceRuleController {
       const rules = await this.maintenanceRuleCrudUseCase.getAllRules();
       res.json(rules);
     } catch (error: any) {
-      res.status(400).json({ 
-        error: error.message || "Erreur lors de la récupération des règles" 
+      res.status(400).json({
+        error: error.message || "Erreur lors de la récupération des règles"
       });
     }
   }
@@ -72,8 +72,8 @@ export class MaintenanceRuleController {
       }
       res.json(rule);
     } catch (error: any) {
-      res.status(400).json({ 
-        error: error.message || "Erreur lors de la mise à jour de la règle" 
+      res.status(400).json({
+        error: error.message || "Erreur lors de la mise à jour de la règle"
       });
     }
   }
@@ -87,8 +87,8 @@ export class MaintenanceRuleController {
       }
       res.status(204).send();
     } catch (error: any) {
-      res.status(400).json({ 
-        error: error.message || "Erreur lors de la suppression de la règle" 
+      res.status(400).json({
+        error: error.message || "Erreur lors de la suppression de la règle"
       });
     }
   }
@@ -100,14 +100,14 @@ export class MaintenanceRuleController {
       res.status(201).json(result);
     } catch (error: any) {
       if (error.message.includes('Stock insuffisant')) {
-        res.status(400).json({ 
+        res.status(400).json({
           error: error.message,
           type: 'STOCK_INSUFFISANT'
         });
         return;
       }
-      res.status(400).json({ 
-        error: error.message || "Erreur lors de la planification de l'entretien" 
+      res.status(400).json({
+        error: error.message || "Erreur lors de la planification de l'entretien"
       });
     }
   }

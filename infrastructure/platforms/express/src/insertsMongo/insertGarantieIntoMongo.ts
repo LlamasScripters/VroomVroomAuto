@@ -22,7 +22,7 @@ async function insertOrUpdateGarantieInMongo(garantieSQL: GarantieSQL): Promise<
     };
 
     if (garantieMongo) {
-        const isSame = Object.keys(newGarantie).every(key => 
+        const isSame = Object.keys(newGarantie).every(key =>
             JSON.stringify(newGarantie[key]) === JSON.stringify((garantieMongo as { [key: string]: any })[key])
         );
 

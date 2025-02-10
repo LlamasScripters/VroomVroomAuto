@@ -10,7 +10,7 @@ const GarantieSQL = connection.define('Garantie', {
     panneId: {
         type: DataTypes.UUID,
         allowNull: false,
-    }, 
+    },
     motoId: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -42,6 +42,6 @@ const GarantieSQL = connection.define('Garantie', {
         },
     }
 }, {
-  tableName: 'Garanties',
+    tableName: 'Garanties',
 });
 export default GarantieSQL;

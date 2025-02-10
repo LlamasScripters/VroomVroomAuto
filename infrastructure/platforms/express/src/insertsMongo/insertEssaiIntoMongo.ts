@@ -1,5 +1,5 @@
 import "../modelsSQL/associations";
-import EssaiMongo from "../modelsMongo/essaie.mongo"; 
+import EssaiMongo from "../modelsMongo/essaie.mongo";
 import Essai from "../modelsSQL/essaie.sql";
 import { EssaiSQL } from "../interfaces/modelsSQL.interface";
 
@@ -23,7 +23,7 @@ async function insertOrUpdateEssaiInMongo(essaiSQL: EssaiSQL): Promise<void> {
     };
 
     if (essaiMongo) {
-        const isSame = Object.keys(newEssai).every(key => 
+        const isSame = Object.keys(newEssai).every(key =>
             JSON.stringify(newEssai[key]) === JSON.stringify((essaiMongo as { [key: string]: any })[key])
         );
 

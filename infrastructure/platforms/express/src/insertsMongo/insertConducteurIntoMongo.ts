@@ -2,7 +2,6 @@ import "../modelsSQL/associations";
 import ConducteurMongo from "../modelsMongo/conducteur.mongo";
 import Conducteur from "../modelsSQL/conducteur.sql";
 import { ConducteurSQL } from "../interfaces/modelsSQL.interface";
-import { stat } from "fs";
 
 async function insertOrUpdateConducteurInMongo(conducteurSQL: ConducteurSQL): Promise<void> {
     const conducteurMongo = await ConducteurMongo.findById(conducteurSQL.conducteurId).exec();
@@ -29,7 +28,7 @@ async function insertOrUpdateConducteurInMongo(conducteurSQL: ConducteurSQL): Pr
     };
 
     if (conducteurMongo) {
-        const isSame = Object.keys(newConducteur).every(key => 
+        const isSame = Object.keys(newConducteur).every(key =>
             JSON.stringify(newConducteur[key]) === JSON.stringify((conducteurMongo as { [key: string]: any })[key])
         );
 

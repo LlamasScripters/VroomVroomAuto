@@ -25,7 +25,7 @@ async function insertOrUpdateEntretienInMongo(entretienSQL: EntretienSQL): Promi
     };
 
     if (entretienMongo) {
-        const isSame = Object.keys(newEntretien).every(key => 
+        const isSame = Object.keys(newEntretien).every(key =>
             JSON.stringify(newEntretien[key]) === JSON.stringify((entretienMongo as { [key: string]: any })[key])
         );
 

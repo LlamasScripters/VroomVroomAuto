@@ -125,7 +125,7 @@ export class ConducteurSQLRepository implements ConducteurRepository {
         const conducteur = await ConducteurSQL.findOne({
             where: { userId: userId.toString() }
         }) as ConducteurModel | null;
-        
+
         if (!conducteur) return null;
         return this.toDomain(conducteur);
     }

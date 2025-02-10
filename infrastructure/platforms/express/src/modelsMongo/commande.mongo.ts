@@ -62,7 +62,7 @@ commandeSchema.index(
         dateLivraison: 'text',
         statutCommande: 'text',
     },
-    {name: 'searchIndex'}
+    { name: 'searchIndex' }
 );
 
 const Commande = mongoose.model("Commandes", commandeSchema);

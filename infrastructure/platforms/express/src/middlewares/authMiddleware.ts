@@ -4,7 +4,7 @@ import { UserSQL as UserSQLType } from "../interfaces/modelsSQL.interface";
 import jwt from "jsonwebtoken";
 
 interface AuthRequest extends Request {
-  user?: any;
+    user?: any;
 }
 
 interface JwtPayload {
@@ -33,7 +33,7 @@ export const authenticate = async (req: AuthRequest, res: Response, next: NextFu
         if (!user.isValidated) {
             return res.status(401).json({ code: "account_not_validated" });
         }
-        
+
         req.user = {
             id: user.userId,
             role: user.role,
@@ -55,7 +55,7 @@ export const authorizeAdmin = (req: AuthRequest, res: Response, next: NextFuncti
     if (!user) return res.status(401).json({ error: "Access denied." });
 
     if (user.role !== "admin") {
-    return res.status(403).json({ error: "Access denied." });
+        return res.status(403).json({ error: "Access denied." });
     }
 
     next();
@@ -66,7 +66,7 @@ export const authorizeUser = (req: AuthRequest, res: Response, next: NextFunctio
     if (!user) return res.status(401).json({ error: "Access denied." });
 
     if (user.role !== "user") {
-    return res.status(403).json({ error: "Access denied." });
+        return res.status(403).json({ error: "Access denied." });
     }
     next();
 };

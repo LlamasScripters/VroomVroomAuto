@@ -20,7 +20,7 @@ interface EssaiMongoAttributes {
     }
 }
 
-interface EssaiMongoModel extends Model<EssaiMongoAttributes>, EssaiMongoAttributes {}
+interface EssaiMongoModel extends Model<EssaiMongoAttributes>, EssaiMongoAttributes { }
 
 export class EssaiMgRepository implements EssaiMongoRepository {
     async save(essai: Essai): Promise<Essai> {

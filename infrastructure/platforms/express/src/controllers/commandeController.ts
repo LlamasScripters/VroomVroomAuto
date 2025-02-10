@@ -4,10 +4,10 @@ import { CommandeCrudUseCases } from '@application/usecases/commande/CommandeCru
 import { CommandeSQLRepository } from '../repositories/commande.repository.sql';
 import { PieceSQLRepository } from '../repositories/piece.repository.sql';
 import * as CommandeMapper from '@application/mappers/CommandeMapper';
-import { CreateCommandeDTO, UpdateCommandeDTO } from '@application/dtos/CommandeDTO';
-import { UUID } from '@domain/value-objects/UUID';
+import { UpdateCommandeDTO } from '@application/dtos/CommandeDTO';
 import { CommandeStatusUseCases } from '@application/usecases/commande/CommandeStatusUseCases';
 import { PieceFournisseurSQLRepository } from '../repositories/pieceFournisseur.repository.sql';
+
 export class CommandeController {
   private commandeUseCases: CommandeCrudUseCases;
   private commandeStatusUseCases: CommandeStatusUseCases;
@@ -26,16 +26,15 @@ export class CommandeController {
 
   async createCommande(req: Request, res: Response): Promise<void> {
     try {
-        const commandeDTO = req.body;
-        const commande = await this.commandeUseCases.createCommande(commandeDTO);
-        const responseCommande = CommandeMapper.toDTO(commande);
-        res.status(201).json(responseCommande);
+      const commandeDTO = req.body;
+      const commande = await this.commandeUseCases.createCommande(commandeDTO);
+      const responseCommande = CommandeMapper.toDTO(commande);
+      res.status(201).json(responseCommande);
     } catch (error: any) {
-        console.error('Erreur création commande:', error);
-        res.status(400).json({ error: error.message });
+      console.error('Erreur création commande:', error);
+      res.status(400).json({ error: error.message });
     }
-}
-
+  }
 
 
   async getCommandeById(req: Request, res: Response): Promise<void> {
@@ -104,27 +103,27 @@ export class CommandeController {
     try {
       const { id } = req.params;
       const { statut } = req.body;
-      
+
       if (!['EN_ATTENTE', 'EN_COURS', 'LIVREE', 'ANNULEE'].includes(statut)) {
         res.status(400).json({ error: 'Statut invalide' });
         return;
       }
-  
+
       const commande = await this.commandeStatusUseCases.updateStatus(id, statut);
 
       if (!commande) {
         res.status(404).json({ error: 'Commande non trouvée' });
         return;
       }
-  
+
       if (!commande) {
         res.status(404).json({ error: 'Commande non trouvée' });
         return;
       }
-  
+
       const commandeDTO = CommandeMapper.toDTO(commande);
       res.json(commandeDTO);
-  
+
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }

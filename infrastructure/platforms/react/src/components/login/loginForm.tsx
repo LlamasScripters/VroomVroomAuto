@@ -19,8 +19,6 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     const email = formData.get("email") as string
     const password = formData.get("password") as string
 
-    console.log(email, password)
-
     try {
       const response = await axios.post('http://localhost:3000/api/auth/login', {
         email,

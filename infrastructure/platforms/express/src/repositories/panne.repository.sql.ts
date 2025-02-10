@@ -14,7 +14,7 @@ interface PanneAttributes {
     userId: string;
 }
 
-interface PanneModel extends Model<PanneAttributes>, PanneAttributes {}
+interface PanneModel extends Model<PanneAttributes>, PanneAttributes { }
 
 export class PanneSQLRepository implements PanneRepository {
     async save(panne: Panne): Promise<Panne> {
@@ -75,7 +75,7 @@ export class PanneSQLRepository implements PanneRepository {
             if (updated === 0) throw new Error('Panne not found or not updated');
 
             const updatedPanne = await this.findById(panne.panneId);
-            
+
             if (!updatedPanne) throw new Error('Panne not found after update');
             return updatedPanne;
 

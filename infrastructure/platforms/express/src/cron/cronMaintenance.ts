@@ -15,7 +15,7 @@ export function scheduleEntretienReminderJob() {
       const motoRepository = new SqlMotoRepository();
       const notificationService = new BrevoNotificationService();
 
-      const useCase = new CheckEntretienDueUseCase(entretienRepo, userRepo,motoRepository, notificationService);
+      const useCase = new CheckEntretienDueUseCase(entretienRepo, userRepo, motoRepository, notificationService);
       await useCase.execute();
       console.log("CRON: Vérification terminée.");
     } catch (error) {

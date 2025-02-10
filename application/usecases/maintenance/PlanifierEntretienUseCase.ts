@@ -58,11 +58,6 @@ export class PlanifierEntretienUseCase {
         throw new Error('UserId manquant dans la requête');
       }
 
-      console.log('DTO reçu:', {
-        userId: dto.userId,
-        motoId: dto.motoId,
-      });
-
       const gestionnaire = await this.userRepository.findFirstGestionnaire();
       if (!gestionnaire) {
         throw new Error('Aucun gestionnaire disponible pour prendre en charge l\'entretien');
@@ -91,11 +86,6 @@ export class PlanifierEntretienUseCase {
         undefined               // pieces (sera ajouté plus tard)
          
     );
-
-      console.log('Entretien avant sauvegarde:', {
-        userId: nouvelEntretien.userId.toString(),
-        gestionnaireId: nouvelEntretien.gestionnaireId.toString()
-      });
 
       const entretienSaved = await this.entretienRepository.save(nouvelEntretien);
 

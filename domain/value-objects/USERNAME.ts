@@ -10,8 +10,6 @@ export class Username {
         this.value = value;
     }
 
-    
-
     public toString(): string {
         return this.value;
     }

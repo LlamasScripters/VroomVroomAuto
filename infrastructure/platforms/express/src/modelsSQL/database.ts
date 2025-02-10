@@ -7,7 +7,7 @@ if (!connectionString) {
   throw new Error('POSTGRES_LINK environment variable is not defined');
 }
 
-const connection = new Sequelize(connectionString, {dialect: 'postgres'});
+const connection = new Sequelize(connectionString, { dialect: 'postgres' });
 
 const connectToDatabase = async () => {
   try {

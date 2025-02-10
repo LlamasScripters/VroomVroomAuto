@@ -19,7 +19,7 @@ interface GarantieMongoAttributes {
     statut: string;
 }
 
-interface GarantieMongoModel extends Model<GarantieMongoAttributes>, GarantieMongoAttributes {}
+interface GarantieMongoModel extends Model<GarantieMongoAttributes>, GarantieMongoAttributes { }
 
 export class GarantieMgRepository implements GarantieMongoRepository {
     async save(garantie: Garantie): Promise<Garantie> {
@@ -38,7 +38,7 @@ export class GarantieMgRepository implements GarantieMongoRepository {
                 dateFin: garantie.dateFin,
                 statut: garantie.statut
             });
-            
+
             return this.toDomain(savedMongo as unknown as GarantieMongoModel);
         } catch (error) {
             throw error;
@@ -107,8 +107,8 @@ export class GarantieMgRepository implements GarantieMongoRepository {
                 dateFin: garantie.dateFin,
                 statut: garantie.statut
             },
-            { new: true }
-        );
+                { new: true }
+            );
 
             if (!updated) throw new Error('Garantie not found or not updated');
 

@@ -71,7 +71,7 @@ export class GarantieController {
             res.status(400).json({ error: error.message });
         }
     }
-    
+
     async deleteGarantie(req: Request, res: Response): Promise<void> {
         try {
             const garantieId = req.params.id;

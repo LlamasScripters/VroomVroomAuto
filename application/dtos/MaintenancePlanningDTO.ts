@@ -18,6 +18,18 @@ export interface PlanifierEntretienDTO {
   gestionnaireId: string;
 }
 
+export interface MaintenanceInterval {
+  kilometrage: number;
+  tempsJours: number;
+}
+
+export interface MaintenancePlanningResult {
+  needsMaintenance: boolean;
+  nextMaintenanceKilometrage: number;
+  nextMaintenanceDate: Date;
+  reason?: string;
+}
+
 export interface MaintenancePlanningResultDTO {
   success: boolean;
   entretienId?: string;
@@ -31,4 +43,6 @@ export interface MaintenancePlanningResultDTO {
     intervalleTemps: number;
     typeEntretien: string;
   };
+
+  
 }

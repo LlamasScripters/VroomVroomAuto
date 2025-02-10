@@ -58,16 +58,16 @@ export class MaintenanceRuleSQLRepository implements MaintenanceRuleRepository {
     }, {
       where: { ruleId: rule.ruleId.toString() }
     });
-  
+
     // Récupérer l'entité mise à jour
     const updatedRule = await MaintenanceRuleSQL.findOne({
       where: { ruleId: rule.ruleId.toString() }
     });
-  
+
     if (!updatedRule) {
       throw new Error('Rule not found');
     }
-  
+
     return this.toEntity(updatedRule);
   }
 

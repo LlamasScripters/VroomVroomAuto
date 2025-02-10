@@ -3,7 +3,7 @@ import { EssaiRepository } from '@application/repositories/EssaiRepository';
 import { EssaiMongoRepository } from '@application/repositories/EssaiMongoRepository';
 import { UUID } from '@domain/value-objects/UUID';
 import { EssaiResponse } from '@application/response/EssaiResponse';
-import { CreateEssaiDTO, UpdateEssaiDTO, GetEssaiDTO } from '@application/dtos/EssaiDTO';
+import { CreateEssaiDTO, UpdateEssaiDTO, GetEssaiDTO,DeleteEssaiDTO } from '@application/dtos/EssaiDTO';
 
 
 export class EssaiUseCases {

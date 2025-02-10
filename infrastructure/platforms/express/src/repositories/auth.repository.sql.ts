@@ -5,7 +5,7 @@ import { Email } from "@domain/value-objects/EMAIL";
 import { Password } from "@domain/value-objects/PASSWORD";
 import { Role } from "@domain/value-objects/ROLE";
 import { Username } from "@domain/value-objects/USERNAME";
-import UserSQL from "../modelsSQL/user.sql"; 
+import UserSQL from "../modelsSQL/user.sql";
 import { Model } from "sequelize";
 
 interface UserModel extends Model {
@@ -38,7 +38,7 @@ export class AuthRepositorySQL implements AuthRepository {
         dateCreation: user.dateCreation,
         derniereConnexion: user.derniereConnexion,
       });
-  
+
       const createdUser = await UserSQL.create({
         userId: user.userId.toString(),
         username: user.username.toString(),
@@ -49,7 +49,7 @@ export class AuthRepositorySQL implements AuthRepository {
         dateCreation: user.dateCreation,
         derniereConnexion: user.derniereConnexion,
       });
-  
+
       return this.toDomain(createdUser as UserModel);
     } catch (error) {
       console.error('Erreur Sequelize:', error);

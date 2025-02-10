@@ -15,7 +15,7 @@ interface GarantieAttributes {
     statut: string;
 }
 
-interface GarantieModel extends Model<GarantieAttributes>, GarantieAttributes {}
+interface GarantieModel extends Model<GarantieAttributes>, GarantieAttributes { }
 
 export class GarantieSQLRepository implements GarantieRepository {
     async save(garantie: Garantie): Promise<Garantie> {
@@ -70,8 +70,8 @@ export class GarantieSQLRepository implements GarantieRepository {
                 dateFin: garantie.dateFin,
                 statut: garantie.statut
             }, {
-                where: { 
-                    garantieId: garantie.garantieId.toString() 
+                where: {
+                    garantieId: garantie.garantieId.toString()
                 }
             });
 
@@ -89,11 +89,11 @@ export class GarantieSQLRepository implements GarantieRepository {
 
     async delete(garantieId: UUID): Promise<boolean> {
         try {
-            const deleted = await GarantieSQL.destroy({ 
+            const deleted = await GarantieSQL.destroy({
                 where: {
-                     garantieId: garantieId.toString() 
-                    } 
-                });
+                    garantieId: garantieId.toString()
+                }
+            });
 
             return deleted === 1;
         } catch (error) {

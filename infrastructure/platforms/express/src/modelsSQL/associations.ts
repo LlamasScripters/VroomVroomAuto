@@ -17,9 +17,6 @@ import PieceFournisseurSQL from './pieceFournisseur.sql';
 UserSQL.hasMany(MotoSQL, { foreignKey: 'userId', as: 'motos' });
 MotoSQL.belongsTo(UserSQL, { foreignKey: 'userId', as: 'user' });
 
-// UserSQL.hasMany(CommandeSQL, { foreignKey: 'userId' });
-// CommandeSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
-
 UserSQL.hasMany(ConducteurSQL, { foreignKey: 'userId' });
 ConducteurSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
 
@@ -62,12 +59,9 @@ ReparationSQL.belongsTo(UserSQL, { foreignKey: 'userId' });
 // EntretienPiece associations 
 EntretienSQL.hasMany(EntretienPieceSQL, { foreignKey: 'entretienId', as: 'pieceUtilisees' });
 EntretienPieceSQL.belongsTo(EntretienSQL, { foreignKey: 'entretienId' });
-  
+
 PieceSQL.hasMany(EntretienPieceSQL, { foreignKey: 'pieceId', as: 'utilisationsDansentretiens' });
 EntretienPieceSQL.belongsTo(PieceSQL, { foreignKey: 'pieceId' });
-
-// PieceSQL.hasMany(CommandeSQL, { foreignKey: 'pieceId' });
-// CommandeSQL.belongsTo(PieceSQL, { foreignKey: 'pieceId', as: 'piece' });
 
 PieceSQL.hasMany(EntretienSQL, { foreignKey: 'pieceId' });
 EntretienSQL.hasMany(PieceSQL, { foreignKey: 'pieceId' });
@@ -89,7 +83,7 @@ GarantieSQL.belongsTo(PanneSQL, { foreignKey: 'panneId' });
 
 // PieceFournisseur associations
 PieceFournisseurSQL.hasMany(CommandeSQL, { foreignKey: 'pieceId', as: 'commandes' });
-CommandeSQL.belongsTo(PieceFournisseurSQL, { foreignKey: 'pieceId', as: 'pieceFournisseur'});
+CommandeSQL.belongsTo(PieceFournisseurSQL, { foreignKey: 'pieceId', as: 'pieceFournisseur' });
 
 // Association User-Conducteur
 UserSQL.hasOne(ConducteurSQL, { foreignKey: 'userId', as: 'conducteur' });

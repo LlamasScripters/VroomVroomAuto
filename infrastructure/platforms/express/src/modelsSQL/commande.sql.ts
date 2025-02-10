@@ -12,8 +12,8 @@ const CommandeSQL = connection.define('Commande', {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-        model: 'PiecesFournisseur', 
-        key: 'pieceId'
+      model: 'PiecesFournisseur',
+      key: 'pieceId'
     }
   },
   quantiteCommandee: {

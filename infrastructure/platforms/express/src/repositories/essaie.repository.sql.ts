@@ -14,7 +14,7 @@ interface EssaiAttributes {
     userId: string;
 }
 
-interface EssaiModel extends Model<EssaiAttributes>, EssaiAttributes {}
+interface EssaiModel extends Model<EssaiAttributes>, EssaiAttributes { }
 
 export class EssaiSQLRepository implements EssaiRepository {
     async save(essai: Essai): Promise<Essai> {
@@ -75,7 +75,7 @@ export class EssaiSQLRepository implements EssaiRepository {
             if (updated === 0) throw new Error('Essai not found or not updated');
 
             const updatedEssai = await this.findById(essai.essaiId);
-            
+
             if (!updatedEssai) throw new Error('Essai not found after update');
             return updatedEssai;
 

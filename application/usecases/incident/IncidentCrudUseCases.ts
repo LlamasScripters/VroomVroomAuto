@@ -9,7 +9,7 @@ export class IncidentUseCases {
     private incidentRepository: IncidentRepository
   ) {}
 
-  async createIncident(incidentData: createIncidentDTO ): Promise<IncidentResponse> {
+  async createIncident(incidentData: createIncidentDTO): Promise<IncidentResponse> {
     const incident = Incident.create(
       new UUID(),
       new UUID(incidentData.essaiId), 

@@ -9,24 +9,24 @@ const essaiSchema = new mongoose.Schema(
       required: true,
     },
     moto: {
-        type: {
-            _id: {
-                type: String,
-                default: uuidv4,
-                required: true,
-            }
-        },
-        required: true,
+      type: {
+        _id: {
+          type: String,
+          default: uuidv4,
+          required: true,
+        }
+      },
+      required: true,
     },
     conducteur: {
-        type: {
-            _id: {
-                type: String,
-                default: uuidv4,
-                required: true,
-            }
-        },
-        required: true,
+      type: {
+        _id: {
+          type: String,
+          default: uuidv4,
+          required: true,
+        }
+      },
+      required: true,
     },
     dateDebut: {
       type: Date,
@@ -41,14 +41,14 @@ const essaiSchema = new mongoose.Schema(
       required: true,
     },
     user: {
-        type: {
-            _id: {
-                type: String,
-                default: uuidv4,
-                required: true,
-            }
-        },
-        required: true,
+      type: {
+        _id: {
+          type: String,
+          default: uuidv4,
+          required: true,
+        }
+      },
+      required: true,
     },
   },
   {
@@ -57,14 +57,14 @@ const essaiSchema = new mongoose.Schema(
 );
 
 essaiSchema.index(
-    {
-        moto: "text",
-        conducteur: "text",
-        dateDebut: "text",
-        dateFin: "text",
-        duree: "text",
-    },
-    { name: "searchIndex" }
+  {
+    moto: "text",
+    conducteur: "text",
+    dateDebut: "text",
+    dateFin: "text",
+    duree: "text",
+  },
+  { name: "searchIndex" }
 );
 
 const Essai = mongoose.model("Essais", essaiSchema);

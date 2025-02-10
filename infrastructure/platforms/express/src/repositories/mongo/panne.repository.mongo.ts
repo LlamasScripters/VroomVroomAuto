@@ -18,7 +18,7 @@ interface PanneMongoAttributes {
     }
 }
 
-interface PanneMongoModel extends Model<PanneMongoAttributes>, PanneMongoAttributes {}
+interface PanneMongoModel extends Model<PanneMongoAttributes>, PanneMongoAttributes { }
 
 export class PanneMgRepository implements PanneMongoRepository {
     async save(panne: Panne): Promise<Panne> {
@@ -36,7 +36,7 @@ export class PanneMgRepository implements PanneMongoRepository {
                     _id: panne.userId.toString()
                 }
             });
-            
+
             return this.toDomain(savedMongo as unknown as PanneMongoModel);
         } catch (error) {
             throw error;
@@ -79,7 +79,7 @@ export class PanneMgRepository implements PanneMongoRepository {
                 status: 1,
                 user: { _id: 1 }
             });
-            
+
             if (!pannes) return [];
 
             return pannes.map(panne => this.toDomain(panne as unknown as PanneMongoModel));
@@ -114,7 +114,7 @@ export class PanneMgRepository implements PanneMongoRepository {
     async delete(panneId: UUID): Promise<boolean> {
         try {
             const deleted = await PanneMongo.deleteOne({
-                _id: panneId.toString() 
+                _id: panneId.toString()
             });
 
             return deleted.deletedCount === 1;

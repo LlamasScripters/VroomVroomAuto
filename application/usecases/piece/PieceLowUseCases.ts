@@ -12,7 +12,6 @@ export class CheckPieceLowUseCase {
     async execute(): Promise<void> {
         const pieces = await this.pieceRepository.findByCriticalStock();
         for (const piece of pieces) {
-            console.log("CRON: Piece trouvé:", piece);
     
             const pieceInfo = await this.pieceRepository.findById(piece.pieceId);
             if (!pieceInfo) {

@@ -85,6 +85,6 @@ connectToDatabase()
     console.error("An error occurred during setup:", err);
   });
 
-  // scheduleEntretienReminderJob();
-  // scheduleStockLowJob();
-  
+// scheduleEntretienReminderJob();
+// scheduleStockLowJob();
+

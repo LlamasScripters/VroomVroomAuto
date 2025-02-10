@@ -9,11 +9,11 @@ export function scheduleStockLowJob() {
   cron.schedule('* * * * *', async () => {
     console.log("CRON: Vérification des stocks bas…");
     try {
-        const notificationService = new BrevoNotificationService();
-        const userRepository = new UserRepositorySQL();
-        const pieceRepository = new PieceSQLRepository();
+      const notificationService = new BrevoNotificationService();
+      const userRepository = new UserRepositorySQL();
+      const pieceRepository = new PieceSQLRepository();
 
-        const checkPieceLowUseCase = new CheckPieceLowUseCase(notificationService,userRepository,pieceRepository);
+      const checkPieceLowUseCase = new CheckPieceLowUseCase(notificationService, userRepository, pieceRepository);
 
       await checkPieceLowUseCase.execute();
       console.log("CRON: Vérification terminée.");

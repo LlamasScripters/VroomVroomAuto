@@ -17,7 +17,7 @@ async function insertOrUpdateUserInMongo(userSQL: UserSQL): Promise<void> {
     };
 
     if (userMongo) {
-        const isSame = Object.keys(newUser).every(key => 
+        const isSame = Object.keys(newUser).every(key =>
             JSON.stringify(newUser[key]) === JSON.stringify((userMongo as { [key: string]: any })[key])
         );
 

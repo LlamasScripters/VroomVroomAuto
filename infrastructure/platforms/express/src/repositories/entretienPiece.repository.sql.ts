@@ -13,7 +13,7 @@ interface EntretienPieceAttributes {
   userId: string;
 }
 
-interface EntretienPieceModel extends Model<EntretienPieceAttributes>, EntretienPieceAttributes {}
+interface EntretienPieceModel extends Model<EntretienPieceAttributes>, EntretienPieceAttributes { }
 
 export class EntretienPieceSQLRepository implements EntretienPieceRepository {
   async save(entretienPiece: EntretienPiece): Promise<EntretienPiece> {
