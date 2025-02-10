@@ -1,19 +1,13 @@
 // infrastructure/platforms/react/src/services/pieceService.ts
 import { Piece } from '../types';
-import { useAuthStore } from '@/stores/authStore';
+import axiosInstance from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 export const PieceService = {
   async getAllPieces(): Promise<Piece[]> {
-    const token = useAuthStore.getState().token;
-    
     try {
-      const response = await fetch(`${API_URL}/pieces`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+
+      const response = await axiosInstance.get("pieces")
 
       if (!response.ok) {
         throw new Error('Erreur lors de la récupération des pièces');
@@ -26,17 +20,8 @@ export const PieceService = {
   },
 
   async createPiece(piece: Omit<Piece, 'pieceId' | 'stockCritique'>): Promise<Piece> {
-    const token = useAuthStore.getState().token;
-    
     try {
-      const response = await fetch(`${API_URL}/pieces`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(piece)
-      });
+      const response = await axiosInstance.post("pieces", piece)
 
       if (!response.ok) {
         throw new Error('Erreur lors de la création de la pièce');
@@ -49,17 +34,9 @@ export const PieceService = {
   },
 
   async updatePiece(piece: Piece): Promise<Piece> {
-    const token = useAuthStore.getState().token;
-    
     try {
-      const response = await fetch(`${API_URL}/pieces/${piece.pieceId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(piece)
-      });
+
+      const response = await axiosInstance.put(`pieces/${piece.pieceId}`, piece)
 
       if (!response.ok) {
         throw new Error('Erreur lors de la mise à jour de la pièce');
@@ -72,15 +49,9 @@ export const PieceService = {
   },
 
   async deletePiece(id: string): Promise<void> {
-    const token = useAuthStore.getState().token;
-    
     try {
-      const response = await fetch(`${API_URL}/pieces/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+
+      const response = await axiosInstance.delete(`pieces/${id}`)
 
       if (!response.ok) {
         throw new Error('Erreur lors de la suppression de la pièce');
@@ -91,13 +62,8 @@ export const PieceService = {
   },
 
   async verifierDisponibilite(pieceId: string, quantite: number): Promise<boolean> {
-    const token = useAuthStore.getState().token;
 
-    const response = await fetch(`${API_URL}/pieces/${pieceId}/disponibilite?quantite=${quantite}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+    const response = await axiosInstance.get(`pieces/${pieceId}/disponibilite?quantite=${quantite}`)
 
     if (!response.ok) {
       throw new Error('Erreur lors de la vérification de la disponibilité');

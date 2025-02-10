@@ -1,12 +1,14 @@
 import { MaintenanceRule } from '../types';
 import { MaintenancePlanningResultDTO } from '../../../../../application/dtos/MaintenancePlanningDTO';
-import { useAuthStore } from '../stores/authStore';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+import axiosInstance from 'axios';
 
 export const MaintenanceRuleService = {
   async getAllRules(): Promise<MaintenanceRule[]> {
-    const response = await fetch(`${API_URL}/maintenance/rules`);
+
+
+    const response = await axiosInstance.get("maintenance/rules")
+
+
     if (!response.ok) {
       throw new Error('Erreur lors de la récupération des règles');
     }
@@ -14,13 +16,9 @@ export const MaintenanceRuleService = {
   },
 
   async createRule(rule: MaintenanceRule): Promise<MaintenanceRule> {
-    const response = await fetch(`${API_URL}/maintenance/rules`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(rule),
-    });
+
+    const response = await axiosInstance.post("maintenance/rules", rule)
+
     if (!response.ok) {
       throw new Error('Erreur lors de la création de la règle');
     }
@@ -28,13 +26,9 @@ export const MaintenanceRuleService = {
   },
 
   async updateRule(rule: MaintenanceRule): Promise<MaintenanceRule> {
-    const response = await fetch(`${API_URL}/maintenance/rules/${rule.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(rule),
-    });
+
+    const response = await axiosInstance.put(`maintenance/rules/${rule.id}`, rule)
+
     if (!response.ok) {
       throw new Error('Erreur lors de la mise à jour de la règle');
     }
@@ -42,9 +36,9 @@ export const MaintenanceRuleService = {
   },
 
   async deleteRule(id: string): Promise<void> {
-    const response = await fetch(`${API_URL}/maintenance/rules/${id}`, {
-      method: 'DELETE',
-    });
+
+    const response = await axiosInstance.delete(`maintenance/rules/${id}`)
+
     if (!response.ok) {
       throw new Error('Erreur lors de la suppression de la règle');
     }
@@ -64,14 +58,8 @@ export const MaintenanceRuleService = {
       prixUnitaire: number;
     }>;
   }): Promise<MaintenancePlanningResultDTO> {
-    const response = await fetch(`${API_URL}/maintenance/planification`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${useAuthStore.getState().token}`
-      },
-      body: JSON.stringify(planification),
-    });
+
+    const response = await axiosInstance.post("maintenance/planification", planification)
   
     if (!response.ok) {
       const errorData = await response.json();

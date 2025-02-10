@@ -1,20 +1,15 @@
 // infrastructure/platforms/react/src/services/entretienService.ts
 import { Entretien, Moto } from '../types';
 import { useAuthStore } from '@/stores/authStore';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+import axiosInstance from 'axios';
 
 export const EntretienService = {
 
   async getAllEntretiens(): Promise<Entretien[]> {
-    const token = useAuthStore.getState().token;
     
     try {
-      const response = await fetch(`${API_URL}/entretien`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+
+      const response = await axiosInstance.get("entretien")
 
       if (!response.ok) {
         throw new Error('Erreur lors de la récupération des entretiens');
@@ -27,25 +22,17 @@ export const EntretienService = {
   },
 
   async getMyEntretiens(): Promise<Entretien[]> {
-    const token = useAuthStore.getState().token;
     const user = useAuthStore.getState().user;
 
     try {
-      const motos = await fetch(`${API_URL}/motos`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }).then(res => res.json());
+
+      const motos = await axiosInstance.get("motos")
 
       // Filtrer les motos de l'utilisateur
       const userMotos = motos.filter((moto: Moto) => moto.userId === user?.id);
       const userMotoIds = userMotos.map((moto: Moto) => moto.motoId);
 
-      const entretiens = await fetch(`${API_URL}/entretien`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }).then(res => res.json());
+      const entretiens = await axiosInstance.get("entretien")
 
       // Filtrer les entretiens pour n'avoir que ceux des motos de l'utilisateur
       return entretiens.filter((entretien: Entretien) => 
@@ -59,11 +46,9 @@ export const EntretienService = {
 
 
   async createEntretien(entretien: Entretien): Promise<Entretien> {
-    const response = await fetch(`${API_URL}/entretien`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(entretien)
-    });
+
+    const response = await axiosInstance.post("entretien", entretien)
+  
     if (!response.ok) {
       throw new Error('Erreur lors de la création de l\'entretien');
     }
@@ -71,11 +56,9 @@ export const EntretienService = {
   },
 
   async updateEntretien(entretien: Entretien): Promise<Entretien> {
-    const response = await fetch(`${API_URL}/entretien/${entretien.entretienId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(entretien)
-    });
+
+    const response = await axiosInstance.put(`/entretien/${entretien.entretienId}`, entretien)
+
     if (!response.ok) {
       throw new Error('Erreur lors de la mise à jour de l\'entretien');
     }
@@ -83,9 +66,8 @@ export const EntretienService = {
   },
 
   async deleteEntretien(id: string): Promise<void> {
-    const response = await fetch(`${API_URL}/entretien/${id}`, {
-      method: 'DELETE'
-    });
+
+    const response = await axiosInstance.delete(`/entretien/${id}`)
     
     if (!response.ok) {
       if (response.status === 404) {

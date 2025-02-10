@@ -2,6 +2,7 @@ import { useAuthStore } from '@/stores/authStore';
 import React, { useState, useEffect } from 'react';
 import { validateTriumphVIN, formatVIN } from '../../utils/vinValidator';
 import { AlertCircle } from 'lucide-react';
+import axios from 'axios';
 
 interface User {
   userId: string;
@@ -55,11 +56,9 @@ function MotoForm({ onSubmit, onCancel, initialData }: MotoFormProps) {
     const loadUsers = async () => {
       if (user?.role === 'admin') {
         try {
-          const response = await fetch('http://localhost:3000/api/user', {
-            headers: {
-              'Authorization': `Bearer ${useAuthStore.getState().token}`
-            }
-          });
+          const response = await axios.get('/user');
+            
+
           const data = await response.json();
           setUsers(data);
         } catch (error) {

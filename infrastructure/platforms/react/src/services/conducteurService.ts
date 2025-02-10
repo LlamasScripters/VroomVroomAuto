@@ -1,18 +1,15 @@
 // infrastructure/platforms/react/src/services/conducteurService.ts
 import { Conducteur } from '../types';
-import { useAuthStore } from '@/stores/authStore';
 import { Moto } from '../types';
+import axiosInstance from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 
 export const ConducteurService = {
     async getAllConducteurs(): Promise<Conducteur[]> {
         try {
-            const response = await fetch(`${API_URL}/conducteurs`, {
-                headers: {
-                    'Authorization': `Bearer ${useAuthStore.getState().token}`
-                }
-            });
+            const response = await axiosInstance.get("conducteurs")
+
             if (!response.ok) {
                 throw new Error('Erreur lors de la récupération des conducteurs');
             }
@@ -24,11 +21,9 @@ export const ConducteurService = {
 
     async getConducteurById(id: string): Promise<Conducteur> {
         try {
-            const response = await fetch(`${API_URL}/conducteurs/${id}`, {
-                headers: {
-                    'Authorization': `Bearer ${useAuthStore.getState().token}`
-                }
-            });
+
+            const response = await axiosInstance.get(`conducteurs/${id}`)
+
             if (!response.ok) throw new Error('Conducteur non trouvé');
             return response.json();
         } catch (error) {
@@ -38,14 +33,9 @@ export const ConducteurService = {
 
     async createConducteur(conducteurData: Omit<Conducteur, 'conducteurId'>): Promise<Conducteur> {
         try {
-            const response = await fetch(`${API_URL}/conducteurs`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${useAuthStore.getState().token}`
-                },
-                body: JSON.stringify(conducteurData),
-            });
+
+            const response = await axiosInstance.post("conducteurs", conducteurData)
+
             if (!response.ok) throw new Error('Erreur lors de la création du conducteur');
             return response.json();
         } catch (error) {
@@ -59,14 +49,7 @@ export const ConducteurService = {
                 throw new Error('ID du conducteur manquant');
             }
 
-            const response = await fetch(`${API_URL}/conducteurs/${conducteur.conducteurId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${useAuthStore.getState().token}`
-                },
-                body: JSON.stringify(conducteur),
-            });
+            const response = await axiosInstance.put(`/conducteurs/${conducteur.conducteurId}`, conducteur)
 
             if (!response.ok) {
                 throw new Error('Erreur lors de la mise à jour du conducteur');
@@ -80,12 +63,9 @@ export const ConducteurService = {
 
     async deleteConducteur(id: string): Promise<void> {
         try {
-            const response = await fetch(`${API_URL}/conducteurs/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${useAuthStore.getState().token}`
-                }
-            });
+
+            const response = await axiosInstance.delete(`/conducteurs/${id}`)
+
             if (!response.ok) {
                 throw new Error('Erreur lors de la suppression du conducteur');
             }
@@ -96,11 +76,9 @@ export const ConducteurService = {
 
     async getMotosByUserId(userId: string): Promise<Moto[]> {
         try {
-          const response = await fetch(`${API_URL}/motos?userId=${userId}`, {
-            headers: {
-              'Authorization': `Bearer ${useAuthStore.getState().token}`
-            }
-          });
+
+            const response = await axiosInstance.get(`motos?userId=${userId}`)
+
           if (!response.ok) {
             throw new Error('Erreur lors de la récupération des motos');
           }

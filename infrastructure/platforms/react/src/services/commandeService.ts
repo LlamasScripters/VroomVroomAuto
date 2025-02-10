@@ -1,19 +1,12 @@
 // infrastructure/platforms/react/src/services/commandeService.ts
 import { Commande } from '../types';
-import { useAuthStore } from '@/stores/authStore';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+import axiosInstance from 'axios';
 
 export const CommandeService = {
   async getAllCommandes(): Promise<Commande[]> {
-    const token = useAuthStore.getState().token;
     
     try {
-      const response = await fetch(`${API_URL}/commandes`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await axiosInstance.get("commandes")
 
       if (!response.ok) {
         throw new Error('Erreur lors de la récupération des commandes');
@@ -31,19 +24,11 @@ export const CommandeService = {
       dateLivraisonPrevue: string;
       gestionnaireid: string;
   }): Promise<Commande> {
-      const token = useAuthStore.getState().token;
 
       try {
           console.log('Données commande envoyées:', commandeData);
 
-          const response = await fetch(`${API_URL}/commandes`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`
-              },
-              body: JSON.stringify(commandeData)
-          });
+          const response = await axiosInstance.post("commandes", commandeData)
 
           if (!response.ok) {
               const errorData = await response.json();
@@ -59,17 +44,8 @@ export const CommandeService = {
   },
 
   async updateCommande(commande: Commande): Promise<Commande> {
-    const token = useAuthStore.getState().token;
-
     try {
-      const response = await fetch(`${API_URL}/commandes/${commande.commandeId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(commande)
-      });
+      const response = await axiosInstance.put(`/commandes/${commande.commandeId}`, commande)
 
       if (!response.ok) {
         throw new Error('Erreur lors de la mise à jour de la commande');
@@ -82,15 +58,9 @@ export const CommandeService = {
   },
 
   async deleteCommande(id: string): Promise<void> {
-    const token = useAuthStore.getState().token;
-
     try {
-      const response = await fetch(`${API_URL}/commandes/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+
+      const response = await axiosInstance.delete(`/commandes/${id}`)
 
       if (!response.ok) {
         throw new Error('Erreur lors de la suppression de la commande');
@@ -101,17 +71,9 @@ export const CommandeService = {
   },
 
   async updateStatut(commandeId: string, nouveauStatut: string): Promise<void> {
-    const token = useAuthStore.getState().token;
-
     try {
-      const response = await fetch(`${API_URL}/commandes/${commandeId}/statut`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ statut: nouveauStatut })
-      });
+
+      const response = await axiosInstance.patch(`/commandes/${commandeId}/statut`, { statut: nouveauStatut })
 
       if (!response.ok) {
         throw new Error('Erreur lors de la mise à jour du statut');
