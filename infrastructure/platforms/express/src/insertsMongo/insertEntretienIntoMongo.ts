@@ -7,7 +7,6 @@ async function insertOrUpdateEntretienInMongo(entretienSQL: EntretienSQL): Promi
     const entretienMongo = await EntretienMongo.findById(entretienSQL.entretienId).exec();
 
     const newEntretien: { [key: string]: any } = {
-        _id: entretienSQL.entretienId,
         moto: {
             _id: entretienSQL.motoId,
         },
@@ -17,7 +16,9 @@ async function insertOrUpdateEntretienInMongo(entretienSQL: EntretienSQL): Promi
         kilometrageEntretien: entretienSQL.kilometrageEntretien,
         recommandationsTechnicient: entretienSQL.recommandationsTechnicien,
         recommandationsGestionnaireClient: entretienSQL.recommandationsGestionnaireClient,
-        cout: entretienSQL.cout,
+        coutMainOeuvre: entretienSQL.coutMainOeuvre,
+        coutPieces: entretienSQL.coutPieces,
+        coutTotal: entretienSQL.coutTotal,
         statut: entretienSQL.statut,
         user: {
             _id: entretienSQL.userId,
