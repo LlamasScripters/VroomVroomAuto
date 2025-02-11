@@ -3,12 +3,7 @@
 import { MaintenanceRule } from '@domain/entities/MaintenanceRuleEntity';
 import { MaintenanceRuleRepository } from '@application/repositories/MaintenanceRuleRepository';
 import { UUID } from '@domain/value-objects/UUID';
-import { 
-  CreateMaintenanceRuleDTO, 
-  UpdateMaintenanceRuleDTO, 
-  MaintenanceRuleDTO,
-  GetMaintenanceRuleDTO 
-} from '@application/dtos/MaintenanceRuleDTO';
+import { CreateMaintenanceRuleDTO, UpdateMaintenanceRuleDTO, MaintenanceRuleDTO, GetMaintenanceRuleDTO } from '@application/dtos/MaintenanceRuleDTO';
 import { MaintenanceRuleMapper } from '@application/mappers/MaintenanceRuleMapper';
 
 export class MaintenanceRuleCrudUseCase {

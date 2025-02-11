@@ -1,21 +1,23 @@
 // application/usecases/maintenance/PlanifierEntretienUseCase.ts
-
 import { UUID } from '@domain/value-objects/UUID';
 import { MaintenanceRuleRepository } from '@application/repositories/MaintenanceRuleRepository';
 import { MotoRepository } from '@application/repositories/MotoRepository';
 import { EntretienRepository } from '@application/repositories/EntretienRepository';
+import { PieceRepository } from '@application/repositories/PieceRepository';
+import { EntretienPieceRepository } from '@application/repositories/EntretienPieceRepository';
 import { Entretien } from '@domain/entities/EntretienEntity';
-import { 
-  PlanifierEntretienDTO,
-  MaintenancePlanningResultDTO 
-} from '@application/dtos/MaintenancePlanningDTO';
-// import { EntretienMapper } from '@application/mappers/EntretienMapper';
+import { EntretienPiece } from '@domain/entities/EntretienPieceEntity';
+import { UserRepository } from '@application/repositories/UserRepository';
+import { PlanifierEntretienDTO, MaintenancePlanningResultDTO } from '@application/dtos/MaintenancePlanningDTO';
 
 export class PlanifierEntretienUseCase {
   constructor(
     private maintenanceRuleRepository: MaintenanceRuleRepository,
     private motoRepository: MotoRepository,
-    private entretienRepository: EntretienRepository
+    private entretienRepository: EntretienRepository,
+    private pieceRepository: PieceRepository,
+    private entretienPieceRepository: EntretienPieceRepository,
+    private userRepository: UserRepository
   ) {}
 
   async planifier(dto: PlanifierEntretienDTO): Promise<MaintenancePlanningResultDTO> {
@@ -32,26 +34,82 @@ export class PlanifierEntretienUseCase {
         throw new Error(`Aucune règle de maintenance trouvée pour le modèle ${moto.model}`);
       }
 
-      // 3. calcul de la prochaine date d'entretien
+      // 3. vérification et réservation des pièces
+      let coutPieces = 0;
+      if (dto.pieces && dto.pieces.length > 0) {
+        for (const piece of dto.pieces) {
+          const pieceEntity = await this.pieceRepository.findById(new UUID(piece.pieceId));
+          if (!pieceEntity) {
+            throw new Error(`Pièce non trouvée: ${piece.pieceId}`);
+          }
+          if (pieceEntity.quantiteEnStock < piece.quantite) {
+            throw new Error(`Stock insuffisant pour la pièce ${pieceEntity.nom}`);
+          }
+          coutPieces += piece.quantite * piece.prixUnitaire;
+        }
+      }
+
+      // 4. Calcul des dates et kilométrages
       const datePrevue = dto.datePrevue ? new Date(dto.datePrevue) : this.calculerProchaineDate(regle.intervalleTemps);
       const kilometragePrevu = dto.kilometragePrevu || this.calculerProchainKilometrage(moto.kilometrage, regle.intervalleKilometrage);
 
-      // 4. création l'entretien planifié
+      // vérif explicite de l'userId
+      if (!dto.userId) {
+        throw new Error('UserId manquant dans la requête');
+      }
+
+      const gestionnaire = await this.userRepository.findFirstGestionnaire();
+      if (!gestionnaire) {
+        throw new Error('Aucun gestionnaire disponible pour prendre en charge l\'entretien');
+      }
+
+      // 5. Création de l'entretien
       const nouvelEntretien = Entretien.create(
-        new UUID(),
-        moto.motoId,
-        dto.typeEntretien || regle.typeEntretien,
-        datePrevue,
-        new Date(), // dateRealisee sera mise à jour lors de l'exécution
-        kilometragePrevu,
-        dto.notes || '',
-        '', // recommandationsGestionnaireClient à remplir plus tard
-        0, // coût à définir
-        'PLANIFIE',
-        new UUID() // userId à gérer avec l'authh
-      );
+        new UUID(),               // entretienId
+        moto.motoId,             // motoId
+        dto.typeEntretien || regle.typeEntretien,  // typeEntretien
+        datePrevue,              // datePrevue
+        new Date(),              // dateRealisee
+        kilometragePrevu,        // kilometrageEntretien
+        dto.notes || '',         // recommandationsTechnicien
+        '',                      // recommandationsGestionnaireClient
+        'PLANIFIE',             // statut
+        new UUID(dto.userId), //userId
+        gestionnaire.userId, // gestionnaireId
+        dto.coutMainOeuvre || 0, // coutMainOeuvre
+        coutPieces,           // coutPieces
+        {                        // motoDetails
+            marque: moto.marque,
+            model: moto.model,
+            serialNumber: moto.serialNumber
+        },
+        undefined               // pieces (sera ajouté plus tard)
+         
+    );
 
       const entretienSaved = await this.entretienRepository.save(nouvelEntretien);
+
+      // 6. Association des pièces à l'entretien et mise à jour des stocks
+      if (dto.pieces && dto.pieces.length > 0) {
+        for (const piece of dto.pieces) {
+          const entretienPiece = EntretienPiece.create(
+            new UUID(),
+            entretienSaved.entretienId,
+            new UUID(piece.pieceId),
+            piece.quantite,
+            piece.prixUnitaire,
+            new UUID(dto.userId)
+          );
+          await this.entretienPieceRepository.save(entretienPiece);
+          
+          // Mise à jour du stock de la pièce après l'entretien planifié
+          await this.pieceRepository.updateStock(
+            new UUID(piece.pieceId), 
+            piece.quantite, 
+            'RETRAIT'
+          );
+        }
+      }
 
       return {
         success: true,

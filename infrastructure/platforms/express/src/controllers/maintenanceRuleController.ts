@@ -8,6 +8,9 @@ import { SqlMotoRepository } from '../repositories/moto.repository.sql';
 import { EntretienSQLRepository } from '../repositories/entretien.repository.sql';
 import { CreateMaintenanceRuleDTO, UpdateMaintenanceRuleDTO } from '@application/dtos/MaintenanceRuleDTO';
 import { PlanifierEntretienDTO } from '@application/dtos/MaintenancePlanningDTO';
+import { PieceSQLRepository } from '../repositories/piece.repository.sql';
+import { EntretienPieceSQLRepository } from '../repositories/entretienPiece.repository.sql';
+import { UserRepositorySQL } from '../repositories/user.repository.sql';
 
 export class MaintenanceRuleController {
   private maintenanceRuleCrudUseCase: MaintenanceRuleCrudUseCase;
@@ -17,12 +20,19 @@ export class MaintenanceRuleController {
     const maintenanceRuleRepository = new MaintenanceRuleSQLRepository();
     const motoRepository = new SqlMotoRepository();
     const entretienRepository = new EntretienSQLRepository();
+    const pieceRepository = new PieceSQLRepository();
+    const entretienPiece = new EntretienPieceSQLRepository();
+    const userRepository = new UserRepositorySQL();
+
 
     this.maintenanceRuleCrudUseCase = new MaintenanceRuleCrudUseCase(maintenanceRuleRepository);
     this.planifierEntretienUseCase = new PlanifierEntretienUseCase(
       maintenanceRuleRepository,
       motoRepository,
-      entretienRepository
+      entretienRepository,
+      pieceRepository,
+      entretienPiece,
+      userRepository
     );
   }
 
@@ -32,8 +42,8 @@ export class MaintenanceRuleController {
       const rule = await this.maintenanceRuleCrudUseCase.createRule(ruleDTO);
       res.status(201).json(rule);
     } catch (error: any) {
-      res.status(400).json({ 
-        error: error.message || "Erreur lors de la création de la règle de maintenance" 
+      res.status(400).json({
+        error: error.message || "Erreur lors de la création de la règle de maintenance"
       });
     }
   }
@@ -43,8 +53,8 @@ export class MaintenanceRuleController {
       const rules = await this.maintenanceRuleCrudUseCase.getAllRules();
       res.json(rules);
     } catch (error: any) {
-      res.status(400).json({ 
-        error: error.message || "Erreur lors de la récupération des règles" 
+      res.status(400).json({
+        error: error.message || "Erreur lors de la récupération des règles"
       });
     }
   }
@@ -62,8 +72,8 @@ export class MaintenanceRuleController {
       }
       res.json(rule);
     } catch (error: any) {
-      res.status(400).json({ 
-        error: error.message || "Erreur lors de la mise à jour de la règle" 
+      res.status(400).json({
+        error: error.message || "Erreur lors de la mise à jour de la règle"
       });
     }
   }
@@ -77,8 +87,8 @@ export class MaintenanceRuleController {
       }
       res.status(204).send();
     } catch (error: any) {
-      res.status(400).json({ 
-        error: error.message || "Erreur lors de la suppression de la règle" 
+      res.status(400).json({
+        error: error.message || "Erreur lors de la suppression de la règle"
       });
     }
   }
@@ -89,8 +99,15 @@ export class MaintenanceRuleController {
       const result = await this.planifierEntretienUseCase.planifier(planificationDTO);
       res.status(201).json(result);
     } catch (error: any) {
-      res.status(400).json({ 
-        error: error.message || "Erreur lors de la planification de l'entretien" 
+      if (error.message.includes('Stock insuffisant')) {
+        res.status(400).json({
+          error: error.message,
+          type: 'STOCK_INSUFFISANT'
+        });
+        return;
+      }
+      res.status(400).json({
+        error: error.message || "Erreur lors de la planification de l'entretien"
       });
     }
   }

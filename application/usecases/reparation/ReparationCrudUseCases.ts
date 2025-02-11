@@ -1,6 +1,6 @@
-import { Reparation } from '../../../domain/entities/ReparationEntity';
-import { ReparationRepository } from '../../repositories/ReparationRepository';
-import { UUID } from '../../../domain/value-objects/UUID';
+import { Reparation } from '@domain/entities/ReparationEntity';
+import { ReparationRepository } from '@application/repositories/ReparationRepository';
+import { UUID } from '@domain/value-objects/UUID';
 
 interface ReparationData {
   reparationId: UUID;

@@ -1,5 +1,5 @@
-import { Reparation } from '../../domain/entities/ReparationEntity';
-import { UUID } from '../../domain/value-objects/UUID';
+import { Reparation } from '@domain/entities/ReparationEntity';
+import { UUID } from '@domain/value-objects/UUID';
 
 export interface ReparationRepository {
   save(reparation: Reparation): Promise<Reparation>;

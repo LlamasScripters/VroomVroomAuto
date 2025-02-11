@@ -29,8 +29,8 @@ export function EntretienTable({
           <TableHead>Type d'entretien</TableHead>
           <TableHead>Date prévue</TableHead>
           <TableHead>Date réalisée</TableHead>
-          <TableHead>Kilométrage</TableHead>
-          <TableHead>Coût</TableHead>
+          <TableHead>Kilométrage prévu</TableHead>
+          <TableHead>Coût total</TableHead>
           <TableHead>Statut</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
@@ -49,20 +49,20 @@ export function EntretienTable({
             <TableCell>{new Date(entretien.datePrevue).toLocaleDateString()}</TableCell>
             <TableCell>{entretien.dateRealisee ? new Date(entretien.dateRealisee).toLocaleDateString() : '-'}</TableCell>
             <TableCell>{entretien.kilometrageEntretien} km</TableCell>
-            <TableCell>{entretien.cout}€</TableCell>
+            <TableCell>
+            {`${(parseFloat(entretien.coutMainOeuvre?.toString() || '0') + parseFloat(entretien.coutPieces?.toString() || '0')).toFixed(2).replace('.', ',')}€`}
+            </TableCell>
             <TableCell>{entretien.statut}</TableCell>
             <TableCell className="text-right">
-              {onViewEntretien && (
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="mr-2"
-                  onClick={() => onViewEntretien(entretien)}
-                >
-                  <Eye className="h-4 w-4" />
-                  <span className="sr-only">Voir</span>
-                </Button>
-              )}
+              <Button
+                variant="outline"
+                size="icon"
+                className="mr-2"
+                onClick={() => onViewEntretien && onViewEntretien(entretien)}
+              >
+                <Eye className="h-4 w-4" />
+                <span className="sr-only">Voir</span>
+              </Button>
               {!readOnly && (
                 <>
                   <Button
@@ -72,7 +72,6 @@ export function EntretienTable({
                     onClick={() => onEditEntretien(entretien)}
                   >
                     <Edit className="h-4 w-4" />
-                    <span className="sr-only">Modifier</span>
                   </Button>
                   <Button
                     variant="outline"
@@ -80,7 +79,6 @@ export function EntretienTable({
                     onClick={() => onDeleteEntretien(entretien.entretienId!)}
                   >
                     <Trash2 className="h-4 w-4" />
-                    <span className="sr-only">Supprimer</span>
                   </Button>
                 </>
               )}

@@ -18,7 +18,7 @@ async function insertOrUpdateIncidentInMongo(incidentSQL: IncidentSQL): Promise<
     };
 
     if (incidentMongo) {
-        const isSame = Object.keys(newIncident).every(key => 
+        const isSame = Object.keys(newIncident).every(key =>
             JSON.stringify(newIncident[key]) === JSON.stringify((incidentMongo as { [key: string]: any })[key])
         );
 

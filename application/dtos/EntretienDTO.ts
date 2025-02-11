@@ -1,4 +1,5 @@
 // application/dtos/EntretienDTO.ts
+import { EntretienPiece } from '@domain/entities/EntretienPieceEntity';
 export interface CreateEntretienDTO {
   motoId: string;
   typeEntretien: string;
@@ -7,9 +8,12 @@ export interface CreateEntretienDTO {
   kilometrageEntretien: number;
   recommandationsTechnicien: string;
   recommandationsGestionnaireClient: string;
-  cout: number;
   statut: string;
   userId: string;
+  gestionnaireId: string;
+  coutMainOeuvre: number; 
+  coutPieces: number;       
+  pieces?: EntretienPiece[];
 }
 
 export interface UpdateEntretienDTO {
@@ -21,8 +25,10 @@ export interface UpdateEntretienDTO {
   kilometrageEntretien?: number;
   recommandationsTechnicien?: string;
   recommandationsGestionnaireClient?: string;
-  cout?: number;
   statut?: string;
+  coutMainOeuvre?: number;
+  coutPieces?: number;
+  pieces?: EntretienPiece[];
 }
 
 export interface DeleteEntretienDTO {
@@ -42,12 +48,23 @@ export interface EntretienDTO {
     serialNumber: string;
   };
   typeEntretien: string;
-  datePrevue: string;
-  dateRealisee: string;
+  datePrevue: string |null;
+  dateRealisee: string |null;
   kilometrageEntretien: number;
   recommandationsTechnicien: string;
   recommandationsGestionnaireClient: string;
-  cout: number;
   statut: string;
   userId: string;
+  gestionnaireId: string;
+  coutMainOeuvre: number;
+  coutPieces: number;
+  coutTotal: number;
+  pieces?: PieceEntretienDTO[];
+}
+
+export interface PieceEntretienDTO {
+  pieceId: string;
+  quantite: number;
+  prixUnitaire: number;
+  gestionnaireId: string;
 }

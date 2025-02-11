@@ -62,7 +62,7 @@ reparationSchema.index(
     status: "text",
   },
   {
-      name: "searchIndex",
+    name: "searchIndex",
   }
 );
 

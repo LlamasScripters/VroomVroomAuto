@@ -1,6 +1,6 @@
 // domain/entities/MaintenanceRuleEntity.ts
 
-import { UUID } from '../value-objects/UUID';
+import { UUID } from '@domain/value-objects/UUID';
 
 export class MaintenanceRule {
   constructor(

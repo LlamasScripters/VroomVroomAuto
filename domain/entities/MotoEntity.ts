@@ -1,4 +1,4 @@
-import { UUID } from '../value-objects/UUID';
+import { UUID } from '@domain/value-objects/UUID';
 
 interface UserInfo {
   userId: string;

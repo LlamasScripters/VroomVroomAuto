@@ -2,31 +2,7 @@ import { PanneRepository } from '@application/repositories/PanneRepository';
 import { Panne } from '@domain/entities/PanneEntity';
 import { UUID } from '@domain/value-objects/UUID';
 import { Model } from 'sequelize';
-import UserSQL from '../modelsSQL/user.sql';
-import MotoSQL from '../modelsSQL/moto.sql';
 import PanneSQL from '../modelsSQL/panne.sql';
-import ReparationSQL from '../modelsSQL/reparation.sql';
-
-interface UserAttributes {
-    userId: string;
-    username: string;
-    email: string;
-    password?: string;
-    role: string;
-    isValidated: boolean;
-    dateCreation: Date;
-    derniereConnexion: Date;
-}
-
-interface MotoAttributes {
-    motoId: string;
-    model: string;
-    kilometrage: number;
-    dateMiseEnService: Date;
-    status: string;
-    serialNumber: string;
-    clientId: string;
-}
 
 interface PanneAttributes {
     panneId?: string;
@@ -38,23 +14,13 @@ interface PanneAttributes {
     userId: string;
 }
 
-interface ReparationAttributes {
-    reparationId: string;
-    panneId: string;
-    description: string;
-    dateReparation: Date;
-    actionsCorrectives: string[];
-    coutReparation: number;
-    status: string;
-    userId: string;
-}
-
-interface PanneModel extends Model<PanneAttributes>, PanneAttributes {}
+interface PanneModel extends Model<PanneAttributes>, PanneAttributes { }
 
 export class PanneSQLRepository implements PanneRepository {
     async save(panne: Panne): Promise<Panne> {
         try {
             const saved = await PanneSQL.create({
+                panneId: panne.panneId.toString(),
                 motoId: panne.motoId.toString(),
                 description: panne.description,
                 date: panne.date,
@@ -109,7 +75,7 @@ export class PanneSQLRepository implements PanneRepository {
             if (updated === 0) throw new Error('Panne not found or not updated');
 
             const updatedPanne = await this.findById(panne.panneId);
-            
+
             if (!updatedPanne) throw new Error('Panne not found after update');
             return updatedPanne;
 

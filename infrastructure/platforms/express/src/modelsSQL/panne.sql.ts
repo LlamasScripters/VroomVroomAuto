@@ -18,6 +18,9 @@ const PanneSQL = connection.define('Panne', {
   date: {
     type: DataTypes.DATE,
     allowNull: false,
+    validate: {
+      isBefore: new Date().toISOString().split('T')[0],
+    },
   },
   actionCorrective: {
     type: DataTypes.STRING,
@@ -33,7 +36,7 @@ const PanneSQL = connection.define('Panne', {
   },
   userId: {
     type: DataTypes.UUID,
-    allowNull: false,
+    allowNull: true,
   },
 }, {
   tableName: 'Pannes',

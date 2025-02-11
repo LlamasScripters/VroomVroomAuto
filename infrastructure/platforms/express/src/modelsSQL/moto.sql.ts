@@ -31,6 +31,7 @@ const MotoSQL = connection.define('Moto', {
   serialNumber: {
     type: DataTypes.STRING,
     allowNull: true,
+    unique: true,
   },
   userId: {
     type: DataTypes.UUID,

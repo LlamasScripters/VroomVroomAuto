@@ -22,7 +22,7 @@ async function insertOrUpdateReparationInMongo(reparationSQL: ReparationSQL): Pr
     };
 
     if (reparationMongo) {
-        const isSame = Object.keys(newReparation).every(key => 
+        const isSame = Object.keys(newReparation).every(key =>
             JSON.stringify(newReparation[key]) === JSON.stringify((reparationMongo as { [key: string]: any })[key])
         );
 

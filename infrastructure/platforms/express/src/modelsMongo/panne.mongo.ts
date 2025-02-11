@@ -53,17 +53,17 @@ const panneSchema = new mongoose.Schema(
 );
 
 panneSchema.index(
-    {
-        moto: "text",
-        description: "text",
-        date: "text",
-        actionCorrective: "text",
-        status: "text",
-    },
-    {
-        name: "searchIndex",
-    }
-); 
+  {
+    moto: "text",
+    description: "text",
+    date: "text",
+    actionCorrective: "text",
+    status: "text",
+  },
+  {
+    name: "searchIndex",
+  }
+);
 
 const Panne = mongoose.model("Pannes", panneSchema);
 

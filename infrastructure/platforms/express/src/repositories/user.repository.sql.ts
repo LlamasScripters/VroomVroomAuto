@@ -7,6 +7,7 @@ import { User } from "@domain/entities/UserEntity";
 import { UserRepository } from "@application/repositories/UserRepository";
 import UserSQL from "../modelsSQL/user.sql";
 import { Model } from "sequelize";
+import { Op } from "sequelize";
 
 
 interface UserModel extends Model {
@@ -27,15 +28,15 @@ export class UserRepositorySQL implements UserRepository {
     async save(user: User): Promise<User> {
         try {
             const createdUser = await UserSQL.create({
-                userId: user.userId.toString(),              
-                username: user.username.toString(),          
-                email: user.email.toString(),                
-                password: user.password.toString(),          
+                userId: user.userId.toString(),
+                username: user.username.toString(),
+                email: user.email.toString(),
+                password: user.password.toString(),
                 role: user.role.toString(),
                 isValidated: user.isValidated,
                 dateCreation: user.dateCreation,
                 derniereConnexion: user.derniereConnexion
-            });
+            }) as UserModel | null;
 
             return this.toDomain(createdUser as UserModel);
 
@@ -51,14 +52,14 @@ export class UserRepositorySQL implements UserRepository {
         return this.toDomain(user);
     }
 
-   async findByEmail(email: Email): Promise<User | null> {
-        const user = await UserSQL.findOne({ where: { email: email.toString() }}) as UserModel | null;
+    async findByEmail(email: Email): Promise<User | null> {
+        const user = await UserSQL.findOne({ where: { email: email.toString() } }) as UserModel | null;
 
         if (!user) return null;
 
         return this.toDomain(user);
 
-   }
+    }
 
     async delete(userId: UUID): Promise<boolean> {
         const userSQL = await UserSQL.destroy({
@@ -72,6 +73,18 @@ export class UserRepositorySQL implements UserRepository {
         return users.map(user => this.toDomain(user));
     }
 
+
+    async findFirstGestionnaire(): Promise<User | null> {
+        const gestionnaire = await UserSQL.findOne({
+            where: {
+                role: {
+                    [Op.in]: ['gestionnaire', 'admin']
+                }
+            }
+        });
+        return gestionnaire ? this.toDomain(gestionnaire as UserModel) : null;
+    }
+
     async update(user: User): Promise<User> {
         await UserSQL.update({
             username: user.username.toString(),
@@ -82,7 +95,7 @@ export class UserRepositorySQL implements UserRepository {
             derniereConnexion: user.derniereConnexion
         }, {
             where: {
-                userId: user.userId.toString()   
+                userId: user.userId.toString()
             },
             returning: true
         });
@@ -93,16 +106,42 @@ export class UserRepositorySQL implements UserRepository {
         return this.toDomain(updatedUser);
     }
 
-private toDomain(model: UserModel): User {
-  return User.create(
-    new UUID(model.userId),
-    new Username(model.username),
-    new Email(model.email),
-    new Password(model.password),
-    new Role(model.role as "admin" | "user" | "gestionnaire"),
-    model.isValidated,
-    model.dateCreation,
-    model.derniereConnexion
-  );
-}
+    async findByRolesGestionnaire(): Promise<User[]> {
+        const users = await UserSQL.findAll({
+            where: {
+                role: {
+                    [Op.in]: ['gestionnaire']
+                }
+            }
+        }) as UserModel[];
+
+        return users.map(user => this.toDomain(user));
+    }
+
+    async findByRolesAdmin(): Promise<User[]> {
+        const users = await UserSQL.findAll({
+            where: {
+                role: {
+                    [Op.in]: ['admin']
+                }
+            }
+        }) as UserModel[];
+
+        return users.map(user => this.toDomain(user));
+    }
+
+    private toDomain(model: UserModel): User {
+        return User.create(
+            new UUID(model.userId),
+            new Username(model.username),
+            new Email(model.email),
+            new Password(model.password),
+            new Role(model.role as "admin" | "user" | "gestionnaire"),
+            model.isValidated,
+            model.dateCreation,
+            model.derniereConnexion
+        );
+    }
+
+
 }

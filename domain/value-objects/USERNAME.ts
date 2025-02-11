@@ -1,4 +1,4 @@
-import { UsernameError } from '../errors/value-objects/UsernameError';
+import { UsernameError } from '@domain/errors/value-objects/UsernameError';
 
 export class Username {
     private readonly value: string;
@@ -9,8 +9,6 @@ export class Username {
         }
         this.value = value;
     }
-
-    
 
     public toString(): string {
         return this.value;

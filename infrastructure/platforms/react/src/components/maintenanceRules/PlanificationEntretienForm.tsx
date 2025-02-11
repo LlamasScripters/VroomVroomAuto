@@ -1,19 +1,40 @@
 // infrastructure/platforms/react/src/components/maintenanceRules/PlanificationEntretienForm.tsx
 
 import React, { useState, useEffect } from 'react';
-import { Moto, MaintenanceRule } from '../../types';
+import { Moto, MaintenanceRule, Piece } from '../../types';
 import { MotoService } from '../../services/motoService';
 import { MaintenanceRuleService } from '../../services/maintenanceRuleService';
+import { PieceService } from '../../services/pieceService';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-hot-toast";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from 'lucide-react';
+import { useAuthStore } from '@/stores/authStore';
+
+interface PiecePlanifiee {
+  pieceId: string;
+  nom: string;
+  quantite: number;
+  prixUnitaire: number;
+  reference: string;
+  stockDisponible: number;
+}
 
 interface PlanificationEntretienFormProps {
   onSubmit: (planification: {
     motoId: string;
+    userId: string;
     datePrevue?: string;
     kilometragePrevu?: number;
     typeEntretien?: string;
     notes?: string;
+    coutMainOeuvre: number;
+    pieces: Array<{
+      pieceId: string;
+      quantite: number;
+      prixUnitaire: number;
+    }>;
   }) => void;
   onCancel: () => void;
 }
@@ -22,30 +43,41 @@ const PlanificationEntretienForm: React.FC<PlanificationEntretienFormProps> = ({
   onSubmit,
 }) => {
   const [motos, setMotos] = useState<Moto[]>([]);
+  const [pieces, setPieces] = useState<Piece[]>([]);
   const [maintenanceRules, setMaintenanceRules] = useState<MaintenanceRule[]>([]);
   const [selectedMoto, setSelectedMoto] = useState<Moto | null>(null);
   const [selectedRule, setSelectedRule] = useState<MaintenanceRule | null>(null);
   const navigate = useNavigate();
+
+  const [piecesPlanifiees, setPiecesPlanifiees] = useState<PiecePlanifiee[]>([]);
+  const [selectedPieceId, setSelectedPieceId] = useState<string>('');
+  const [quantiteSelectionnee, setQuantiteSelectionnee] = useState<number>(1);
+
+  const user = useAuthStore(state => state.user);
 
   const [formData, setFormData] = useState({
     motoId: '',
     datePrevue: '',
     kilometragePrevu: 0,
     typeEntretien: '',
-    notes: ''
+    notes: '',
+    coutMainOeuvre: 0,
   });
 
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const [motosData, rulesData] = await Promise.all([
+        const [motosData, rulesData, piecesData] = await Promise.all([
           MotoService.getAllMotos(),
-          MaintenanceRuleService.getAllRules()
+          MaintenanceRuleService.getAllRules(),
+          PieceService.getAllPieces()
         ]);
         setMotos(motosData);
         setMaintenanceRules(rulesData);
+        setPieces(piecesData);
       } catch (error) {
         console.error('Erreur lors du chargement des données:', error);
+        toast.error('Erreur lors du chargement des données');
       }
     };
     fetchInitialData();
@@ -82,25 +114,105 @@ const PlanificationEntretienForm: React.FC<PlanificationEntretienFormProps> = ({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!selectedRule) {
-      toast.error("Une règle de maintenance est requise pour planifier l'entretien");
-      return;
-    }
-  
-    if (selectedMoto && formData.kilometragePrevu <= selectedMoto.kilometrage) {
-      toast.error("Le kilométrage prévu doit être supérieur au kilométrage actuel");
-      return;
-    }
-  
-    onSubmit(formData);
-  };
 
   const handleCancel = () => {
-    navigate('/entretiens'); // ou le chemin approprié
+    navigate('/entretiens'); 
   };
+
+    // Gestion des pièces
+    const handleAddPiece = () => {
+      if (!selectedPieceId || quantiteSelectionnee <= 0) {
+        toast.error('Veuillez sélectionner une pièce et une quantité valide');
+        return;
+      }
+  
+      const piece = pieces.find(p => p.pieceId === selectedPieceId);
+      if (!piece) return;
+  
+      if (quantiteSelectionnee > piece.quantiteEnStock) {
+        toast.error('Quantité demandée supérieure au stock disponible');
+        return;
+      }
+  
+      // Vérifier si la pièce est déjà dans la liste
+      const pieceExistante = piecesPlanifiees.find(p => p.pieceId === selectedPieceId);
+      if (pieceExistante) {
+        const nouvelleQuantite = pieceExistante.quantite + quantiteSelectionnee;
+        if (nouvelleQuantite > piece.quantiteEnStock) {
+          toast.error('La quantité totale dépasserait le stock disponible');
+          return;
+        }
+  
+        setPiecesPlanifiees(prev => prev.map(p => 
+          p.pieceId === selectedPieceId 
+            ? { ...p, quantite: nouvelleQuantite }
+            : p
+        ));
+      } else {
+        setPiecesPlanifiees(prev => [...prev, {
+          pieceId: piece.pieceId!,
+          nom: piece.nom,
+          reference: piece.reference,
+          quantite: quantiteSelectionnee,
+          prixUnitaire: piece.prixUnitaire || 0,
+          stockDisponible: piece.quantiteEnStock
+        }]);
+      }
+  
+      // Reset de la sélection
+      setSelectedPieceId('');
+      setQuantiteSelectionnee(1);
+    };
+  
+    const handleRemovePiece = (pieceId: string) => {
+      setPiecesPlanifiees(prev => prev.filter(p => p.pieceId !== pieceId));
+    };
+  
+    const calculateCoutTotalPieces = () => {
+      return piecesPlanifiees.reduce((total, piece) => 
+        total + (piece.quantite * piece.prixUnitaire), 0
+      );
+    };
+  
+    // Soumission du formulaire
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+    
+      if (!user?.id) {
+        toast.error("Erreur : Utilisateur non authentifié");
+        return;
+      }
+    
+      if (!formData.motoId) {
+        toast.error("Veuillez sélectionner une moto");
+        return;
+      }
+    
+      if (formData.coutMainOeuvre < 0) {
+        toast.error("Le coût de main d'œuvre ne peut pas être négatif");
+        return;
+      }
+    
+      const planification = {
+        ...formData,
+        userId: user.id,
+        pieces: piecesPlanifiees.map(p => ({
+          pieceId: p.pieceId,
+          quantite: p.quantite,
+          prixUnitaire: p.prixUnitaire
+        }))
+      };
+    
+      try {
+        await onSubmit(planification);
+      } catch (error) {
+        // L'erreur sera gérée par le composant parent
+        console.error('Erreur lors de la soumission:', error);
+      }
+    };
+
+    const selectedPiece = pieces.find(piece => piece.pieceId === selectedPieceId);
+    const maxQuantite = selectedPiece?.quantiteEnStock || 0;
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
@@ -196,6 +308,145 @@ const PlanificationEntretienForm: React.FC<PlanificationEntretienFormProps> = ({
           <option value="Curatif">Curatif</option>
         </select>
       </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          Coût main d'œuvre (€)
+        </label>
+        <input
+          type="number"
+          value={formData.coutMainOeuvre}
+          onChange={(e) => setFormData(prev => ({...prev, coutMainOeuvre: parseFloat(e.target.value)}))}
+          className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+          min="0"
+          step="0.01"
+          required
+        />
+      </div>
+
+      <div className="border-t pt-4 mt-4">
+          <h3 className="text-lg font-medium mb-4">Sélection des pièces</h3>
+          
+          <div className="grid grid-cols-3 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Pièce
+              </label>
+              <select
+                value={selectedPieceId}
+                onChange={(e) => setSelectedPieceId(e.target.value)}
+                className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+              >
+                <option value="">Sélectionner une pièce</option>
+                {pieces
+                  .filter(p => p.quantiteEnStock > 0) // Ne montrer que les pièces en stock
+                  .map(piece => (
+                    <option key={piece.pieceId} value={piece.pieceId}>
+                      {piece.nom} - {piece.reference} (Stock: {piece.quantiteEnStock})
+                    </option>
+                  ))
+                }
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Quantité (Stock disponible : {maxQuantite})
+              </label>
+              <input
+                type="number"
+                value={quantiteSelectionnee}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value);
+                  if (selectedPiece && value > selectedPiece.quantiteEnStock) {
+                    toast.error(`La quantité ne peut pas dépasser le stock disponible (${selectedPiece.quantiteEnStock} unités)`);
+                    return;
+                  }
+                  setQuantiteSelectionnee(value);
+                }}
+                min="1"
+                max={maxQuantite}
+                className={`mt-1 block w-full p-2 border rounded-lg ${
+                  selectedPieceId && quantiteSelectionnee > maxQuantite 
+                    ? 'border-red-500 bg-red-50' 
+                    : 'border-gray-300'
+                }`}
+                disabled={!selectedPieceId}
+              />
+              {selectedPieceId && quantiteSelectionnee > maxQuantite && (
+                <p className="text-red-500 text-sm mt-1">
+                  La quantité dépasse le stock disponible
+                </p>
+              )}
+            </div>
+
+            <div className="flex items-end">
+              <button
+                type="button"
+                onClick={handleAddPiece}
+                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+              >
+                Ajouter
+              </button>
+            </div>
+          </div>
+
+          {/* Tableau des pièces sélectionnées */}
+          {piecesPlanifiees.length > 0 && (
+            <div className="mt-4">
+              <h4 className="text-md font-medium mb-2">Pièces sélectionnées</h4>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Référence</TableHead>
+                    <TableHead>Nom</TableHead>
+                    <TableHead>Quantité</TableHead>
+                    <TableHead>Prix unitaire</TableHead>
+                    <TableHead>Prix total</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {piecesPlanifiees.map((piece) => (
+                    <TableRow key={piece.pieceId}>
+                      <TableCell>{piece.reference}</TableCell>
+                      <TableCell>{piece.nom}</TableCell>
+                      <TableCell>{piece.quantite}</TableCell>
+                      <TableCell>{piece.prixUnitaire}€</TableCell>
+                      <TableCell>{(piece.quantite * piece.prixUnitaire).toFixed(2)}€</TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => handleRemovePiece(piece.pieceId)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                          <span className="sr-only">Supprimer</span>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+
+              {/* Résumé des coûts */}
+              <div className="mt-4 p-4 bg-gray-50 rounded-md">
+                <div className="flex justify-between items-center">
+                  <span>Coût des pièces:</span>
+                  <span className="font-medium">{calculateCoutTotalPieces().toFixed(2)}€</span>
+                </div>
+                <div className="flex justify-between items-center mt-2">
+                  <span>Coût de main d'œuvre:</span>
+                  <span className="font-medium">{formData.coutMainOeuvre.toFixed(2)}€</span>
+                </div>
+                <div className="flex justify-between items-center mt-2 text-lg font-bold">
+                  <span>Coût total:</span>
+                  <span>{(calculateCoutTotalPieces() + formData.coutMainOeuvre).toFixed(2)}€</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
 
       <div className="mt-6 flex justify-end space-x-4">
         <button

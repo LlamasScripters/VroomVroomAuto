@@ -21,19 +21,25 @@ services:
   nestjs:
     image: node:latest
     container_name: nestjs-backend
-    working_dir: /app
+    working_dir: /app/infrastructure/platforms/nestJs
     volumes:
-      - ./infrastructure/platforms/nestJs:/app
+      - .:/app
     ports:
       - "4000:4000"
-    command: "sh -c 'npm install && npm run start:dev'"
+    command: >
+      sh -c '
+        npm install &&
+        rm -rf dist node_modules &&
+        npm install &&
+        npm run build &&
+        NODE_PATH=/app/infrastructure/platforms/nestJs/node_modules npm run start:dev
+      '
     environment:
       - POSTGRES_LINK=postgres://user:password@postgres:5432/mydatabase
       - MONGODB_CONNECTION_STRING=mongodb://mongodb:27017/mydatabase?authSource=admin
     depends_on:
       - postgres
       - mongo
-
   react:
     image: node:latest
     container_name: react-frontend
@@ -43,6 +49,16 @@ services:
     ports:
       - "5173:5173"
     command: "sh -c 'npm install && npm run dev'"
+
+  angular:
+    image: node:latest
+    container_name: angular-frontend
+    working_dir: /app/angular
+    volumes:
+      - ./infrastructure/platforms/angular:/app/angular
+    ports:
+      - "4200:4200" 
+    command: "sh -c 'npm install && npm start -- --host 0.0.0.0'" 
 
   postgres:
     image: postgres:latest

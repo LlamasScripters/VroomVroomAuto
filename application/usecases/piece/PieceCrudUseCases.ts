@@ -53,10 +53,36 @@ export class PieceCrudUseCases {
   }
 
   async updateStock(pieceId: string, quantite: number): Promise<Piece | null> {
-    return await this.pieceRepository.updateStock(new UUID(pieceId), quantite);
+    return await this.pieceRepository.updateStock(new UUID(pieceId), quantite, 'AJOUT');
   }
 
   async getPiecesCritiques(): Promise<Piece[]> {
     return await this.pieceRepository.findByCriticalStock();
   }
+
+  async verifierDisponibilite(pieceId: string, quantite: number): Promise<boolean> {
+    const piece = await this.pieceRepository.findById(new UUID(pieceId));
+    if (!piece) {
+      throw new Error('Pièce non trouvée');
+    }
+    return piece.quantiteEnStock >= quantite;
+  }
+
+  async mettreAJourStock(pieceId: string, quantite: number, type: 'AJOUT' | 'RETRAIT'): Promise<Piece> {
+    const piece = await this.pieceRepository.findById(new UUID(pieceId));
+    if (!piece) {
+      throw new Error('Pièce non trouvée');
+    }
+
+    const nouvelleQuantite = type === 'AJOUT' 
+      ? piece.quantiteEnStock + quantite
+      : piece.quantiteEnStock - quantite;
+
+    if (nouvelleQuantite < 0) {
+      throw new Error('Stock insuffisant');
+    }
+
+    return await this.pieceRepository.updateStock(new UUID(pieceId), nouvelleQuantite, type);
+  }
+
 }

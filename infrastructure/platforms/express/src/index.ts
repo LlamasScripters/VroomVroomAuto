@@ -7,12 +7,22 @@ import { initializeModels } from "./modelsMongo/indexMongo";
 import { denormalizeData } from "./bin/denormalizeIntoMongo";
 import './modelsSQL/associations';
 
+import { scheduleEntretienReminderJob } from "./cron/cronMaintenance";
+import { scheduleStockLowJob } from "./cron/cronStockLow";
+
+
 import motoRoutes from './routes/moto.route';
 import entretienRoutes from './routes/entretien.route';
 import panneRoutes from './routes/panne.route';
 import maintenanceRuleRoutes from './routes/maintenanceRule.route';
 import userRoute from './routes/user.route';
 import authRouter from "./routes/auth.route";
+import pieceRoutes from './routes/piece.route';
+import garantieRoutes from './routes/garantie.route';
+import commandeRoutes from './routes/commande.route';
+import pieceFournisseurRoutes from './routes/pieceFournisseur.route';
+import conducteurRoutes from './routes/conducteur.route';
+import essaiRoutes from './routes/essaie.route';
 
 
 // Charger les variables d'environnement
@@ -31,10 +41,16 @@ app.use(cors());
 //Routes
 app.use('/api/motos', motoRoutes);
 app.use('/api/entretien', entretienRoutes);
-app.use('/api/panne', panneRoutes);
+app.use('/api/pannes', panneRoutes);
 app.use('/api/maintenance', maintenanceRuleRoutes);
 app.use('/api/user', userRoute);
 app.use('/api/auth', authRouter);
+app.use('/api/pieces', pieceRoutes);
+app.use('/api/garanties', garantieRoutes);
+app.use('/api/commandes', commandeRoutes);
+app.use('/api/pieces-fournisseur', pieceFournisseurRoutes);
+app.use('/api/conducteurs', conducteurRoutes);
+app.use('/api/essais', essaiRoutes);
 
 // Port
 const PORT = 3000;
@@ -68,3 +84,7 @@ connectToDatabase()
   .catch((err: unknown) => {
     console.error("An error occurred during setup:", err);
   });
+
+// scheduleEntretienReminderJob();
+// scheduleStockLowJob();
+

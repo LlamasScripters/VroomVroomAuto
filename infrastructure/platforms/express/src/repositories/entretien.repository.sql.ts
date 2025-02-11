@@ -5,7 +5,8 @@ import { Entretien } from '@domain/entities/EntretienEntity';
 import { UUID } from '@domain/value-objects/UUID';
 import EntretienSQL from '../modelsSQL/entretien.sql';
 import MotoSQL from '../modelsSQL/moto.sql';
-import { Model } from 'sequelize';
+import { Model, Op } from 'sequelize';
+
 
 interface MotoAttributes {
   marque: string;
@@ -23,13 +24,15 @@ interface EntretienAttributes {
   kilometrageEntretien: number;
   recommandationsTechnicien: string;
   recommandationsGestionnaireClient: string;
-  cout: number;
+  coutMainOeuvre: number;       // Remplacé cout par coutMainOeuvre
+  coutPieces: number;          // Ajouté coutPieces
   statut: string;
   userId: string;
+  gestionnaireId: string;
   moto?: MotoAttributes;
 }
 
-interface EntretienModel extends Model<EntretienAttributes>, EntretienAttributes {}
+interface EntretienModel extends Model<EntretienAttributes>, EntretienAttributes { }
 
 export class EntretienSQLRepository implements EntretienRepository {
   async save(entretien: Entretien): Promise<Entretien> {
@@ -43,9 +46,11 @@ export class EntretienSQLRepository implements EntretienRepository {
         kilometrageEntretien: entretien.kilometrageEntretien,
         recommandationsTechnicien: entretien.recommandationsTechnicien,
         recommandationsGestionnaireClient: entretien.recommandationsGestionnaireClient,
-        cout: entretien.cout,
+        coutMainOeuvre: entretien.coutMainOeuvre,
+        coutPieces: entretien.coutPieces,
         statut: entretien.statut,
-        userId: entretien.userId.toString()
+        userId: entretien.userId.toString(),
+        gestionnaireId: entretien.gestionnaireId.toString(),
       });
 
       await saved.reload({
@@ -73,7 +78,7 @@ export class EntretienSQLRepository implements EntretienRepository {
         attributes: ['marque', 'model', 'serialNumber']
       }]
     });
-    
+
     if (!entretien) return null;
     return this.toDomain(entretien as EntretienModel);
   }
@@ -87,7 +92,7 @@ export class EntretienSQLRepository implements EntretienRepository {
         attributes: ['marque', 'model', 'serialNumber', 'userId']
       }]
     });
-    
+
     return entretiens.map(entretien => this.toDomain(entretien as EntretienModel));
   }
 
@@ -101,11 +106,13 @@ export class EntretienSQLRepository implements EntretienRepository {
         kilometrageEntretien: entretien.kilometrageEntretien,
         recommandationsTechnicien: entretien.recommandationsTechnicien,
         recommandationsGestionnaireClient: entretien.recommandationsGestionnaireClient,
-        cout: entretien.cout,
+        coutMainOeuvre: entretien.coutMainOeuvre,  // Mise à jour
+        coutPieces: entretien.coutPieces,          // Ajouté
         statut: entretien.statut,
+        gestionnaireId: entretien.gestionnaireId.toString(),
         userId: entretien.userId.toString()
       },
-      { 
+      {
         where: { entretienId: entretien.entretienId.toString() }
       }
     );
@@ -136,6 +143,19 @@ export class EntretienSQLRepository implements EntretienRepository {
     return deleted > 0;
   }
 
+  async findAllEntretienDus(): Promise<Entretien[]> {
+    const results = await EntretienSQL.findAll({
+      where: {
+        datePrevue: {
+          [Op.lte]: new Date(),
+        },
+        dateRealisee: null,
+      },
+    });
+    return results.map(row => this.toDomain(row as EntretienModel));
+  }
+
+
   private toDomain(model: EntretienModel): Entretien {
     return Entretien.create(
       new UUID(model.entretienId),
@@ -146,9 +166,11 @@ export class EntretienSQLRepository implements EntretienRepository {
       model.kilometrageEntretien,
       model.recommandationsTechnicien,
       model.recommandationsGestionnaireClient,
-      model.cout,
       model.statut,
       new UUID(model.userId),
+      new UUID(model.gestionnaireId),
+      model.coutMainOeuvre,
+      model.coutPieces,
       model.moto ? {
         marque: model.moto.marque,
         model: model.moto.model,

@@ -14,6 +14,13 @@ import EntretienPlanificationPage from './pages/EntretienPlanificationPage';
 import EntretienHistoriquePage from './pages/EntretienHistoriquePage';
 import ClientEntretiensPage from './pages/ClientEntretiensPage';
 import ClientEntretiensHistoriquePage from './pages/ClientEntretiensHistoriquePage';
+import MiseAJourKilometrage from './pages/MisAJourKilometrage';
+import CommandeManagementPage from './pages/CommandeManagementPage';
+import AdminPieceFournisseurPage from './pages/AdminPieceFournisseurPage';
+import SuiviCommandesPage from './pages/SuiviCommandesPage';
+import HistoriqueCommandesPage from './pages/HistoriqueCommandesPage';
+import CataloguePiecesFournisseurPage from './pages/CataloguePiecesFournisseurPage';
+import ConducteurManagementPage from './pages/ConducteurManagementPage';
 
 const routes: RouteObject[] = [
   {
@@ -73,8 +80,36 @@ const routes: RouteObject[] = [
     element: <ClientEntretiensPage />,
   },
   {
+    path: '/mise-a-jour-km',
+    element: <MiseAJourKilometrage />,
+  },
+  {
     path: '/entretiens/mes-entretiens/historique',
     element: <ClientEntretiensHistoriquePage />,
+  },
+  {
+    path: '/admin/commandes',
+    element: <CommandeManagementPage />,
+  },
+  {
+    path: '/admin/pieces',
+    element: <AdminPieceFournisseurPage />,
+  },
+  {
+    path: '/commandes/suivi-commandes',
+    element: <SuiviCommandesPage />,
+  },
+  {
+    path: '/commandes/historique',
+    element: <HistoriqueCommandesPage />,
+  },
+  {
+    path: '/commandes/catalogue-pieces',
+    element: <CataloguePiecesFournisseurPage />,
+  },
+  {
+    path: '/conducteurs',
+    element: <ConducteurManagementPage />,
   },
 
 ];

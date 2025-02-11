@@ -16,6 +16,16 @@ import EntretienHistoriquePage from "./pages/EntretienHistoriquePage";
 import MaintenanceRuleManagementPage from "./pages/MaintenanceRuleManagementPage";
 import ClientEntretiensPage from './pages/ClientEntretiensPage';
 import ClientEntretiensHistoriquePage from './pages/ClientEntretiensHistoriquePage';
+import MiseAJourKilometrage from './pages/MisAJourKilometrage';
+import CommandeManagementPage from "./pages/CommandeManagementPage";
+import AdminPieceFournisseurPage from "./pages/AdminPieceFournisseurPage";
+import SuiviCommandesPage from "./pages/SuiviCommandesPage";
+import HistoriqueCommandesPage from './pages/HistoriqueCommandesPage';
+import CataloguePiecesFournisseurPage from './pages/CataloguePiecesFournisseurPage';
+import ConducteurManagementPage from './pages/ConducteurManagementPage';
+import EssaiManagementPage from './pages/EssaiManagementPage';
+
+
 import { AppSidebar } from "../src/components/sideBar/appSidebar";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,} from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
@@ -95,13 +105,21 @@ function App() {
         <Route path="/entretiens/mes-entretiens" element={<ProtectedLayout requiredRole={["user", "gestionnaire", "admin"]}><ClientEntretiensPage /></ProtectedLayout>} />
         <Route path="/entretiens/mes-entretiens/historique" element={<ProtectedLayout requiredRole={["user","gestionnaire","admin"]}><ClientEntretiensHistoriquePage /></ProtectedLayout>} />
         <Route path="/maintenance-rules" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><MaintenanceRuleManagementPage /></ProtectedLayout>} />
-        <Route path="/pannes" element={<ProtectedLayout><PanneManagementPage /></ProtectedLayout>} />
-        <Route path="/garanties" element={<ProtectedLayout><GarantieManagementPage /></ProtectedLayout>} />
-        <Route path="/reparations" element={<ProtectedLayout><ReparationManagementPage /></ProtectedLayout>} />
+        <Route path="/pannes" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><PanneManagementPage /></ProtectedLayout>} />
+        <Route path="/garanties" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><GarantieManagementPage /></ProtectedLayout>} />
+        <Route path="/reparations" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><ReparationManagementPage /></ProtectedLayout>} />
         <Route path="/pieces" element={<ProtectedLayout><PieceManagementPage /></ProtectedLayout>} />
+        <Route path="/mise-a-jour-km" element={<ProtectedLayout><MiseAJourKilometrage /></ProtectedLayout>} />
         <Route path="/clients" element={<ProtectedLayout><ClientManagementPage /></ProtectedLayout>} />
         <Route path="/employes" element={<ProtectedLayout><EmployeManagementPage /></ProtectedLayout>} />
         <Route path="/statistiques" element={<ProtectedLayout><StatisticsPage /></ProtectedLayout>} />
+        <Route path="/admin/commandes" element={<ProtectedLayout requiredRole={["admin"]}><CommandeManagementPage /></ProtectedLayout>} />
+        <Route path="/admin/pieces" element={<ProtectedLayout requiredRole={["admin"]}><AdminPieceFournisseurPage /></ProtectedLayout>} />
+        <Route path="/commandes/suivi-commandes" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><SuiviCommandesPage /></ProtectedLayout>} />
+        <Route path="/commandes/historique" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><HistoriqueCommandesPage /></ProtectedLayout>} />
+        <Route path="/commandes/catalogue-pieces" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><CataloguePiecesFournisseurPage /></ProtectedLayout>} />
+        <Route path="/conducteurs" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><ConducteurManagementPage /></ProtectedLayout>} />
+        <Route path="/essais" element={<ProtectedLayout requiredRole={["gestionnaire", "admin"]}><EssaiManagementPage /></ProtectedLayout>} />
       </Routes>
     </Router>
   );

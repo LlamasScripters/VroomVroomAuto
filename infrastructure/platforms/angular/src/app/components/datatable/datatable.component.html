@@ -1,0 +1,189 @@
+<div class="overflow-x-auto p-4">
+  <!-- Message d'erreur -->
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+    <span class="block sm:inline">{{ error }}</span>
+    <button class="absolute top-0 right-0 px-4 py-3" (click)="error = null">
+      <span class="sr-only">Fermer</span>
+      <svg class="h-4 w-4 fill-current" role="button" viewBox="0 0 20 20">
+        <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Bouton d'ajout -->
+  <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4" (click)="openAddIncidentModal()">
+    Ajouter un incident
+  </button>
+
+  <!-- Indicateur de chargement -->
+  <div *ngIf="isLoading" class="flex justify-center py-4">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+  </div>
+
+  <!-- Table des incidents -->
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+      <tr>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Titre</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Incident</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <tr *ngFor="let incident of incidents">
+        <td class="px-6 py-4 whitespace-nowrap">
+          {{ getIncidentId(incident.incidentId) }}
+        </td>
+
+        <td class="px-6 py-4 whitespace-nowrap">{{ incident.typeIncident }}</td>
+        <td class="px-6 py-4 whitespace-nowrap">{{ incident.description }}</td>
+        <td class="px-6 py-4 whitespace-nowrap">{{ incident.dateIncident | date:'medium' }}</td>
+        <td class="px-6 py-4 whitespace-nowrap">
+          <span [ngClass]="{
+            'px-2 py-1 rounded text-xs font-medium': true,
+            'bg-red-100 text-red-800': incident.gravite === 'HAUTE',
+            'bg-yellow-100 text-yellow-800': incident.gravite === 'MOYENNE',
+            'bg-green-100 text-green-800': incident.gravite === 'FAIBLE'
+          }">
+            {{ incident.gravite }}
+          </span>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap space-x-2">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="openEditIncidentModal(incident)">
+            Modifier
+          </button>
+          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="openDeleteIncidentModal(incident)">
+            Supprimer
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal d'ajout d'incident -->
+<div *ngIf="showAddIncidentModal" class="fixed z-10 inset-0 overflow-y-auto">
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 transition-opacity" aria-hidden="true" (click)="closeAddIncidentModal()">
+      <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+    </div>
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Ajouter un incident</h3>
+        <div class="mt-2">
+          <form (ngSubmit)="addIncident()">
+            <div class="mb-4">
+              <label for="typeIncident" class="block text-gray-700 font-bold mb-2">Type d'incident</label>
+              <input type="text" id="typeIncident" name="typeIncident" [(ngModel)]="newIncident.typeIncident" 
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <div class="mb-4">
+              <label for="description" class="block text-gray-700 font-bold mb-2">Description</label>
+              <textarea id="description" name="description" [(ngModel)]="newIncident.description" 
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
+            </div>
+            <div class="mb-4">
+              <label for="dateIncident" class="block text-gray-700 font-bold mb-2">Date de l'incident</label>
+              <input type="datetime-local" id="dateIncident" name="dateIncident" [(ngModel)]="newIncident.dateIncident" 
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <div class="mb-4">
+              <label for="gravite" class="block text-gray-700 font-bold mb-2">Gravité</label>
+              <select id="gravite" name="gravite" [(ngModel)]="newIncident.gravite" 
+                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                <option value="FAIBLE">Faible</option>
+                <option value="MOYENNE">Moyenne</option>
+                <option value="ELEVEE">Élevée</option>
+              </select>
+            </div>
+            <div class="flex justify-end space-x-2">
+              <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" (click)="closeAddIncidentModal()">
+                Annuler
+              </button>
+              <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                Ajouter
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de modification d'incident -->
+<div *ngIf="showEditIncidentModal" class="fixed z-10 inset-0 overflow-y-auto">
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 transition-opacity" aria-hidden="true" (click)="closeEditIncidentModal()">
+      <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+    </div>
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Modifier un incident</h3>
+        <div class="mt-2">
+          <form (ngSubmit)="updateIncident()" *ngIf="selectedIncident">
+            <div class="mb-4">
+              <label for="typeIncident" class="block text-gray-700 font-bold mb-2">Type d'incident</label>
+              <input type="text" id="typeIncident" name="typeIncident" [(ngModel)]="selectedIncident.typeIncident" 
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <div class="mb-4">
+              <label for="description" class="block text-gray-700 font-bold mb-2">Description</label>
+              <textarea id="description" name="description" [(ngModel)]="selectedIncident.description" 
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
+            </div>
+            <div class="mb-4">
+              <label for="dateIncident" class="block text-gray-700 font-bold mb-2">Date de l'incident</label>
+              <input type="datetime-local" id="dateIncident" name="dateIncident" [(ngModel)]="selectedIncident.dateIncident" 
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <div class="mb-4">
+              <label for="gravite" class="block text-gray-700 font-bold mb-2">Gravité</label>
+              <select id="gravite" name="gravite" [(ngModel)]="selectedIncident.gravite" 
+                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                <option value="FAIBLE">Faible</option>
+                <option value="MOYENNE">Moyenne</option>
+                <option value="ELEVEE">Élevée</option>
+              </select>
+            </div>
+            <div class="flex justify-end space-x-2">
+              <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" (click)="closeEditIncidentModal()">
+                Annuler
+              </button>
+              <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Enregistrer
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de suppression d'incident -->
+<div *ngIf="showDeleteIncidentModal" class="fixed z-10 inset-0 overflow-y-auto">
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 transition-opacity" aria-hidden="true" (click)="closeDeleteIncidentModal()">
+      <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+    </div>
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">Supprimer un incident</h3>
+        <div class="mt-2">
+          <p class="text-sm text-gray-500">Êtes-vous sûr de vouloir supprimer cet incident ?</p>
+        </div>
+        <div class="mt-4 flex justify-end">
+          <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="closeDeleteIncidentModal()">Annuler</button>
+          <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="deleteIncident()">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

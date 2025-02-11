@@ -1,6 +1,6 @@
-import { Panne } from '../../domain/entities/PanneEntity';
-import { UUID } from '../../domain/value-objects/UUID';
-import { PanneDTO } from '../dtos/PanneDTO';
+import { Panne } from '@domain/entities/PanneEntity';
+import { UUID } from '@domain/value-objects/UUID';
+import { PanneDTO } from '@application/dtos/PanneDTO';
 
 export function toDTO(panne: Panne): PanneDTO {
     return {

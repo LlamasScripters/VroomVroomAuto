@@ -16,7 +16,7 @@ async function insertOrUpdatePieceInMongo(pieceSQL: PieceSQL): Promise<void> {
     };
 
     if (pieceMongo) {
-        const isSame = Object.keys(newPiece).every(key => 
+        const isSame = Object.keys(newPiece).every(key =>
             JSON.stringify(newPiece[key]) === JSON.stringify((pieceMongo as { [key: string]: any })[key])
         );
 

@@ -9,16 +9,26 @@ async function insertOrUpdateConducteurInMongo(conducteurSQL: ConducteurSQL): Pr
     const newConducteur: { [key: string]: any } = {
         _id: conducteurSQL.conducteurId,
         nom: conducteurSQL.nom,
-        permis: conducteurSQL.permis,
+        prenom: conducteurSQL.prenom,
+        dateNaissance: conducteurSQL.dateNaissance,
+        numeroPermis: conducteurSQL.numeroPermis,
         categoriePermis: conducteurSQL.categoriePermis,
-        experience: conducteurSQL.experience,
+        dateObtentionPermis: conducteurSQL.dateObtentionPermis,
+        dateValiditePermis: conducteurSQL.dateValiditePermis,
+        anneeExperience: conducteurSQL.anneeExperience,
+        telephone: conducteurSQL.telephone,
+        email: conducteurSQL.email,
+        disponibilite: conducteurSQL.disponibilite,
+        statut: conducteurSQL.statut,
         user: {
-            _id: conducteurSQL.userId,
+            _id: conducteurSQL.userId
         },
+        dateCreation: conducteurSQL.dateCreation,
+        derniereModification: conducteurSQL.derniereModification
     };
 
     if (conducteurMongo) {
-        const isSame = Object.keys(newConducteur).every(key => 
+        const isSame = Object.keys(newConducteur).every(key =>
             JSON.stringify(newConducteur[key]) === JSON.stringify((conducteurMongo as { [key: string]: any })[key])
         );
 

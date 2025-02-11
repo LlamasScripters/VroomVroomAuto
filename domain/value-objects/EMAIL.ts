@@ -1,4 +1,4 @@
-import { EmailError } from '../errors/value-objects/EmailError';
+import { EmailError } from '@domain/errors/value-objects/EmailError';
 
 export class Email {
   private readonly value: string;

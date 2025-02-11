@@ -1,23 +1,17 @@
 // infrastructure/platforms/react/src/services/motoService.ts
-
 import { Moto } from '../types';
-import { useAuthStore } from '@/stores/authStore';
-
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+import axiosInstance from '../../axios';
 
 export const MotoService = {
   async getAllMotos(): Promise<Moto[]> {
     try {
-      const response = await fetch(`${API_URL}/motos`, {
-        headers: {
-          'Authorization': `Bearer ${useAuthStore.getState().token}`
-        }
-      });
-      if (!response.ok) {
+
+      const response = await axiosInstance.get("/motos")
+      console.log(response)
+      if (!response.data) {
         throw new Error('Erreur lors de la récupération des motos');
       }
-      return response.json();
+      return response.data;
     } catch (error) {
       throw new Error(`Erreur lors de la récupération des motos: ${error}`);
     }
@@ -25,11 +19,12 @@ export const MotoService = {
 
   async getMotoById(id: string): Promise<Moto> {
     try {
-      const response = await fetch(`${API_URL}/motos/${id}`);
-      if (!response.ok) {
+
+      const response = await axiosInstance.get(`/motos/${id}`)
+      if (!response.data) {
         throw new Error('Moto non trouvée');
       }
-      return response.json();
+      return response.data;
     } catch (error) {
       throw new Error(`Erreur lors de la récupération de la moto: ${error}`);
     }
@@ -37,19 +32,13 @@ export const MotoService = {
 
   async createMoto(motoData: Omit<Moto, 'id'>): Promise<Moto> {
     try {
-      const token = useAuthStore.getState().token;
-      const response = await fetch(`${API_URL}/motos`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(motoData),
-      });
-      if (!response.ok) {
+
+      const response = await axiosInstance.post("/motos", motoData)
+  
+      if (!response.data) {
         throw new Error('Erreur lors de la création de la moto');
       }
-      return response.json();
+      return response.data;
     } catch (error) {
       throw new Error(`Erreur lors de la création de la moto: ${error}`);
     }
@@ -60,20 +49,14 @@ export const MotoService = {
         if (!moto.motoId) {
             throw new Error('ID de moto manquant');
         }
-      
-        const response = await fetch(`${API_URL}/motos/${moto.motoId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(moto),
-        });
+
+        const response = await axiosInstance.put(`/motos/${moto.motoId}`, moto)
         
-        if (!response.ok) {
+        if (!response.data) {
             throw new Error('Erreur lors de la mise à jour de la moto');
         }
         
-        return response.json();
+        return response.data;
     } catch (error) {
         throw new Error(`Erreur lors de la mise à jour de la moto: ${error}`);
     }
@@ -84,10 +67,10 @@ export const MotoService = {
       throw new Error('ID de moto invalide');
     }
     try {
-      const response = await fetch(`${API_URL}/motos/${id}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
+
+      const response = await axiosInstance.delete(`/motos/${id}`)
+    
+      if (!response.data) {
         throw new Error('Erreur lors de la suppression de la moto');
       }
     } catch (error) {

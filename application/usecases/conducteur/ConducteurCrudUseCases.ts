@@ -1,45 +1,92 @@
-import { Conducteur } from '../../../domain/entities/ConducteurEntity';
-import { ConducteurRepository } from '../../repositories/ConducteurRepository';
-import { UUID } from '../../../domain/value-objects/UUID';
+// application/usecases/conducteur/ConducteurCrudUseCases.ts
+import { Conducteur, DisponibiliteConducteur, StatutConducteur } from '@domain/entities/ConducteurEntity';
+import { ConducteurRepository } from '@application/repositories/ConducteurRepository';
+import { UUID } from '@domain/value-objects/UUID';
+import { CreateConducteurDTO, UpdateConducteurDTO } from '@application/dtos/ConducteurDTO';
+import { UserRepository } from '@application/repositories/UserRepository';
 
-interface ConducteurData {
-  conducteurId: UUID;
-  nom: string;
-  permis: string;
-  categoriePermis: string;
-  experience: number;
-  userId: UUID;
-}
+export class ConducteurCrudUseCases {
+    constructor(
+      private conducteurRepository: ConducteurRepository,
+      private userRepository: UserRepository
+    ) {}
 
-export class ConducteurUseCases {
-  constructor(private conducteurRepository: ConducteurRepository) {}
-
-  async createConducteur(nom: string, permis: string, categoriePermis: string, experience: number, userId: UUID): Promise<Conducteur> {
-    const conducteur = Conducteur.create(new UUID(), nom, permis, categoriePermis, experience, userId);
-    return this.conducteurRepository.save(conducteur);
+    async createConducteur(conducteurData: CreateConducteurDTO): Promise<Conducteur> {
+      // vérification si l'utilisateur existe
+      const user = await this.userRepository.findById(new UUID(conducteurData.userId));
+      if (!user) {
+          throw new Error('Utilisateur non trouvé');
+      }
+  
+      // vérification si l'utilisateur a déjà un profil conducteur
+      const existingConducteur = await this.conducteurRepository.findByUser(new UUID(conducteurData.userId));
+      if (existingConducteur) {
+          throw new Error('Un profil conducteur existe déjà pour cet utilisateur');
+      }
+  
+      const conducteur = Conducteur.create(
+          new UUID(),
+          conducteurData.nom,
+          conducteurData.prenom,
+          new Date(conducteurData.dateNaissance),
+          conducteurData.numeroPermis,
+          conducteurData.categoriePermis,
+          new Date(conducteurData.dateObtentionPermis),
+          new Date(conducteurData.dateValiditePermis),
+          conducteurData.anneeExperience,
+          conducteurData.telephone,
+          conducteurData.email || user.email.toString(), // mail de l'user
+          conducteurData.disponibilite as DisponibiliteConducteur,
+          StatutConducteur.ACTIF,
+          new UUID(conducteurData.userId)
+      );
+  
+      return await this.conducteurRepository.save(conducteur);
   }
 
-  async getConducteurById(conducteurId: UUID): Promise<Conducteur | null> {
-    return this.conducteurRepository.findById(conducteurId);
-  }
+    async getConducteurById(conducteurId: string): Promise<Conducteur | null> {
+        return await this.conducteurRepository.findById(new UUID(conducteurId));
+    }
 
-  async updateConducteur(conducteurId: UUID, updatedData: Partial<ConducteurData>): Promise<Conducteur | null> {
-    const conducteur = await this.conducteurRepository.findById(conducteurId);
-    if (!conducteur) return null;
+    async updateConducteur(updatedData: UpdateConducteurDTO): Promise<Conducteur | null> {
+        const conducteur = await this.conducteurRepository.findById(new UUID(updatedData.conducteurId));
+        if (!conducteur) return null;
 
-    const updatedConducteur = Conducteur.create(
-      conducteur.conducteurId,
-      updatedData.nom || conducteur.nom,
-      updatedData.permis || conducteur.permis,
-      updatedData.categoriePermis || conducteur.categoriePermis,
-      updatedData.experience || conducteur.experience,
-      conducteur.userId
-    );
-    
-    return this.conducteurRepository.save(updatedConducteur);
-  }
+        const updatedConducteur = Conducteur.create(
+            conducteur.conducteurId,
+            updatedData.nom ?? conducteur.nom,
+            updatedData.prenom ?? conducteur.prenom,
+            updatedData.dateNaissance ? new Date(updatedData.dateNaissance) : conducteur.dateNaissance,
+            updatedData.numeroPermis ?? conducteur.numeroPermis,
+            updatedData.categoriePermis ?? conducteur.categoriePermis,
+            updatedData.dateObtentionPermis ? new Date(updatedData.dateObtentionPermis) : conducteur.dateObtentionPermis,
+            updatedData.dateValiditePermis ? new Date(updatedData.dateValiditePermis) : conducteur.dateValiditePermis,
+            updatedData.anneeExperience ?? conducteur.anneeExperience,
+            updatedData.telephone ?? conducteur.telephone,
+            updatedData.email ?? conducteur.email,
+            updatedData.disponibilite ?? conducteur.disponibilite,
+            updatedData.statut ?? conducteur.statut,
+            conducteur.userId,
+            conducteur.dateCreation,
+            new Date()
+        );
 
-  async deleteConducteur(conducteurId: UUID): Promise<boolean> {
-    return this.conducteurRepository.delete(conducteurId);
-  }
+        return await this.conducteurRepository.update(updatedConducteur);
+    }
+
+    async deleteConducteur(conducteurId: string): Promise<boolean> {
+        return await this.conducteurRepository.delete(new UUID(conducteurId));
+    }
+
+    async getAllConducteurs(): Promise<Conducteur[]> {
+        return await this.conducteurRepository.findAll();
+    }
+
+    async getConducteursByUser(userId: string): Promise<Conducteur[]> {
+        return await this.conducteurRepository.findByGestionnaire(new UUID(userId));
+    }
+
+    async getConducteursByDisponibilite(disponibilite: DisponibiliteConducteur): Promise<Conducteur[]> {
+        return await this.conducteurRepository.findByDisponibilite(disponibilite);
+    }
 }

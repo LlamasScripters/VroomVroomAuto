@@ -1,7 +1,7 @@
 // infrastructure/platforms/express/src/modelsSql/maintenanceRule.sql.ts
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import { connection } from './database';
-import { MaintenanceRuleAttributes, MaintenanceRuleModel } from '../interfaces/maintenanceRule.interface';
+import { MaintenanceRuleModel } from '../interfaces/maintenanceRule.interface';
 
 const MaintenanceRuleSQL = connection.define<MaintenanceRuleModel>('MaintenanceRule', {
   ruleId: {

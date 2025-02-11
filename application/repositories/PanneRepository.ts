@@ -1,5 +1,5 @@
-import { Panne } from '../../domain/entities/PanneEntity';
-import { UUID } from '../../domain/value-objects/UUID';
+import { Panne } from '@domain/entities/PanneEntity';
+import { UUID } from '@domain/value-objects/UUID';
 
 export interface PanneRepository {
   save(panne: Panne): Promise<Panne>;

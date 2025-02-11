@@ -1,4 +1,5 @@
-import { UUID } from '../value-objects/UUID';
+import { UUID } from '@domain/value-objects/UUID';
+import { EntretienPiece } from '@domain/entities/EntretienPieceEntity';
 
 export interface MotoDetails {
   marque: string;
@@ -16,11 +17,29 @@ export class Entretien {
       public readonly kilometrageEntretien: number,
       public readonly recommandationsTechnicien: string,
       public readonly recommandationsGestionnaireClient: string,
-      public readonly cout: number,
       public readonly statut: string,
       public readonly userId: UUID,
-      public readonly motoDetails?: MotoDetails
-    ) {}
+      public readonly gestionnaireId: UUID,
+      public readonly coutMainOeuvre: number,   
+      public readonly coutPieces: number,      
+      public readonly motoDetails?: MotoDetails,
+      public readonly pieces?: EntretienPiece[]
+    ) {
+      this.validateCouts();
+    }
+
+    private validateCouts(): void {
+      if (this.coutMainOeuvre !== undefined && this.coutMainOeuvre < 0) {
+        throw new Error('Le coût de main d\'œuvre ne peut pas être négatif');
+      }
+      if (this.coutPieces !== undefined && this.coutPieces < 0) {
+        throw new Error('Le coût des pièces ne peut pas être négatif');
+      }
+    }
+
+    public getCoutTotal(): number {
+      return (this.coutMainOeuvre ?? 0) + (this.coutPieces ?? 0);
+    }
 
     public static create(
       entretienId: UUID,
@@ -31,11 +50,14 @@ export class Entretien {
       kilometrageEntretien: number,
       recommandationsTechnicien: string,
       recommandationsGestionnaireClient: string,
-      cout: number,
       statut: string,
       userId: UUID,
-      motoDetails?: MotoDetails
+      gestionnaireId: UUID,  
+      coutMainOeuvre: number,
+      coutPieces: number,
+      motoDetails?: MotoDetails,
+      pieces?: EntretienPiece[]
     ): Entretien {
-      return new Entretien(entretienId, motoId, typeEntretien, datePrevue, dateRealisee, kilometrageEntretien, recommandationsTechnicien, recommandationsGestionnaireClient, cout, statut, userId, motoDetails);
+      return new Entretien(entretienId, motoId, typeEntretien, datePrevue, dateRealisee, kilometrageEntretien, recommandationsTechnicien, recommandationsGestionnaireClient, statut, userId,gestionnaireId, coutMainOeuvre, coutPieces, motoDetails, pieces); 
     }
   }

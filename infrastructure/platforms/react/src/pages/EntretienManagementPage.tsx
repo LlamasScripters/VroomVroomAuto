@@ -4,6 +4,7 @@ import { Entretien } from '../types';
 import { EntretienService } from '../services/entretienService';
 import EntretienTable from '../components/entretienManagement/EntretienTable';
 import EntretienForm from '../components/entretienManagement/EntretienForm';
+import EntretienDetailsView from '@/components/entretienManagement/EntretienDetailsView';
 import SearchAndFilters from '../components/shared/SearchAndFilters';
 import { toast } from "react-hot-toast";
 
@@ -16,6 +17,7 @@ function EntretienManagementPage() {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [currentEntretien, setCurrentEntretien] = useState<Entretien | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedEntretien, setSelectedEntretien] = useState<Entretien | null>(null);
   const entretiensPerPage = 5;
 
   useEffect(() => {
@@ -128,6 +130,10 @@ function EntretienManagementPage() {
     setCurrentPage(1);
   };
 
+  const handleViewEntretien = (entretien: Entretien) => {
+    setSelectedEntretien(entretien);
+  };
+
   return (
     <div className="">
       <div className="sm:flex sm:items-center sm:justify-between mb-6">
@@ -192,6 +198,7 @@ function EntretienManagementPage() {
           entretiens={currentEntretiens}
           onEditEntretien={handleEditEntretien}
           onDeleteEntretien={handleDeleteEntretien}
+          onViewEntretien={handleViewEntretien}
         />
       )}
 
@@ -218,6 +225,14 @@ function EntretienManagementPage() {
           />
         </div>
       )}
+
+      {selectedEntretien && (
+        <EntretienDetailsView
+          entretien={selectedEntretien}
+          onClose={() => setSelectedEntretien(null)}
+        />
+      )}
+      
     </div>
   );
 }

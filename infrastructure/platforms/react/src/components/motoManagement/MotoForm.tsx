@@ -1,5 +1,8 @@
 import { useAuthStore } from '@/stores/authStore';
 import React, { useState, useEffect } from 'react';
+import { validateTriumphVIN, formatVIN } from '../../utils/vinValidator';
+import { AlertCircle } from 'lucide-react';
+import axios from 'axios';
 
 interface User {
   userId: string;
@@ -36,6 +39,7 @@ function MotoForm({ onSubmit, onCancel, initialData }: MotoFormProps) {
 
   const { user } = useAuthStore();
   const [users, setUsers] = useState<User[]>([]);
+  const [vinError, setVinError] = useState<string>('');
 
   const [formData, setFormData] = useState({
     motoId: initialData?.motoId || '',
@@ -52,11 +56,9 @@ function MotoForm({ onSubmit, onCancel, initialData }: MotoFormProps) {
     const loadUsers = async () => {
       if (user?.role === 'admin') {
         try {
-          const response = await fetch('http://localhost:3000/api/user', {
-            headers: {
-              'Authorization': `Bearer ${useAuthStore.getState().token}`
-            }
-          });
+          const response = await axios.get('/user');
+            
+
           const data = await response.json();
           setUsers(data);
         } catch (error) {
@@ -69,13 +71,31 @@ function MotoForm({ onSubmit, onCancel, initialData }: MotoFormProps) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    
+    if (name === 'serialNumber') {
+      const formattedVIN = formatVIN(value);
+      
+      const vinValidationError = validateTriumphVIN(formattedVIN);
+      if (vinValidationError) {
+          setVinError(vinValidationError);
+      } else {
+          setVinError('');
+      }
+      
+      setFormData({ ...formData, [name]: formattedVIN });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.kilometrage < 0) {
       alert("Le kilométrage ne peut pas être négatif.");
+      return;
+    }
+    if (!validateTriumphVIN(formData.serialNumber)) {
+      alert("Le numéro VIN n'est pas valide pour une moto Triumph.");
       return;
     }
     onSubmit(formData);
@@ -91,10 +111,9 @@ function MotoForm({ onSubmit, onCancel, initialData }: MotoFormProps) {
           type="text"
           id="marque"
           name="marque"
-          value={formData.marque}
-          onChange={handleChange}
-          required
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-lg"
+          value="Triumph"
+          readOnly
+          className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
         />
       </div>
 
@@ -112,16 +131,31 @@ function MotoForm({ onSubmit, onCancel, initialData }: MotoFormProps) {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="serialNumber" className="block text-sm font-medium text-gray-700">N° Série</label>
+        <label htmlFor="serialNumber" className="block text-sm font-medium text-gray-700">
+          N° VIN Triumph
+        </label>
         <input
           type="text"
           id="serialNumber"
           name="serialNumber"
           value={formData.serialNumber}
           onChange={handleChange}
+          maxLength={17}
           required
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-lg"
+          className={`mt-1 block w-full p-2 border ${
+            vinError ? 'border-red-500' : 'border-gray-300'
+          } rounded-lg`}
+          placeholder="SMT..."
         />
+        {vinError && (
+          <div className="flex items-center mt-1 text-sm text-red-600">
+            <AlertCircle className="h-4 w-4 mr-1" />
+            {vinError}
+          </div>
+        )}
+        <p className="mt-1 text-sm text-gray-500">
+          Le numéro VIN doit commencer par SMT et contenir 17 caractères
+        </p>
       </div>
 
       <div className="mb-4">

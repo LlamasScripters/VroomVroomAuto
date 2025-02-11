@@ -21,10 +21,20 @@ export interface CommandeSQL {
 export interface ConducteurSQL {
     conducteurId: string;
     nom: string;
-    permis: string;
+    prenom: string;
+    dateNaissance: Date;
+    numeroPermis: string;
     categoriePermis: string;
-    experience: number;
+    dateObtentionPermis: Date;
+    dateValiditePermis: Date;
+    anneeExperience: number;
+    telephone: string;
+    email: string;
+    disponibilite: string;
+    statut: string;
     userId: string;
+    dateCreation: Date;
+    derniereModification: Date;
 }
 
 export interface EntretienSQL {
@@ -50,6 +60,17 @@ export interface EssaiSQL {
     duree: number;
     statut: string;
     userId: string;
+}
+
+export interface GarantieSQL {
+    garantieId: string;
+    panneId: string;
+    motoId: string;
+    couverture: string;
+    type: string;
+    dateDebut: Date;
+    dateFin: Date;
+    statut: string;
 }
 
 export interface IncidentSQL {

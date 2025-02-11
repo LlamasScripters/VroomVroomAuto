@@ -20,7 +20,7 @@ async function insertOrUpdateMotoInMongo(motoSQL: MotoSQL): Promise<void> {
     };
 
     if (motoMongo) {
-        const isSame = Object.keys(newMoto).every(key => 
+        const isSame = Object.keys(newMoto).every(key =>
             JSON.stringify(newMoto[key]) === JSON.stringify((motoMongo as { [key: string]: any })[key])
         );
 

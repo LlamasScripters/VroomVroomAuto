@@ -1,8 +1,8 @@
-import { User } from "../../../domain/entities/UserEntity";
-import { AuthRepository } from "../../repositories/AuthRepository";
-import { UUID } from "../../../domain/value-objects/UUID";
-import { Email } from "../../../domain/value-objects/EMAIL";
-import { Password } from "../../../domain/value-objects/PASSWORD";
+import { User } from "@domain/entities/UserEntity";
+import { AuthRepository } from "@application/repositories/AuthRepository";
+import { UUID } from "@domain/value-objects/UUID";
+import { Email } from "@domain/value-objects/EMAIL";
+import { Password } from "@domain/value-objects/PASSWORD";
 import { AuthentificationService } from "@application/services/AuthentificationService";
 import { PasswordService } from "@application/services/PasswordService";
 import { NotificationService } from "@application/services/NotificationService";
@@ -25,7 +25,6 @@ export class UserAuthUseCases {
 
     const user = await this.userRepository.findByEmail(email);
     if (!user) return null;
-    console.log(user);  
     const userPassword = user.password.toString();
 
     const isPasswordValid = await this.passwordService.verifyPassword(
@@ -33,7 +32,6 @@ export class UserAuthUseCases {
       userPassword
     );
 
-    console.log(isPasswordValid);
     if (!isPasswordValid) return null;  
 
     return await this.authenticationService.createAuthenticationToken(user.userId.toString());
@@ -107,7 +105,6 @@ export class UserAuthUseCases {
     await this.userRepository.save(user);
 
     const validationToken = await this.authenticationService.createAuthenticationToken(user.userId.toString());
-    console.log(validationToken);
     
     await this.notificationService.sendValidationEmail(email.toString(), validationToken);
 

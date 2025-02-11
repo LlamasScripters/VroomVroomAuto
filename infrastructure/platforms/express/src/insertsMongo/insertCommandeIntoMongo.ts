@@ -22,7 +22,7 @@ async function insertOrUpdateCommandeInMongo(commandeSQL: CommandeSQL): Promise<
     };
 
     if (commandeMongo) {
-        const isSame = Object.keys(newCommande).every(key => 
+        const isSame = Object.keys(newCommande).every(key =>
             JSON.stringify(newCommande[key]) === JSON.stringify((commandeMongo as { [key: string]: any })[key])
         );
 

@@ -1,7 +1,7 @@
-import { Panne } from '../../../domain/entities/PanneEntity';
+import { Panne } from '@domain/entities/PanneEntity';
 import { PanneRepository } from '@application/repositories/PanneRepository';
 import { PanneMongoRepository } from '@application/repositories/PanneMongoRepository';
-import { UUID } from '../../../domain/value-objects/UUID';
+import { UUID } from '@domain/value-objects/UUID';
 import { CreatePanneDTO, UpdatePanneDTO, GetPanneDTO } from '@application/dtos/PanneDTO';
 import { PanneResponse } from '@application/response/PanneResponse';
 
@@ -38,7 +38,6 @@ export class PanneUseCases {
   async getPanneById(panneData: GetPanneDTO): Promise<Panne | null> {
     const panneIdentifier = new UUID(panneData.panneId);
     return await this.panneMongoRepository.findById(panneIdentifier);
-    // return await this.panneRepository.findById(panneIdentifier);
   }
 
   async updatePanne(updatedData: UpdatePanneDTO): Promise<Panne | null> {
@@ -73,6 +72,5 @@ export class PanneUseCases {
 
   async listAllPannes(): Promise<Panne[]> {
     return this.panneMongoRepository.findAll();
-    // return this.panneRepository.findAll();
   }
 }

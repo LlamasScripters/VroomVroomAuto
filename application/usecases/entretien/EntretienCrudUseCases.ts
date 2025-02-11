@@ -21,11 +21,15 @@ export class EntretienCrudUseCases {
       entretienData.kilometrageEntretien,
       entretienData.recommandationsTechnicien,
       entretienData.recommandationsGestionnaireClient,
-      entretienData.cout,
       entretienData.statut,
-      new UUID(entretienData.userId)
+      new UUID(entretienData.userId),
+      new UUID(entretienData.gestionnaireId),
+      entretienData.coutMainOeuvre || 0,  
+      entretienData.coutPieces || 0,     
+      undefined,                          
+      entretienData.pieces || []          
     );
-
+  
     try {
       const savedEntretien = await this.entretienRepository.save(entretien);
       return { entretienId: savedEntretien.entretienId.toString() };
@@ -43,7 +47,7 @@ export class EntretienCrudUseCases {
     const entretienIdentifier = new UUID(updatedData.entretienId);
     const entretien = await this.entretienRepository.findById(entretienIdentifier);
     if (!entretien) return null;
-
+  
     const updatedEntretien = Entretien.create(
       entretien.entretienId,
       updatedData.motoId ? new UUID(updatedData.motoId) : entretien.motoId,
@@ -53,12 +57,15 @@ export class EntretienCrudUseCases {
       updatedData.kilometrageEntretien ?? entretien.kilometrageEntretien,
       updatedData.recommandationsTechnicien ?? entretien.recommandationsTechnicien,
       updatedData.recommandationsGestionnaireClient ?? entretien.recommandationsGestionnaireClient,
-      updatedData.cout ?? entretien.cout,
       updatedData.statut ?? entretien.statut,
       entretien.userId,
-      entretien.motoDetails
+      entretien.gestionnaireId,
+      updatedData.coutMainOeuvre ?? entretien.coutMainOeuvre, 
+      updatedData.coutPieces ?? entretien.coutPieces,       
+      entretien.motoDetails,
+      entretien.pieces                                      
     );
-    
+      
     return await this.entretienRepository.update(updatedEntretien);
   }
 

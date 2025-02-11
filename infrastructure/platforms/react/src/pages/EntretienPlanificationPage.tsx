@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import { MaintenanceRuleService } from '../services/maintenanceRuleService';
 import PlanificationEntretienForm from '../components/maintenanceRules/PlanificationEntretienForm';
-import { toast } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 
 interface PlanificationData {
   motoId: string;
+  userId: string;          
   datePrevue?: string;
   kilometragePrevu?: number;
   typeEntretien?: string;
   notes?: string;
+  coutMainOeuvre: number;  
+  pieces: {                 
+      pieceId: string;
+      quantite: number;
+      prixUnitaire: number;
+  }[];
 }
 
 const EntretienPlanificationPage: React.FC = () => {
@@ -20,10 +27,9 @@ const EntretienPlanificationPage: React.FC = () => {
       setIsLoading(true);
       setError(null);
       
-      const result = await MaintenanceRuleService.planifierEntretien(planificationData);
-      
+      await MaintenanceRuleService.planifierEntretien(planificationData);
       toast.success('Entretien planifié avec succès');
-      return result;
+      
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Une erreur est survenue';
       setError(errorMessage);
@@ -36,6 +42,7 @@ const EntretienPlanificationPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Toaster position="top-right" /> 
       <h1 className="text-2xl font-bold mb-6">Planification des Entretiens</h1>
       
       {error && (

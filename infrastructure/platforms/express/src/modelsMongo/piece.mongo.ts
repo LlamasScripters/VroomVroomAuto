@@ -35,14 +35,14 @@ const pieceSchema = new mongoose.Schema(
 );
 
 pieceSchema.index(
-    {
-        nom: "text",
-        reference: "text",
-        categorie: "text",
-    },
-    {
-        name: "searchIndex",
-    }
+  {
+    nom: "text",
+    reference: "text",
+    categorie: "text",
+  },
+  {
+    name: "searchIndex",
+  }
 );
 
 const Piece = mongoose.model("Pieces", pieceSchema);

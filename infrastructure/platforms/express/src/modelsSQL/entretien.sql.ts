@@ -10,7 +10,7 @@ const EntretienSQL = connection.define('Entretien', {
   motoId: {
     type: DataTypes.UUID,
     allowNull: false,
-    references:{
+    references: {
       model: 'Motos',
       key: 'motoId'
     }
@@ -25,6 +25,7 @@ const EntretienSQL = connection.define('Entretien', {
   },
   dateRealisee: {
     type: DataTypes.DATE,
+    allowNull: true,
   },
   kilometrageEntretien: {
     type: DataTypes.FLOAT,
@@ -36,19 +37,44 @@ const EntretienSQL = connection.define('Entretien', {
   recommandationsGestionnaireClient: {
     type: DataTypes.STRING,
   },
-  cout: {
-    type: DataTypes.FLOAT,
+  coutMainOeuvre: {
+    type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
+    defaultValue: 0,
+  },
+  coutPieces: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
+    defaultValue: 0,
+  },
+  coutTotal: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
+    defaultValue: 0,
   },
   statut: {
     type: DataTypes.STRING,
-    allowNull: false,
   },
   userId: {
     type: DataTypes.UUID,
     allowNull: true,
+    references: {
+      model: 'Users',
+      key: 'userId'
+    }
   },
+
+  gestionnaireId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    references: {
+      model: 'Users',
+      key: 'userId'
+    }
+  },
+
 }, {
   tableName: 'Entretiens',
 });
+
 export default EntretienSQL;

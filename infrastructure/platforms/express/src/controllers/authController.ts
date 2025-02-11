@@ -35,7 +35,6 @@ export class AuthController {
     try {
       const loginDTO: LoginDTO = req.body;
       const token = await this.authUseCases.login(loginDTO);
-      console.log(token);
       if (!token) {
         res.status(401).json({ error: "Invalid credentials" });
         return;
@@ -110,28 +109,28 @@ export class AuthController {
 
   async me(req: Request, res: Response): Promise<void> {
     try {
-      
+
       const token = req.headers.authorization?.split(" ")[1];
       if (!token) {
-         res.status(401).json({ error: "No token provided" });
-         return;
+        res.status(401).json({ error: "No token provided" });
+        return;
       }
-  
+
       // Vérifier le token (authService)
-      const userId = await this.authUseCases.verifyToken(token); 
-  
+      const userId = await this.authUseCases.verifyToken(token);
+
       if (!userId) {
         res.status(401).json({ error: "Token invalid or expired" });
         return;
       }
-  
+
       const user = await this.authUseCases.getUserById(userId);
-  
+
       if (!user) {
-         res.status(404).json({ error: "User not found" });
-         return;
+        res.status(404).json({ error: "User not found" });
+        return;
       }
-  
+
       res.json({
         id: user.userId.toString(),
         email: user.email.toString(),

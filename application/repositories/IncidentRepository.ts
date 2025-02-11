@@ -1,5 +1,6 @@
-import { Incident } from '../../domain/entities/IncidentEntity';
-import { UUID } from '../../domain/value-objects/UUID';
+// incidentRepository 
+import { Incident } from '@domain/entities/IncidentEntity';
+import { UUID } from '@domain/value-objects/UUID';
 
 export interface IncidentRepository {
   save(incident: Incident): Promise<Incident>;
