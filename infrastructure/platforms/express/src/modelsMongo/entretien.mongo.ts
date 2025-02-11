@@ -41,7 +41,15 @@ const entretienSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        cout: {
+        coutMainOeuvre: {
+            type: Number,
+            required: true,
+        },
+        coutPieces: {
+            type: Number,
+            required: true,
+        },
+        coutTotal: {
             type: Number,
             required: true,
         },
@@ -66,14 +74,18 @@ const entretienSchema = new mongoose.Schema(
 
 entretienSchema.index(
     {
-        typeEntretien: 'text',
-        datePrevue: 'text',
-        dateRealisee: 'text',
-        kilometrageEntretien: 'text',
-        recommandationsTechnicient: 'text',
-        recommandationsGestionnaireClient: 'text',
-        cout: 'text',
-        statut: 'text',
+        "moto._id": 1,
+        "typeEntretien": 1,
+        "datePrevue": 1,
+        "dateRealisee": 1,
+        "kilometrageEntretien": 1,
+        "recommandationsTechnicient": 1,
+        "recommandationsGestionnaireClient": 1,
+        "coutMainOeuvre": 1,
+        "coutPieces": 1,
+        "coutTotal": 1,
+        "statut": 1,
+        "user._id": 1,
     },
     { name: 'searchIndex' }
 );

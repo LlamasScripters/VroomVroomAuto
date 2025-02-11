@@ -46,7 +46,9 @@ export interface EntretienSQL {
     kilometrageEntretien: number;
     recommandationsTechnicien: string;
     recommandationsGestionnaireClient: string;
-    cout: number;
+    coutMainOeuvre: number;
+    coutPieces: number;
+    coutTotal: number;
     statut: string;
     userId: string;
 }
